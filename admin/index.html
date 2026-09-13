@@ -75,6 +75,42 @@
   code{background:#EEF2F7; padding:1px 5px; border-radius:3px; font-size:12.5px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
   .dirty{display:none; font-size:12px; color:#8A6A12; background:#FFF3D6; border:1px solid #F0DFB5; padding:4px 10px; border-radius:999px}
   .dirty.show{display:inline-block}
+
+  /* The three preview buttons were 27px tall. A thumb needs more. */
+  @media (max-width: 900px){
+    .previewbar{gap:6px; padding:5px 8px}
+    .previewbar button{min-height:40px; padding:0 14px; font-size:13px}
+  }
+
+  /* Show/hide for the token. */
+  .tokenrow{display:flex; gap:8px; align-items:stretch}
+  .tokenrow input{flex:1; min-width:0}
+  .tokenrow button{flex:none; min-height:44px; padding:0 14px; font-size:13px;
+    background:#fff; color:var(--ink); border:1px solid var(--line); border-radius:6px; cursor:pointer}
+
+  /* Nothing reaches the live site without passing through this. */
+  .kx-confirm{position:fixed; inset:0; z-index:9999; display:flex; align-items:center;
+    justify-content:center; padding:20px; background:rgba(13,27,62,.55)}
+  .kx-confirm-box{background:#fff; border-radius:12px; max-width:560px; width:100%;
+    max-height:82vh; display:flex; flex-direction:column; overflow:hidden;
+    box-shadow:0 30px 80px rgba(13,27,62,.4)}
+  .kx-confirm h3{margin:0; padding:18px 22px 12px; font-size:18px; color:var(--ink)}
+  .kx-confirm .kx-confirm-lead{margin:0; padding:0 22px 14px; font-size:14px; color:var(--ink-2); line-height:1.55}
+  .kx-confirm ul{margin:0; padding:0 22px 18px; list-style:none; overflow-y:auto}
+  .kx-confirm li{padding:11px 0; border-top:1px solid var(--line); font-size:14px; line-height:1.5}
+  .kx-confirm .kx-f{display:block; font-weight:600; color:var(--ink); margin-bottom:3px}
+  .kx-confirm .kx-old{color:var(--ink-2); text-decoration:line-through}
+  .kx-confirm .kx-new{color:var(--ok); font-weight:600}
+  .kx-confirm-foot{display:flex; gap:10px; justify-content:flex-end; padding:16px 22px;
+    border-top:1px solid var(--line); background:#F7F8FA}
+  .kx-confirm-foot button{min-height:46px; padding:0 20px; font-size:15px; font-weight:600;
+    border-radius:6px; cursor:pointer}
+  .kx-confirm-foot .kx-go{background:var(--ok,#0DC59A); color:#062B22; border:0}
+  .kx-confirm-foot .kx-no{background:#fff; color:var(--ink); border:1px solid var(--line)}
+  @media (max-width: 560px){
+    .kx-confirm-foot{flex-direction:column-reverse}
+    .kx-confirm-foot button{width:100%}
+  }
 </style>
 </head>
 <body>
@@ -101,7 +137,10 @@
       </p>
       <label>
         <span>GitHub token</span>
-        <input type="text" id="token" placeholder="github_pat_..." autocomplete="off" spellcheck="false">
+        <span class="tokenrow">
+          <input type="password" id="token" placeholder="github_pat_..." autocomplete="off" spellcheck="false">
+          <button type="button" id="tokenShow" aria-pressed="false">Show</button>
+        </span>
         <small>Kept in this browser only. Clearing your browser data removes it and you will paste a new one.</small>
       </label>
       <button class="ghost" id="connect" type="button">Connect</button>
@@ -456,11 +495,106 @@
       });
   }
 
+  /* Human names for the settings, so the confirmation reads like the form. */
+  var FIELD_LABEL = {
+    phoneDisplay: 'Phone and WhatsApp number',
+    email: 'Email address',
+    instagram: 'Instagram page',
+    starter: 'Starter, rupees per court per year',
+    pro: 'Pro, rupees per court per year',
+    setupWaived: 'Setup fee waived, rupees',
+    address: 'Registered address',
+    endpoint: 'Lead capture web app URL',
+    analyticsProvider: 'Measurement service',
+    analyticsId: 'Site identifier',
+    zohoEnabled: 'Send demo requests to Zoho CRM',
+    zohoRegion: 'Zoho data centre',
+    zohoXnq: 'Form token 1',
+    zohoXmi: 'Form token 2',
+    zohoActionType: 'Zoho action type',
+    zohoLeadSource: 'Lead source label'
+  };
+
+  function readPath(obj, path) {
+    return path.reduce(function (a, k) { return (a === null || a === undefined) ? a : a[k]; }, obj);
+  }
+
+  /** Which settings differ between what is saved and what is on screen. */
+  function changeList(next) {
+    var rows = [];
+    Object.keys(FIELDS).forEach(function (id) {
+      var path = FIELDS[id];
+      var was = readPath(content || {}, path);
+      var now = readPath(next, path);
+      if (typeof was === 'boolean' || typeof now === 'boolean') {
+        was = was ? 'yes' : 'no'; now = now ? 'yes' : 'no';
+      }
+      was = (was === null || was === undefined) ? '' : String(was);
+      now = (now === null || now === undefined) ? '' : String(now);
+      if (was === now) return;
+      rows.push({ label: FIELD_LABEL[id] || id, was: was, now: now, secret: /Xnq|Xmi/.test(id) });
+    });
+    return rows;
+  }
+
+  /** Show the changes and wait for a yes. Nothing is published before it. */
+  function confirmChanges(rows, onYes) {
+    var wrap = document.createElement('div');
+    wrap.className = 'kx-confirm';
+    wrap.setAttribute('role', 'dialog');
+    wrap.setAttribute('aria-modal', 'true');
+    wrap.setAttribute('aria-label', 'Confirm what goes live');
+
+    var items = rows.map(function (r) {
+      var show = function (v) {
+        if (!v) return '<span class="kx-old">(empty)</span>';
+        var t = r.secret ? v.slice(0, 4) + '\u2026' : v;
+        return t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      };
+      return '<li><span class="kx-f">' + r.label + '</span>' +
+        '<span class="kx-old">' + show(r.was) + '</span> \u2192 ' +
+        '<span class="kx-new">' + show(r.now) + '</span></li>';
+    }).join('');
+
+    wrap.innerHTML = '<div class="kx-confirm-box">' +
+      '<h3>Publish ' + rows.length + (rows.length === 1 ? ' change' : ' changes') + ' to the live site?</h3>' +
+      '<p class="kx-confirm-lead">Anyone visiting konnexplay.com will see this within about a minute.</p>' +
+      '<ul>' + items + '</ul>' +
+      '<div class="kx-confirm-foot">' +
+      '<button type="button" class="kx-no">Not yet</button>' +
+      '<button type="button" class="kx-go">Yes, publish</button>' +
+      '</div></div>';
+
+    function close() {
+      wrap.remove();
+      document.removeEventListener('keydown', onKey, true);
+    }
+    function onKey(e) {
+      if (e.key === 'Escape' || e.key === 'Esc') { close(); }
+    }
+    wrap.querySelector('.kx-no').addEventListener('click', close);
+    wrap.querySelector('.kx-go').addEventListener('click', function () { close(); onYes(); });
+    wrap.addEventListener('click', function (e) { if (e.target === wrap) close(); });
+    document.addEventListener('keydown', onKey, true);
+
+    document.body.appendChild(wrap);
+    try { wrap.querySelector('.kx-go').focus(); } catch (e) {}
+  }
+
   function save() {
     if (!validate()) { msg('err', 'Fix the highlighted fields first.'); return; }
     if (!token) { msg('err', 'Connect with a GitHub token before saving.'); return; }
 
     var next = formToContent();
+    var rows = changeList(next);
+    if (!rows.length) {
+      msg('info', 'Nothing has changed, so there is nothing to publish.');
+      return;
+    }
+    confirmChanges(rows, function () { publish(next); });
+  }
+
+  function publish(next) {
     var body = JSON.stringify(next, null, 2) + '\n';
     $('save').disabled = true;
     msg('info', 'Saving...');
@@ -642,6 +776,15 @@
   $('reload').addEventListener('click', function () {
     $('frame').src = '../index.html?t=' + Date.now();
   });
+  /* The token is masked by default. This is for checking a paste. */
+  $('tokenShow').addEventListener('click', function () {
+    var f = $('token');
+    var shown = f.type === 'text';
+    f.type = shown ? 'password' : 'text';
+    this.textContent = shown ? 'Show' : 'Hide';
+    this.setAttribute('aria-pressed', shown ? 'false' : 'true');
+  });
+
   $('vDesk').addEventListener('click', function () {
     $('frame').style.maxWidth = ''; $('frame').style.margin = '';
     $('vDesk').setAttribute('aria-pressed', 'true'); $('vPhone').setAttribute('aria-pressed', 'false');
