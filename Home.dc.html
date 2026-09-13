@@ -328,7 +328,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 <h2 style="font-family:Outfit,sans-serif;font-weight:800;font-size:clamp(30px,3.2vw,40px);line-height:1.05;letter-spacing:-0.02em;margin:0 0 22px;max-width:24ch;text-wrap:balance">One link, everywhere a player looks for you.</h2>
 <p style="font-size:18px;line-height:1.65;color:#3D4457;margin:0 0 28px;max-width:52ch;text-wrap:pretty">Players find you on Instagram, on Google, or on a board at your gate, and every one of those ends at the same link. They book themselves, and the booking is yours, not a marketplace's.</p>
 <div style="border:1.5px solid #0D1B3E;padding:16px 20px;margin-bottom:32px;font-family:Outfit,sans-serif;font-weight:700;font-size:clamp(18px,2vw,24px);letter-spacing:-0.01em;word-break:break-word"><span style="color:#088064">your-venue</span>.konnexplay.com</div>
-<div style="display:grid;grid-template-columns:{{ chanCols }};gap:16px">
+<div data-chan="1" style="display:grid;grid-template-columns:{{ chanCols }};gap:16px">
 
 <div style="background:#FFFFFF;border:1px solid {{ ch0 }};padding:16px 18px;align-self:start;transition:border-color 400ms ease,box-shadow 400ms ease;box-shadow:{{ sh0 }}">
 <div style="font-size:11px;letter-spacing:0.12em;font-weight:700;color:#5A6275;margin-bottom:12px">IN YOUR INSTAGRAM BIO</div>
@@ -460,7 +460,16 @@ class Component extends DCLogic {
     window.addEventListener('scroll', this._onScroll, { passive: true });
     this._onScroll();
 
-    if (!reduced) { this.setupReveal(); this._chanT = setInterval(() => this.setState(x => ({ chan: (x.chan + 1) % 4 })), 1800); }
+    if (!reduced) {
+      this.setupReveal();
+      this._chanT = setInterval(() => {
+        // Each of these ticks re-renders the whole homepage. Skip the ones
+        // nobody can see. Looked up fresh so it cannot go stale across the
+        // re-renders this component does on scroll.
+        if (!this.kxChanVisible()) return;
+        this.setState(x => ({ chan: (x.chan + 1) % 4 }));
+      }, 1800);
+    }
     this.setupCounters(reduced);
     this.setupCalendar(reduced);
     this.playVideos();
@@ -530,6 +539,24 @@ class Component extends DCLogic {
     nodes.forEach(el => { el.setAttribute('data-count-done', '1'); this._ioC.observe(el); });
   }
 
+  /**
+   * Are the channel cards on screen?
+   *
+   * Yes when it cannot tell, so anything unexpected leaves the highlight
+   * running exactly as it did before.
+   */
+  kxChanVisible() {
+    try {
+      const el = document.querySelector('[data-chan]');
+      if (!el) return true;
+      const r = el.getBoundingClientRect();
+      if (!r.height) return true;
+      return r.bottom > 0 && r.top < (window.innerHeight || 0);
+    } catch (e) {
+      return true;
+    }
+  }
+
   setupCalendar(reduced) {
     if (reduced || !('IntersectionObserver' in window)) return;
     const host = document.querySelector('[data-calendar]');
@@ -543,7 +570,10 @@ class Component extends DCLogic {
 
   runFill() {
     clearTimeout(this._fillT);
-    clearInterval(this._chanT);
+    // This used to stop the channel highlight as well, and never start it
+    // again, so the first time a visitor scrolled as far as the calendar the
+    // highlight died for the rest of the visit. The two are unrelated, and the
+    // highlight now skips its own work when it is off screen anyway.
     const next = () => {
       const n = this.state.fill;
       if (n >= 3) {
