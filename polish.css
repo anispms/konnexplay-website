@@ -1,0 +1,107 @@
+/* Mobile polish.
+   The design build was authored at desktop width, so stacked link lists
+   inherited desktop line-heights: every footer and menu link measures about
+   19 pixels tall on a phone, against the 44 pixel minimum a thumb needs.
+   These rules only widen the touch area; they change no colour, no font and
+   no desktop layout. */
+
+@media (max-width: 900px) {
+  /* Links stacked in a column, which is every footer and menu list here. */
+  div[style*="flex-direction:column"] > a[href],
+  div[style*="flex-direction: column"] > a[href] {
+    min-height: 44px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    display: flex;
+    align-items: center;
+  }
+
+  /* The columns already carry their own gap, so remove the doubling. */
+  div[style*="flex-direction:column"][style*="gap:11px"],
+  div[style*="flex-direction: column"][style*="gap: 11px"] {
+    gap: 0 !important;
+  }
+
+  /* The legal row at the very bottom is a wrapping flex row, not a column,
+     so it needs its own rule. Privacy, Terms and refunds sat at 16px. */
+  div[style*="gap: 12px 24px"] > a[href],
+  div[style*="gap:12px 24px"] > a[href] {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* The header wordmark is the way back to the homepage. */
+  a[style*="flex-shrink: 0"][style*="text-decoration: none"],
+  a[style*="flex-shrink:0"][style*="text-decoration:none"] {
+    min-height: 44px;
+  }
+
+  /* Room for the action bar so it never sits on top of the last line. */
+  /* The runtime wraps the page in its own full-height container, so padding
+     on body never reaches the scroll height. The footer is in normal flow,
+     so pad that instead and the last line clears the bar. */
+  footer {
+    padding-bottom: 88px !important;
+  }
+}
+
+/* Sticky action bar: on a phone the way to reach you should never be more
+   than one thumb away, whatever the visitor is reading. */
+#kx-actionbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2147483000;
+  display: none;
+  grid-template-columns: 1fr 1fr 1.25fr;
+  gap: 1px;
+  background: rgba(13, 27, 62, .14);
+  box-shadow: 0 -8px 24px rgba(13, 27, 62, .16);
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+@media (max-width: 900px) {
+  #kx-actionbar { display: grid; }
+}
+
+#kx-actionbar a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 56px;
+  text-decoration: none;
+  font-size: 14.5px;
+  font-weight: 600;
+  letter-spacing: -.005em;
+  background: #FFFFFF;
+  color: #0D1B3E;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#kx-actionbar a.kx-primary {
+  background: #0DC59A;
+  color: #062B22;
+}
+
+#kx-actionbar a:active { filter: brightness(.94); }
+
+#kx-actionbar svg {
+  width: 17px;
+  height: 17px;
+  flex: none;
+}
+
+/* Respect a visitor who has asked for less movement. */
+@media (prefers-reduced-motion: reduce) {
+  #kx-actionbar { transition: none !important; }
+}
+
+/* Printing a page should not carry a floating bar onto paper. */
+@media print {
+  #kx-actionbar { display: none !important; }
+  body { padding-bottom: 0 !important; }
+}
