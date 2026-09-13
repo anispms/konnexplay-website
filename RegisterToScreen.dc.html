@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet" />
+</helmet>
+<div data-register-root="1" style="position:relative;width:100%;height:{{ outerH }}">
+<div style="position:sticky;top:0;height:{{ stickyH }};min-height:560px;overflow:hidden;display:flex;align-items:center;background:#FAFAF9">
+<div style="width:100%;max-width:1200px;margin:0 auto;padding:{{ padY }} 24px">{{ stage }}</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200,&quot;height&quot;:700}}">
+class Component extends DCLogic {
+  state = { p: 0, w: 1200, reduced: false };
+
+  ROWS = [
+    { t: '5:00 PM', n: 'Ankit R.', c: 'Turf 1', amt: '₹900', pay: 'Paid' },
+    { t: '6:00 PM', n: 'Corp. grp', c: 'Turf 2', amt: '₹1,800', pay: 'Paid' },
+    { t: '7:00 PM', n: 'Riya M.', c: 'Court A', amt: '₹700', pay: 'Advance ₹200' },
+    { t: '8:00 PM', n: 'Nirav S.', c: 'Turf 1', amt: '₹1,000', pay: 'Paid', clash: true },
+    { t: '8:00 PM', n: 'Hardik P.', c: 'Turf 1', amt: '₹1,000', pay: 'Paid', clash: true },
+    { t: '9:00 PM', n: 'Smashers', c: 'Court B', amt: '₹1,400', pay: 'Paid' },
+    { t: '10:00 PM', n: 'Night lg.', c: 'Turf 2', amt: '₹1,200', pay: 'Advance ₹500' }
+  ];
+
+  componentDidMount() {
+    const mq = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
+    const reduced = !!(mq && mq.matches);
+    this._r = () => { const w = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0); if (w !== this.state.w) this.setState({ w: w }); };
+    this._s = () => {
+      if (this._raf) return;
+      this._raf = requestAnimationFrame(() => {
+        this._raf = null;
+        const target = document.querySelector('[data-register-root]');
+        if (!target) return;
+        const r = target.getBoundingClientRect();
+        const span = Math.max(1, r.height - window.innerHeight);
+        const p = Math.min(1, Math.max(0, -r.top / span));
+        if (Math.abs(p - this.state.p) > 0.004) this.setState({ p });
+      });
+    };
+    window.addEventListener('resize', this._r);
+    if (window.ResizeObserver) { this._ro = new ResizeObserver(this._r); this._ro.observe(document.documentElement); }
+    window.addEventListener('scroll', this._s, { passive: true });
+    this._r();
+    this.setState({ reduced, p: reduced ? 1 : 0 });
+    if (!reduced) this._s();
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this._r);
+    if (this._ro) this._ro.disconnect();
+    window.removeEventListener('scroll', this._s);
+    if (this._raf) cancelAnimationFrame(this._raf);
+  }
+
+  e(t, s, ...k) { return React.createElement(t, s ? { style: s } : null, ...k); }
+  ek(key, t, s, ...k) { return React.createElement(t, { key: key, style: s }, ...k); }
+  capSize() { const w = this.state.w; return w < 760 ? 28 : (w < 1120 ? 30 : 40); }
+  ease(x) { return x <= 0 ? 0 : x >= 1 ? 1 : 1 - Math.pow(1 - x, 3); }
+  seg(p, a, b) { return Math.min(1, Math.max(0, (p - a) / (b - a))); }
+
+  paper(p) {
+    const out = this.ease(this.seg(p, 0.18, 0.52));
+    const mobile = this.state.w < 860 || this._compact;
+    const rows = this.ROWS.map((r, i) => this.ek('pr' + i, 'div', {
+      display: 'grid', gridTemplateColumns: mobile ? '74px minmax(0,1fr) 62px' : '92px minmax(0,1fr) 88px 86px',
+      alignItems: 'baseline', gap: 10, padding: '0 18px', height: 46, position: 'relative',
+      fontFamily: 'Caveat, cursive', fontSize: mobile ? 20 : 23, whiteSpace: 'nowrap', color: r.clash ? '#B3261E' : '#1B2A4A',
+      opacity: 1 - this.ease(this.seg(p, 0.14 + i * 0.012, 0.42 + i * 0.012))
+    },
+      this.e('span', { transform: 'rotate(-.4deg)' }, r.t),
+      this.e('span', { transform: 'rotate(.25deg)' }, r.n + (r.clash ? ' ?' : '')),
+      this.e('span', {}, r.c),
+      mobile ? null : this.e('span', {}, r.amt),
+      r.clash ? this.e('span', { position: 'absolute', left: mobile ? 96 : 110, right: 14, top: 8, bottom: 8, border: '2px solid #B3261E', borderRadius: '48% 52% 50% 50% / 60% 40% 60% 40%', pointerEvents: 'none' }) : null
+    ));
+    return this.e('div', {
+      position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
+      transform: 'translateY(' + (-16 * out) + 'vh) rotate(' + (-3.4 * out) + 'deg) scale(' + (1 - 0.06 * out) + ')',
+      opacity: 1 - out, transformOrigin: '30% 100%', pointerEvents: 'none'
+    },
+      this.e('div', {
+        width: '100%', maxWidth: 640, background: '#FBF7EC', boxShadow: '0 26px 60px rgba(13,27,62,.18)',
+        transform: 'rotate(-1deg)', border: '1px solid #E6DEC9', position: 'relative'
+      },
+        this.e('div', { display: 'flex', alignItems: 'baseline', gap: 12, padding: '20px 18px 10px', borderBottom: '1px solid #E0D6BE', fontFamily: 'Caveat, cursive', fontSize: mobile ? 24 : 30, color: '#1B2A4A', whiteSpace: 'nowrap' },
+          this.e('span', {}, 'Saturday'), this.e('span', { fontSize: '.66em', color: '#6B6350' }, '12 / 09')),
+        this.e('div', { position: 'relative', background: 'repeating-linear-gradient(180deg,#FBF7EC 0px,#FBF7EC 45px,#D9E2EC 45px,#D9E2EC 46px)' },
+          this.e('div', { position: 'absolute', top: 0, bottom: 0, left: mobile ? 70 : 88, width: 1, background: 'rgba(179,38,30,.35)' }),
+          ...rows
+        ),
+        this.e('div', { padding: '14px 18px 20px', fontFamily: 'Caveat, cursive', fontSize: mobile ? 19 : 22, color: '#B3261E' }, 'double booked — 8 PM, Turf 1')
+      )
+    );
+  }
+
+  screen(p) {
+    const inAll = this.seg(p, 0.42, 0.62);
+    const mobile = this.state.w < 860 || this._compact;
+    const order = [0, 1, 2, 3, 5, 6, 4];
+    const rows = order.map((src, i) => {
+      const r = this.ROWS[src];
+      const a = this.ease(this.seg(p, 0.46 + i * 0.055, 0.56 + i * 0.055));
+      const resolved = src === 4;
+      return this.ek('sr' + i, 'div', {
+        display: 'grid', gridTemplateColumns: mobile ? '74px minmax(0,1fr) 76px' : '92px minmax(0,1fr) 96px 118px',
+        alignItems: 'center', gap: 10, padding: '0 18px', height: 46,
+        borderTop: '1px solid #E4E7EC', background: '#FFFFFF',
+        fontFamily: 'Inter, sans-serif', fontSize: 14, color: '#0D1B3E',
+        opacity: a, transform: 'translateX(' + (18 * (1 - a)) + 'px)'
+      },
+        this.e('span', { fontWeight: 700, fontVariantNumeric: 'tabular-nums', color: resolved ? '#088064' : '#0D1B3E' }, resolved ? '10:00 PM' : r.t),
+        this.e('span', { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }, resolved ? React.createElement('span', null, 'Hardik P. ', React.createElement('span', { style: { color: '#5A6275' } }, '— rebooked')) : r.n),
+        this.e('span', { color: '#5A6275' }, r.c),
+        mobile ? null : this.e('span', { justifySelf: 'start', background: r.pay === 'Paid' ? '#E8FBF5' : '#FFF1E3', color: r.pay === 'Paid' ? '#066B54' : '#8A4A0F', fontSize: 11, fontWeight: 700, padding: '4px 9px', whiteSpace: 'nowrap' }, r.pay)
+      );
+    });
+    return this.e('div', {
+      position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
+      opacity: inAll, pointerEvents: 'none'
+    },
+      this.e('div', { width: '100%', maxWidth: 640, background: '#F5F7FA', border: '1px solid #DDE0E5', boxShadow: '0 26px 60px rgba(13,27,62,.12)', transform: 'translateY(' + (22 * (1 - this.ease(inAll))) + 'px)' },
+        this.e('div', { display: 'flex', alignItems: 'center', gap: 10, padding: '13px 18px', background: '#FFFFFF', borderBottom: '1px solid #DDE0E5' },
+          this.e('div', { display: 'grid', gridTemplateColumns: 'repeat(3,6px)', gridTemplateRows: 'repeat(3,6px)', gap: 1.5 },
+            ...[1, 0, 1, 1, 1, 0, 1, 0, 1].map((v, n) => this.ek('d' + n, 'div', { background: v ? '#0DC59A' : '#DDE0E5', borderRadius: 2 }))),
+          this.e('div', { fontFamily: 'Outfit, sans-serif', fontWeight: 700, fontSize: 14 }, 'KonnexPlay'),
+          this.e('div', { fontSize: 12, color: '#5A6275' }, 'Saturday 12 September'),
+          this.e('div', { marginLeft: 'auto', fontSize: 12, fontWeight: 600, color: '#088064' }, '₹8,000 collected')
+        ),
+        ...rows,
+        this.e('div', { borderTop: '1px solid #E4E7EC', padding: '14px 18px', background: '#FFFFFF', fontSize: 13, color: '#5A6275' }, 'One slot can only be sold once. The clash never reaches your Saturday.')
+      )
+    );
+  }
+
+  staticStage() {
+    const mobile = this.state.w < 860;
+    this._compact = !mobile;
+    const cap = (h, b) => this.e('div', { maxWidth: '44ch' },
+      this.e('h2', { fontFamily: 'Outfit, sans-serif', fontWeight: 800, fontSize: this.capSize(), lineHeight: 1.05, letterSpacing: '-0.02em', margin: '0 0 24px', textWrap: 'balance' }, h),
+      this.e('p', { fontSize: 17, lineHeight: 1.6, color: '#3D4457', margin: 0, textWrap: 'pretty' }, b));
+    const frame = (child) => this.e('div', { position: 'relative', height: mobile ? 360 : 480 }, child);
+    const out = this.e('div', {},
+      this.e('div', { fontSize: 12, letterSpacing: '.14em', fontWeight: 700, color: '#5A6275', marginBottom: 24 }, 'THE REGISTER AND THE SCREEN'),
+      this.e('div', { display: 'grid', gridTemplateColumns: mobile ? '1fr' : '1fr 1fr', gap: mobile ? 48 : 56 },
+        this.e('div', { display: 'grid', gap: 32 }, cap('This is how most venues in India still take a booking.', 'A ruled page, a pen, and a manager who has to remember. Two groups have been promised 8 PM on Turf 1.'), frame(this.paper(0))),
+        this.e('div', { display: 'grid', gap: 32 }, cap('The same Saturday, once it lives in KonnexPlay.', 'Every line is a paid booking, and the slot closes the moment it is taken. Nothing to remember, nothing to double sell.'), frame(this.screen(1)))
+      )
+    );
+    this._compact = false;
+    return out;
+  }
+
+  renderVals() {
+    if (this.state.reduced) return { stage: this.staticStage(), outerH: 'auto', stickyH: 'auto', padY: this.state.w < 900 ? '64px' : '96px' };
+    const p = this.state.p;
+    const mobile = this.state.w < 860;
+    const capA = 1 - this.ease(this.seg(p, 0.1, 0.3));
+    const capB = this.ease(this.seg(p, 0.52, 0.72));
+    const stage = this.e('div', { 'data-register-stage': true, display: 'grid', gridTemplateColumns: mobile ? '1fr' : '5fr 7fr', gap: mobile ? 28 : 24, alignItems: 'center' },
+      this.e('div', { position: 'relative', minHeight: mobile ? 60 : 220 },
+        this.e('div', { fontSize: 12, letterSpacing: '.14em', fontWeight: 700, color: '#5A6275', marginBottom: 24 }, 'THE REGISTER AND THE SCREEN'),
+        this.e('div', { position: 'relative', minHeight: mobile ? 104 : 200 },
+          this.e('div', { position: mobile ? 'static' : 'absolute', inset: mobile ? 'auto' : 0, opacity: capA, transition: 'opacity .2s linear', display: capA < 0.02 && mobile ? 'none' : 'block' },
+            this.e('h2', { fontFamily: 'Outfit, sans-serif', fontWeight: 800, fontSize: this.capSize(), lineHeight: 1.05, letterSpacing: '-0.02em', margin: '0 0 24px', maxWidth: '24ch', textWrap: 'balance' }, 'This is how most venues in India still take a booking.'),
+            this.e('p', { fontSize: 17, lineHeight: 1.6, color: '#3D4457', margin: 0, maxWidth: '46ch', textWrap: 'pretty' }, 'A ruled page, a pen, and a manager who has to remember. Two groups have been promised 8 PM on Turf 1.')
+          ),
+          this.e('div', { position: mobile ? 'static' : 'absolute', inset: mobile ? 'auto' : 0, opacity: capB, transition: 'opacity .2s linear', display: capB < 0.02 && mobile ? 'none' : 'block' },
+            this.e('h2', { fontFamily: 'Outfit, sans-serif', fontWeight: 800, fontSize: this.capSize(), lineHeight: 1.05, letterSpacing: '-0.02em', margin: '0 0 24px', maxWidth: '24ch', textWrap: 'balance' }, 'The same Saturday, once it lives in KonnexPlay.'),
+            this.e('p', { fontSize: 17, lineHeight: 1.6, color: '#3D4457', margin: 0, maxWidth: '46ch', textWrap: 'pretty' }, 'Every line is a paid booking, and the slot closes the moment it is taken. Nothing to remember, nothing to double sell.')
+          )
+        )
+      ),
+      this.e('div', { position: 'relative', height: mobile ? 380 : 520 }, this.paper(p), this.screen(p))
+    );
+    return { stage: stage, outerH: mobile ? '210vh' : '230vh', stickyH: '100vh', padY: '0px' };
+  }
+}
+</script>
+</body>
+</html>

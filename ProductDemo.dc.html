@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet" />
+<style>
+@keyframes pdIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes pdBar { from { width: 0%; } to { width: 100%; } }
+</style>
+</helmet>
+<div style="font-family:Inter,sans-serif;color:#0D1B3E;width:100%">{{ ui }}</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:760,&quot;height&quot;:520},&quot;speed&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:3600,&quot;min&quot;:1500,&quot;max&quot;:8000,&quot;unit&quot;:&quot;ms&quot;,&quot;tsType&quot;:&quot;number&quot;}}">
+class Component extends DCLogic {
+  state = { i: 0, reduced: false, maxH: 0 };
+  TABS = ['Today', 'Calendar', 'Payment', 'Customers', 'Reports'];
+  componentDidMount() {
+    const mq = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
+    const reduced = !!(mq && mq.matches);
+    this.setState({ reduced });
+    this._w = window.innerWidth;
+    this._m = () => { if (Math.abs(window.innerWidth - this._w) > 40) { this._w = window.innerWidth; this.setState({ maxH: 0 }, () => this.probe()); } };
+    window.addEventListener('resize', this._m);
+    this.probe();
+    if (!reduced) this._t = setInterval(() => this.setState(s => ({ i: (s.i + 1) % 5 })), this.props.speed ?? 3600);
+  }
+  componentWillUnmount() { clearInterval(this._t); clearTimeout(this._p); window.removeEventListener('resize', this._m); }
+  measure() {
+    const el = this._screen;
+    if (!el) return 0;
+    const h = el.scrollHeight;
+    if (h > this.state.maxH) this.setState({ maxH: h });
+    return h;
+  }
+  probe() {
+    // render each screen once, record the tallest, then return to the first
+    const step = (k) => {
+      if (k > 4) { this.setState({ i: 0 }); return; }
+      this.setState({ i: k }, () => { this.measure(); this._p = setTimeout(() => step(k + 1), 30); });
+    };
+    step(0);
+  }
+  componentDidUpdate() { this.measure(); }
+  e(t, s, ...k) { return React.createElement(t, { style: s }, ...k); }
+  out() { return 'Outfit,sans-serif'; }
+
+  row(time, name, court, amount, state) {
+    const chip = state === 'paid' ? { bg: '#E8FBF5', fg: '#066B54', t: 'Paid' } : state === 'due' ? { bg: '#FFF1E3', fg: '#8A4A0F', t: amount + ' due' } : { bg: '#EDF1F5', fg: '#3D4457', t: 'Advance' };
+    return this.e('div', { display: 'flex', alignItems: 'center', gap: 12, padding: '13px 16px', background: '#FFFFFF', border: '1px solid #E4E7EC' },
+      this.e('div', { fontFamily: this.out(), fontWeight: 700, fontSize: 14, minWidth: 62, fontVariantNumeric: 'tabular-nums' }, time),
+      this.e('div', { flex: 1, minWidth: 0 },
+        this.e('div', { fontSize: 14, fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }, name),
+        this.e('div', { fontSize: 12, color: '#5A6275', marginTop: 2 }, court)
+      ),
+      this.e('div', { fontSize: 13, fontWeight: 600, whiteSpace: 'nowrap' }, amount),
+      this.e('div', { background: chip.bg, color: chip.fg, padding: '4px 9px', fontSize: 11, fontWeight: 700, whiteSpace: 'nowrap' }, chip.t)
+    );
+  }
+
+  screenToday() {
+    return this.e('div', { padding: 20, display: 'flex', flexDirection: 'column', gap: 14 },
+      this.e('div', { display: 'flex', gap: 12, flexWrap: 'wrap' },
+        this.e('div', { flex: '1 1 180px', background: '#0DC59A', color: '#061428', padding: '16px 18px' },
+          this.e('div', { fontSize: 11, letterSpacing: '.1em', fontWeight: 700 }, 'COLLECTED TODAY'),
+          this.e('div', { fontFamily: this.out(), fontWeight: 800, fontSize: 34, letterSpacing: '-0.03em', lineHeight: 1.1, marginTop: 4 }, '₹18,400'),
+          this.e('div', { fontSize: 12, fontWeight: 600, marginTop: 4 }, '11 slots booked today')
+        ),
+        this.e('div', { flex: '1 1 120px', border: '1px solid #E4E7EC', padding: '16px 18px', background: '#FFFFFF' },
+          this.e('div', { fontSize: 11, letterSpacing: '.1em', fontWeight: 700, color: '#5A6275' }, 'STILL DUE'),
+          this.e('div', { fontFamily: this.out(), fontWeight: 800, fontSize: 34, letterSpacing: '-0.03em', lineHeight: 1.1, marginTop: 4 }, '₹3,200')
+        ),
+        this.e('div', { flex: '1 1 120px', border: '1px solid #E4E7EC', padding: '16px 18px', background: '#FFFFFF' },
+          this.e('div', { fontSize: 11, letterSpacing: '.1em', fontWeight: 700, color: '#5A6275' }, 'OPEN SLOTS'),
+          this.e('div', { fontFamily: this.out(), fontWeight: 800, fontSize: 34, letterSpacing: '-0.03em', lineHeight: 1.1, marginTop: 4 }, '3')
+        )
+      ),
+      this.e('div', { fontSize: 12, letterSpacing: '.1em', fontWeight: 700, color: '#5A6275', marginTop: 4 }, 'NEXT UP'),
+      this.row('7:00 PM', 'Hardik Patel', 'Turf 1 · 1 hr · booked online', '₹1,000', 'paid'),
+      this.row('8:00 PM', 'Nirav Shah', 'Turf 1 · 2 hrs · booked online', '₹600', 'due'),
+      this.row('9:00 PM', 'Surat Smashers', 'Court 3 · 1 hr · booked online', '₹1,400', 'paid'),
+      this.row('10:00 PM', 'Night League', 'Turf 2 · 1 hr · advance paid', '₹500', 'adv')
+    );
+  }
+
+  screenCalendar() {
+    const courts = ['TURF 1', 'TURF 2', 'COURT A', 'COURT B'];
+    const hours = ['5 PM', '6 PM', '7 PM', '8 PM', '9 PM', '10 PM'];
+    const data = [
+      ['b:Ankit R.', 'o', 'b:Riya M.', 'o'],
+      ['b:Ankit R.', 'b:Corporate', 'b:Riya M.', 'a:₹200 adv'],
+      ['b:Smashers', 'b:Corporate', 'o', 'b:Jay D.'],
+      ['b:Nirav S.', 'b:Nirav S.', 'b:Hardik P.', 'b:Jay D.'],
+      ['a:₹500 adv', 'b:Meet T.', 'b:Hardik P.', 'o'],
+      ['o', 'b:Meet T.', 'o', 'b:League']
+    ];
+    const cell = (v) => {
+      if (v === 'o') return this.e('div', { background: '#FFFFFF', border: '1px solid #E4E7EC', padding: '12px 10px', fontSize: 12, fontWeight: 600, color: '#5A6275' }, 'Open');
+      const t = v.slice(2);
+      const adv = v[0] === 'a';
+      return this.e('div', { background: adv ? '#FFF1E3' : '#0DC59A', border: '1px solid ' + (adv ? '#F0DCC4' : '#0DC59A'), padding: '12px 10px', fontSize: 12, fontWeight: 700, color: adv ? '#8A4A0F' : '#061428', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }, t);
+    };
+    const cells = [this.e('div', {})];
+    courts.forEach(c => cells.push(this.e('div', { fontSize: 11, letterSpacing: '.08em', fontWeight: 700, color: '#5A6275', paddingBottom: 4 }, c)));
+    hours.forEach((h, i) => {
+      cells.push(this.e('div', { fontSize: 12, fontWeight: 700, color: '#5A6275', display: 'flex', alignItems: 'center', fontVariantNumeric: 'tabular-nums' }, h));
+      data[i].forEach(v => cells.push(cell(v)));
+    });
+    return this.e('div', { padding: 20 },
+      this.e('div', { display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 14, gap: 12, flexWrap: 'wrap' },
+        this.e('div', { fontFamily: this.out(), fontWeight: 700, fontSize: 16 }, 'Saturday, 13 September'),
+        this.e('div', { display: 'flex', gap: 14, fontSize: 11, fontWeight: 600, color: '#5A6275', flexWrap: 'wrap' },
+          this.e('span', {}, '■ Booked'), this.e('span', { color: '#8A4A0F' }, '■ On advance'), this.e('span', { color: '#5A6275' }, '□ Open'))
+      ),
+      this.e('div', { display: 'grid', gridTemplateColumns: '54px repeat(4,minmax(0,1fr))', gap: 6 }, ...cells)
+    );
+  }
+
+  screenPayment() {
+    const line = (l, v, bold) => this.e('div', { display: 'flex', justifyContent: 'space-between', gap: 12, padding: '12px 0', borderTop: '1px solid #E4E7EC', fontSize: 14, fontWeight: bold ? 700 : 500, color: bold ? '#0D1B3E' : '#3D4457' }, this.e('span', {}, l), this.e('span', { fontVariantNumeric: 'tabular-nums' }, v));
+    return this.e('div', { padding: 20, display: 'flex', flexDirection: 'column', gap: 16 },
+      this.e('div', { background: '#0D1B3E', color: '#FFFFFF', padding: '18px 20px' },
+        this.e('div', { fontSize: 11, letterSpacing: '.1em', fontWeight: 700, color: '#0DC59A' }, 'PAYMENT RECEIVED'),
+        this.e('div', { fontFamily: this.out(), fontWeight: 800, fontSize: 36, letterSpacing: '-0.03em', lineHeight: 1.1, marginTop: 6 }, '₹1,400'),
+        this.e('div', { fontSize: 13, color: '#AAB5CC', marginTop: 4 }, 'UPI · settled to your bank account')
+      ),
+      this.e('div', { border: '1px solid #E4E7EC', background: '#FFFFFF', padding: '4px 16px 12px' },
+        line('Booking', 'Turf 1 · 8 to 10 PM'),
+        line('Player', 'Rahul Mehta · +91 98250 41267'),
+        line('Slot rate', '₹700 per hour'),
+        line('Advance collected', '₹300'),
+        line('Balance paid online', '₹1,100'),
+        line('KonnexPlay commission', '₹0', true)
+      ),
+      this.e('div', { fontSize: 12, color: '#5A6275' }, 'Standard payment gateway charges apply. Confirmation sent to the player automatically.')
+    );
+  }
+
+  screenCustomers() {
+    const r = (n, p, v, l, tag) => this.e('div', { display: 'grid', gridTemplateColumns: 'minmax(0,1.4fr) minmax(0,1fr) 56px minmax(0,1fr)', gap: 10, alignItems: 'center', padding: '12px 0', borderTop: '1px solid #E4E7EC', fontSize: 13 },
+      this.e('div', { fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }, n),
+      this.e('div', { color: '#5A6275', whiteSpace: 'nowrap' }, p),
+      this.e('div', { fontFamily: this.out(), fontWeight: 700, fontSize: 15 }, v),
+      this.e('div', { display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 },
+        this.e('span', { color: '#5A6275', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }, l),
+        tag ? this.e('span', { background: tag === 'r' ? '#E8FBF5' : '#FFF1E3', color: tag === 'r' ? '#066B54' : '#8A4A0F', padding: '3px 7px', fontSize: 10, fontWeight: 700, whiteSpace: 'nowrap' }, tag === 'r' ? 'Regular' : 'Lapsed') : null)
+    );
+    return this.e('div', { padding: 20 },
+      this.e('div', { display: 'flex', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', marginBottom: 12 },
+        this.e('div', {}, this.e('div', { fontFamily: this.out(), fontWeight: 700, fontSize: 16 }, '1,284 players'), this.e('div', { fontSize: 12, color: '#5A6275', marginTop: 2 }, '312 regulars · 47 not seen in 90 days')),
+        this.e('div', { background: '#0DC59A', color: '#061428', padding: '10px 14px', fontSize: 12, fontWeight: 700, alignSelf: 'center' }, 'Export to spreadsheet')
+      ),
+      this.e('div', { display: 'grid', gridTemplateColumns: 'minmax(0,1.4fr) minmax(0,1fr) 56px minmax(0,1fr)', gap: 10, fontSize: 10, letterSpacing: '.08em', fontWeight: 700, color: '#5A6275', paddingBottom: 6 },
+        this.e('div', {}, 'PLAYER'), this.e('div', {}, 'PHONE'), this.e('div', {}, 'VISITS'), this.e('div', {}, 'LAST PLAYED')),
+      r('Hardik Patel', '98250 41267', '38', '2 days ago', 'r'),
+      r('Riya Mehta', '99048 22910', '26', 'Yesterday', 'r'),
+      r('Nirav Shah', '97129 55034', '19', '5 days ago', ''),
+      r('Jay Desai', '90993 71188', '14', 'March 2026', 'l'),
+      r('Meet Trivedi', '89805 12460', '11', 'April 2026', 'l')
+    );
+  }
+
+  screenReports() {
+    const bars = [['Apr', 52], ['May', 61], ['Jun', 48], ['Jul', 74], ['Aug', 83], ['Sep', 96]];
+    return this.e('div', { padding: 20 },
+      this.e('div', { display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 18 },
+        this.e('div', { flex: '1 1 150px', background: '#0DC59A', color: '#061428', padding: '14px 16px' },
+          this.e('div', { fontSize: 11, letterSpacing: '.1em', fontWeight: 700 }, 'COLLECTED'),
+          this.e('div', { fontFamily: this.out(), fontWeight: 800, fontSize: 28, letterSpacing: '-0.03em', marginTop: 4 }, '₹2,84,600')),
+        this.e('div', { flex: '1 1 120px', border: '1px solid #E4E7EC', background: '#FFFFFF', padding: '14px 16px' },
+          this.e('div', { fontSize: 11, letterSpacing: '.1em', fontWeight: 700, color: '#5A6275' }, 'EXPENSES'),
+          this.e('div', { fontFamily: this.out(), fontWeight: 800, fontSize: 28, letterSpacing: '-0.03em', marginTop: 4 }, '₹68,900')),
+        this.e('div', { flex: '1 1 120px', border: '1px solid #E4E7EC', background: '#FFFFFF', padding: '14px 16px' },
+          this.e('div', { fontSize: 11, letterSpacing: '.1em', fontWeight: 700, color: '#5A6275' }, 'OCCUPANCY'),
+          this.e('div', { fontFamily: this.out(), fontWeight: 800, fontSize: 28, letterSpacing: '-0.03em', marginTop: 4 }, '78%'))
+      ),
+      this.e('div', { display: 'flex', alignItems: 'flex-end', gap: 10, height: 120, borderBottom: '1px solid #E4E7EC' },
+        ...bars.map(([m, v], i) => this.e('div', { flex: 1, height: v + '%', background: i === bars.length - 1 ? '#0DC59A' : '#E3E6EA' }))),
+      this.e('div', { display: 'flex', gap: 10, paddingTop: 8 }, ...bars.map(([m]) => this.e('div', { flex: 1, textAlign: 'center', fontSize: 11, fontWeight: 600, color: '#5A6275' }, m))),
+      this.e('div', { display: 'flex', gap: 24, marginTop: 16, paddingTop: 14, borderTop: '1px solid #E4E7EC', flexWrap: 'wrap' },
+        this.e('div', {}, this.e('div', { fontSize: 10, letterSpacing: '.1em', fontWeight: 700, color: '#5A6275' }, 'ONLINE'), this.e('div', { fontFamily: this.out(), fontWeight: 700, fontSize: 18, marginTop: 3 }, '₹1,92,400')),
+        this.e('div', {}, this.e('div', { fontSize: 10, letterSpacing: '.1em', fontWeight: 700, color: '#5A6275' }, 'CASH'), this.e('div', { fontFamily: this.out(), fontWeight: 700, fontSize: 18, marginTop: 3 }, '₹92,200')),
+        this.e('div', {}, this.e('div', { fontSize: 10, letterSpacing: '.1em', fontWeight: 700, color: '#5A6275' }, 'BOOKED ONLINE'), this.e('div', { fontFamily: this.out(), fontWeight: 700, fontSize: 18, marginTop: 3, color: '#088064' }, '68%'))
+      )
+    );
+  }
+
+  renderVals() {
+    const i = this.state.i;
+    const screens = [this.screenToday(), this.screenCalendar(), this.screenPayment(), this.screenCustomers(), this.screenReports()];
+    const captions = ['Today, on the owner app', 'The court calendar', 'A payment landing', 'Your customer list', 'Revenue and occupancy'];
+    const tabs = this.TABS.map((t, k) => React.createElement('button', {
+      key: k, type: 'button', onClick: () => { clearInterval(this._t); this.setState({ i: k }); },
+      style: { border: 0, background: 'transparent', padding: '10px 0', cursor: 'pointer', flex: 1, minWidth: 72, textAlign: 'left', color: k === i ? '#0D1B3E' : '#5A6275', fontFamily: 'Inter,sans-serif', fontSize: 12, fontWeight: k === i ? 700 : 500, letterSpacing: '.06em', textTransform: 'uppercase' }
+    },
+      React.createElement('div', { style: { height: 3, background: k === i ? '#0DC59A' : '#DDE0E5', marginBottom: 8 } }),
+      t
+    ));
+    return {
+      ui: React.createElement('div', { style: { width: '100%' } },
+        React.createElement('div', { style: { display: 'flex', gap: 10, marginBottom: 6, flexWrap: 'wrap' } }, ...tabs),
+        React.createElement('div', { key: i, ref: (el) => { this._screen = el; }, style: { background: '#F5F7FA', border: '1px solid #DDE0E5', boxShadow: '0 30px 60px rgba(13,27,62,.12)', animation: 'pdIn .4s ease-out', minHeight: this.state.maxH ? this.state.maxH + 'px' : undefined } },
+          React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 10, padding: '12px 16px', borderBottom: '1px solid #DDE0E5', background: '#FFFFFF' } },
+            React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(3,6px)', gridTemplateRows: 'repeat(3,6px)', gap: 1.5 } },
+              ...[1,0,1,1,1,0,1,0,1].map((v, n) => React.createElement('div', { key: n, style: { background: v ? '#0DC59A' : '#DDE0E5', borderRadius: 2 } }))),
+            React.createElement('div', { style: { fontFamily: 'Outfit,sans-serif', fontWeight: 700, fontSize: 14, letterSpacing: '-0.01em' } }, 'KonnexPlay'),
+            React.createElement('div', { style: { fontSize: 12, color: '#5A6275' } }, 'Whitefield Box Arena, Vesu'),
+            React.createElement('div', { style: { marginLeft: 'auto', fontSize: 12, color: '#5A6275' } }, captions[i])
+          ),
+          screens[i]
+        )
+      )
+    };
+  }
+}
+</script>
+</body>
+</html>

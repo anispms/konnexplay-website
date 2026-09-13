@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta property="og:type" content="website" />
+<meta property="og:image" content="assets/venue-turf-night-wide.jpg" />
+<title>Resources for Sports Venue Owners | KonnexPlay</title>
+<meta name="description" content="Research and practical guides for sports venue owners in India: automating bookings, filling empty slots, collecting advances, reducing no-shows and increasing repeat bookings." />
+<link rel="canonical" href="https://konnexplay.com/resources" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet" />
+<style>
+html, body { margin: 0; padding: 0; background: #FAFAF9; }
+a { color: #0D1B3E; } a:hover { color: #088064; }
+</style>
+</helmet>
+<div style="background:#FAFAF9;font-family:Inter,sans-serif;color:#0D1B3E;-webkit-font-smoothing:antialiased">
+<section style="max-width:1200px;margin:0 auto;padding:72px 24px 48px">
+<div style="font-size:12px;letter-spacing:0.14em;font-weight:700;color:#5A6275;margin-bottom:22px">RESOURCES</div>
+<h1 style="font-family:Outfit,sans-serif;font-weight:800;font-size:clamp(40px,5.4vw,76px);line-height:0.96;letter-spacing:-0.04em;margin:0;max-width:20ch;text-wrap:balance">For people who run sports venues.</h1>
+</section>
+<img loading="lazy" decoding="async" src="assets/venue-pickleball-1.jpg" alt="Outdoor pickleball courts in evening light" style="display:block;width:100%;height:clamp(220px,34vw,440px);object-fit:cover;object-position:center" />
+
+<section style="max-width:1200px;margin:0 auto;padding:0 24px 96px">
+<a href="#/research" style="display:grid;grid-template-columns:{{ cols }};gap:32px 64px;align-items:center;text-decoration:none;color:#0D1B3E;border-top:1px solid #DDE0E5;border-bottom:1px solid #DDE0E5;padding:40px 0">
+<img loading="lazy" decoding="async" src="assets/venue-cage-night.webp" alt="Players in a floodlit box cricket cage at night in Surat" style="display:block;width:100%;aspect-ratio:3/2;object-fit:cover;object-position:center 30%" />
+<div>
+<div style="font-size:12px;letter-spacing:0.14em;font-weight:700;color:#088064;margin-bottom:14px">ORIGINAL RESEARCH · JULY 2026</div>
+<h2 style="font-family:Outfit,sans-serif;font-weight:800;font-size:clamp(26px,3vw,40px);line-height:1;letter-spacing:-0.03em;margin:0 0 16px;text-wrap:balance">The KonnexPlay 2026 sports venue booking report</h2>
+<p style="font-size:17px;line-height:1.65;color:#3D4457;margin:0 0 16px;text-wrap:pretty">We examined 171 sports venues in Surat. Only 2 were listed on more than one booking app. Method, findings, limitations.</p>
+<span style="font-weight:600;color:#088064">Read the report</span>
+</div>
+</a>
+<div style="margin-top:64px">
+<div style="font-size:12px;letter-spacing:0.14em;font-weight:700;color:#5A6275;margin-bottom:18px">GUIDES IN PROGRESS</div>
+<p style="font-size:16px;line-height:1.65;color:#3D4457;margin:0 0 24px;max-width:60ch">We are writing these with real numbers from KonnexPlay venues. Each will be published when it says something useful, not before.</p>
+<div style="display:grid;grid-template-columns:{{ cols }};gap:0 48px;font-size:17px">
+<div style="border-top:1px solid #DDE0E5;padding:14px 0">How to stop answering booking calls</div>
+<div style="border-top:1px solid #DDE0E5;padding:14px 0">The economics of an empty slot</div>
+<div style="border-top:1px solid #DDE0E5;padding:14px 0">How to collect booking advances without losing players</div>
+<div style="border-top:1px solid #DDE0E5;padding:14px 0">How to reduce no-shows at a sports venue</div>
+<div style="border-top:1px solid #DDE0E5;padding:14px 0">Marketplace vs direct booking: what the commission buys you</div>
+<div style="border-top:1px solid #DDE0E5;padding:14px 0">How memberships increase venue revenue</div>
+<div style="border-top:1px solid #DDE0E5;border-bottom:1px solid #DDE0E5;padding:14px 0">How box cricket arenas can take online bookings</div>
+<div style="border-top:1px solid #DDE0E5;border-bottom:1px solid #DDE0E5;padding:14px 0">What is a sports venue channel manager?</div>
+</div>
+</div>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  state = { w: 1200 };
+  componentDidMount() { this._r = () => this.setState({ w: window.innerWidth }); window.addEventListener('resize', this._r); this._r(); }
+  componentWillUnmount() { window.removeEventListener('resize', this._r); }
+  renderVals() { return { cols: this.state.w < 800 ? '1fr' : '1fr 1fr' }; }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>Book a 20-minute demo | KonnexPlay</title>
+<meta name="description" content="See KonnexPlay in 20 minutes, set up on your own courts and rates: your booking website, the calendar your staff will use, payments, and the report you open on the 1st." />
+<link rel="canonical" href="https://konnexplay.com/book-a-demo" />
+<meta property="og:title" content="See KonnexPlay in 20 minutes | KonnexPlay" />
+<meta property="og:description" content="Your courts, your rates, your Saturday. No slide deck." />
+<meta property="og:image" content="assets/shot-calendar-v4.jpg" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet" />
+<style>
+html, body { margin: 0; padding: 0; background: #FAFAF9; }
+a { color: #0D1B3E; } a:hover { color: #088064; }
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid #0DC59A; outline-offset: 2px; }
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Book a 20-minute KonnexPlay demo","description":"A practical 20-minute demo of KonnexPlay run on your own courts and rates."}</script>
+</helmet>
+<div style="background:#FAFAF9;font-family:Inter,sans-serif;color:#0D1B3E;-webkit-font-smoothing:antialiased">
+
+<section data-screen-label="01 Demo" style="background:#0D1B3E;color:#FFFFFF">
+<div style="max-width:1200px;margin:0 auto;padding:{{ padY }} 24px;display:grid;grid-template-columns:{{ cols }};gap:48px 40px;align-items:start">
+
+<div style="background:#FFFFFF;color:#0D1B3E;padding:34px clamp(22px,3vw,38px) 38px;border-top:4px solid #0DC59A;box-shadow:0 30px 70px rgba(0,0,0,.28);grid-column:{{ formCol }};grid-row:1">
+<sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+<div>
+<div style="font-family:Outfit,sans-serif;font-weight:800;font-size:clamp(26px,3vw,34px);letter-spacing:-0.02em;margin-bottom:14px;text-wrap:balance">{{ thanks }}</div>
+<p style="font-size:17px;line-height:1.6;color:#3D4457;margin:0 0 18px">WhatsApp just opened with your details filled in. <strong style="font-weight:600">Press send there</strong> and Roshan will call you on <strong style="font-weight:600">{{ phoneOut }}</strong> to fix a time.</p>
+<div style="background:#F4F6F8;border-left:3px solid #0DC59A;padding:14px 16px;margin:0 0 22px;font-size:15px;line-height:1.55;color:#3D4457">Did WhatsApp not open? Use one of these and we will have it straight away.
+<div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:10px">
+<a href="{{ waLink }}" target="_blank" rel="noopener" style="background:#0DC59A;color:#062B22;padding:11px 18px;font-size:15px;font-weight:600;text-decoration:none;min-height:44px;display:inline-flex;align-items:center">Open WhatsApp</a>
+<a href="tel:+917778858901" style="border:1.5px solid #0D1B3E;color:#0D1B3E;padding:11px 18px;font-size:15px;font-weight:600;text-decoration:none;min-height:44px;display:inline-flex;align-items:center">Call +91 77788 58901</a>
+<a href="{{ mailHref }}" style="border:1.5px solid #0D1B3E;color:#0D1B3E;padding:11px 18px;font-size:15px;font-weight:600;text-decoration:none;min-height:44px;display:inline-flex;align-items:center">Email instead</a>
+</div></div>
+<div style="border-top:1px solid #DDE0E5;padding:14px 0;font-size:16px">Next: we set up your courts and rates before the call</div>
+<div style="border-top:1px solid #DDE0E5;padding:14px 0;font-size:16px">Then: twenty minutes, on your own venue's data</div>
+<div style="border-top:1px solid #DDE0E5;border-bottom:1px solid #DDE0E5;padding:14px 0;font-size:16px">If you want it sooner, WhatsApp <a href="{{ waLink }}" rel="noopener" style="font-weight:600">+91 77788 58901</a></div>
+<button type="button" onClick="{{ reset }}" style="margin-top:22px;border:1.5px solid #0D1B3E;background:#FFFFFF;color:#0D1B3E;padding:14px 22px;font-size:16px;font-weight:600;cursor:pointer;min-height:48px">Send another venue</button>
+</div>
+</sc-if>
+<sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
+<form onSubmit="{{ submitForm }}">
+<div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:26px">
+<div>
+<div style="font-size:11px;letter-spacing:0.14em;font-weight:700;color:#088064;margin-bottom:8px">BOOK YOUR DEMO</div>
+<div style="font-family:Outfit,sans-serif;font-weight:800;font-size:24px;letter-spacing:-0.02em;line-height:1.1">Four fields, thirty seconds.</div>
+</div>
+<div style="font-size:12px;font-weight:700;color:{{ doneColor }};white-space:nowrap;font-variant-numeric:tabular-nums">{{ doneLabel }}</div>
+</div>
+
+<div style="display:grid;gap:22px">
+<label style="display:block">
+<span style="display:block;font-size:11px;letter-spacing:0.14em;font-weight:700;color:#5A6275;margin-bottom:7px">YOUR NAME</span>
+<input type="text" autoComplete="name" value="{{ name }}" onChange="{{ setName }}" placeholder="Rahul Mehta" style="width:100%;box-sizing:border-box;border:0;border-bottom:1.5px solid #C9CBD1;border-radius:0;background:transparent;padding:9px 0 11px;font-size:19px;font-weight:500;color:#0D1B3E;min-height:46px;outline:none;transition:border-color 140ms ease" style-focus="border-bottom:2px solid #0DC59A;padding-bottom:10.5px" />
+</label>
+
+<label style="display:block">
+<span style="display:block;font-size:11px;letter-spacing:0.14em;font-weight:700;color:#5A6275;margin-bottom:7px">MOBILE</span>
+<span style="display:flex;align-items:baseline;gap:10px;border-bottom:1.5px solid #C9CBD1;transition:border-color 140ms ease" style-focus-within="border-bottom:2px solid #0DC59A">
+<span style="font-size:19px;font-weight:600;color:#5A6275;padding-bottom:11px">+91</span>
+<input type="tel" inputMode="numeric" autoComplete="tel" maxLength="10" value="{{ phone }}" onChange="{{ setPhone }}" placeholder="98250 41267" style="flex:1;min-width:0;box-sizing:border-box;border:0;background:transparent;padding:9px 0 11px;font-size:19px;font-weight:500;color:#0D1B3E;min-height:46px;outline:none;letter-spacing:0.02em" />
+</span>
+</label>
+
+<label style="display:block">
+<span style="display:block;font-size:11px;letter-spacing:0.14em;font-weight:700;color:#5A6275;margin-bottom:7px">VENUE NAME</span>
+<input type="text" value="{{ venue }}" onChange="{{ setVenue }}" placeholder="Riverfront Arena" style="width:100%;box-sizing:border-box;border:0;border-bottom:1.5px solid #C9CBD1;border-radius:0;background:transparent;padding:9px 0 11px;font-size:19px;font-weight:500;color:#0D1B3E;min-height:46px;outline:none;transition:border-color 140ms ease" style-focus="border-bottom:2px solid #0DC59A;padding-bottom:10.5px" />
+</label>
+
+<label style="display:block">
+<span style="display:block;font-size:11px;letter-spacing:0.14em;font-weight:700;color:#5A6275;margin-bottom:7px">CITY</span>
+<input type="text" value="{{ city }}" onChange="{{ setCity }}" placeholder="Surat" style="width:100%;box-sizing:border-box;border:0;border-bottom:1.5px solid #C9CBD1;border-radius:0;background:transparent;padding:9px 0 11px;font-size:19px;font-weight:500;color:#0D1B3E;min-height:46px;outline:none;transition:border-color 140ms ease" style-focus="border-bottom:2px solid #0DC59A;padding-bottom:10.5px" />
+</label>
+
+<div>
+<span style="display:block;font-size:11px;letter-spacing:0.14em;font-weight:700;color:#5A6275;margin-bottom:7px">COURTS OR TURFS</span>
+<div style="display:flex;gap:6px">
+<button type="button" onClick="{{ setC1 }}" aria-pressed="{{ cOn1 }}" style="flex:1 1 0;min-width:0;border:1.5px solid {{ cBd1 }};background:{{ cBg1 }};color:{{ cFg1 }};padding:13px 6px;font-size:17px;font-weight:700;cursor:pointer;min-height:48px;transition:all 140ms ease">1</button>
+<button type="button" onClick="{{ setC2 }}" aria-pressed="{{ cOn2 }}" style="flex:1 1 0;min-width:0;border:1.5px solid {{ cBd2 }};background:{{ cBg2 }};color:{{ cFg2 }};padding:13px 6px;font-size:17px;font-weight:700;cursor:pointer;min-height:48px;transition:all 140ms ease">2</button>
+<button type="button" onClick="{{ setC3 }}" aria-pressed="{{ cOn3 }}" style="flex:1 1 0;min-width:0;border:1.5px solid {{ cBd3 }};background:{{ cBg3 }};color:{{ cFg3 }};padding:13px 6px;font-size:17px;font-weight:700;cursor:pointer;min-height:48px;transition:all 140ms ease">3</button>
+<button type="button" onClick="{{ setC4 }}" aria-pressed="{{ cOn4 }}" style="flex:1 1 0;min-width:0;border:1.5px solid {{ cBd4 }};background:{{ cBg4 }};color:{{ cFg4 }};padding:13px 6px;font-size:17px;font-weight:700;cursor:pointer;min-height:48px;transition:all 140ms ease">4</button>
+<button type="button" onClick="{{ setC5 }}" aria-pressed="{{ cOn5 }}" style="flex:1 1 0;min-width:0;border:1.5px solid {{ cBd5 }};background:{{ cBg5 }};color:{{ cFg5 }};padding:13px 6px;font-size:17px;font-weight:700;cursor:pointer;min-height:48px;transition:all 140ms ease">5</button>
+<button type="button" onClick="{{ setC6 }}" aria-pressed="{{ cOn6 }}" style="flex:1 1 0;min-width:0;border:1.5px solid {{ cBd6 }};background:{{ cBg6 }};color:{{ cFg6 }};padding:13px 6px;font-size:17px;font-weight:700;cursor:pointer;min-height:48px;transition:all 140ms ease">6+</button>
+</div>
+</div>
+
+<div>
+<span style="display:block;font-size:11px;letter-spacing:0.14em;font-weight:700;color:#5A6275;margin-bottom:9px">MAIN SPORT</span>
+<div style="display:flex;flex-wrap:wrap;gap:8px">
+<button type="button" onClick="{{ setS0 }}" aria-pressed="{{ sOn0 }}" style="border:1.5px solid {{ sBd0 }};background:{{ sBg0 }};color:{{ sFg0 }};padding:11px 16px;font-size:15px;font-weight:600;cursor:pointer;min-height:44px;transition:all 140ms ease">Box cricket</button>
+<button type="button" onClick="{{ setS1 }}" aria-pressed="{{ sOn1 }}" style="border:1.5px solid {{ sBd1 }};background:{{ sBg1 }};color:{{ sFg1 }};padding:11px 16px;font-size:15px;font-weight:600;cursor:pointer;min-height:44px;transition:all 140ms ease">Football turf</button>
+<button type="button" onClick="{{ setS2 }}" aria-pressed="{{ sOn2 }}" style="border:1.5px solid {{ sBd2 }};background:{{ sBg2 }};color:{{ sFg2 }};padding:11px 16px;font-size:15px;font-weight:600;cursor:pointer;min-height:44px;transition:all 140ms ease">Pickleball</button>
+<button type="button" onClick="{{ setS3 }}" aria-pressed="{{ sOn3 }}" style="border:1.5px solid {{ sBd3 }};background:{{ sBg3 }};color:{{ sFg3 }};padding:11px 16px;font-size:15px;font-weight:600;cursor:pointer;min-height:44px;transition:all 140ms ease">Padel</button>
+<button type="button" onClick="{{ setS4 }}" aria-pressed="{{ sOn4 }}" style="border:1.5px solid {{ sBd4 }};background:{{ sBg4 }};color:{{ sFg4 }};padding:11px 16px;font-size:15px;font-weight:600;cursor:pointer;min-height:44px;transition:all 140ms ease">Badminton</button>
+<button type="button" onClick="{{ setS5 }}" aria-pressed="{{ sOn5 }}" style="border:1.5px solid {{ sBd5 }};background:{{ sBg5 }};color:{{ sFg5 }};padding:11px 16px;font-size:15px;font-weight:600;cursor:pointer;min-height:44px;transition:all 140ms ease">Tennis</button>
+<button type="button" onClick="{{ setS6 }}" aria-pressed="{{ sOn6 }}" style="border:1.5px solid {{ sBd6 }};background:{{ sBg6 }};color:{{ sFg6 }};padding:11px 16px;font-size:15px;font-weight:600;cursor:pointer;min-height:44px;transition:all 140ms ease">Multi-sport</button>
+</div>
+</div>
+
+<label style="display:block">
+<span style="display:block;font-size:11px;letter-spacing:0.14em;font-weight:700;color:#5A6275;margin-bottom:7px">HOW DO YOU TAKE BOOKINGS TODAY? <span style="letter-spacing:0;font-weight:400;text-transform:none">optional</span></span>
+<select value="{{ method }}" onChange="{{ setMethod }}" style="width:100%;box-sizing:border-box;border:0;border-bottom:1.5px solid #C9CBD1;border-radius:0;background:transparent;padding:9px 0 11px;font-size:18px;font-weight:500;color:#0D1B3E;min-height:46px;outline:none;appearance:none;cursor:pointer" style-focus="border-bottom:2px solid #0DC59A;padding-bottom:10.5px">
+<option value="">Choose one</option><option>Phone calls</option><option>WhatsApp</option><option>Register or notebook</option><option>A booking app or marketplace</option><option>Our own software</option>
+</select>
+</label>
+</div>
+
+<sc-if value="{{ showErr }}" hint-placeholder-val="{{ false }}"><div role="alert" style="font-size:15px;line-height:1.5;color:#8A4A0F;background:#FFF1E3;border-left:3px solid #B1382C;padding:14px 16px;margin-top:24px">{{ errText }}</div></sc-if>
+
+<button type="submit" style="margin-top:28px;width:100%;border:0;border-radius:0;background:#0DC59A;color:#061428;padding:19px;font-size:18px;font-weight:700;cursor:pointer;min-height:58px;display:flex;align-items:center;justify-content:center;gap:12px;transition:background 140ms ease" style-hover="background:#0AA983">Book my 20-minute demo <span aria-hidden="true" style="font-size:15px">&rarr;</span></button>
+<div style="border-top:1px solid #DDE0E5;margin-top:24px;padding-top:18px;display:grid;gap:10px;font-size:14px;line-height:1.55;color:#3D4457">
+<div style="display:flex;gap:10px"><span aria-hidden="true" style="color:#088064;font-weight:700;flex-shrink:0">&#10003;</span><span>Nothing to install and nothing to pay for the demo.</span></div>
+<div style="display:flex;gap:10px"><span aria-hidden="true" style="color:#088064;font-weight:700;flex-shrink:0">&#10003;</span><span>If you go ahead, your 12 months start after a 14-day setup period, not the day you pay.</span></div>
+<div style="display:flex;gap:10px"><span aria-hidden="true" style="color:#088064;font-weight:700;flex-shrink:0">&#10003;</span><span>Setup and staff training worth &#8377;5,000, waived.</span></div>
+</div>
+<p style="font-size:13px;line-height:1.6;color:#5A6275;margin:18px 0 0">Roshan calls you to fix a time. Your details go nowhere else. <a href="#/legal?a=privacy" style="font-weight:600">Privacy</a></p>
+</form>
+</sc-if>
+</div>
+<div style="grid-column:{{ textCol }};grid-row:{{ textRow }}">
+<div style="font-size:12px;letter-spacing:0.14em;font-weight:700;color:#0DC59A;margin-bottom:22px">BOOK A DEMO</div>
+<h1 style="font-family:Outfit,sans-serif;font-weight:800;font-size:clamp(34px,4.2vw,56px);line-height:1.02;letter-spacing:-0.03em;margin:0 0 22px;max-width:20ch;text-wrap:balance">See KonnexPlay in 20 minutes.</h1>
+<p style="font-size:18px;line-height:1.65;color:#E3E8F2;margin:0 0 36px;max-width:56ch;text-wrap:pretty">Roshan sets up your courts and your rates on the call, then shows you the four screens your venue will actually live in. If it is not useful, you have lost twenty minutes.</p>
+
+<div style="border-top:1px solid rgba(255,255,255,.22);padding:16px 0;font-size:17px;color:#E3E8F2">No slide deck. No sales pitch.</div>
+<div style="border-top:1px solid rgba(255,255,255,.22);padding:16px 0;font-size:17px;color:#E3E8F2">Set up on your courts and your rates, live on the call.</div>
+<div style="border-top:1px solid rgba(255,255,255,.22);padding:16px 0;font-size:17px;color:#E3E8F2">₹12,000 per court per year. No commission on your own bookings.</div>
+<div style="border-top:1px solid rgba(255,255,255,.22);border-bottom:1px solid rgba(255,255,255,.22);padding:16px 0;font-size:17px;color:#E3E8F2">Rather talk now? Call <a href="tel:+917778858901" style="color:#0DC59A;font-weight:600">+91 77788 58901</a>, 9 AM to 11 PM.</div>
+</div>
+
+
+
+</div>
+</section>
+
+<section data-screen-label="02 What you will be shown" style="background:#FAFAF9">
+<div style="max-width:1200px;margin:0 auto;padding:{{ padY }} 24px">
+<div style="font-size:12px;letter-spacing:0.14em;font-weight:700;color:#5A6275;margin-bottom:22px">THE FOUR SCREENS WE WILL OPEN</div>
+<h2 style="font-family:Outfit,sans-serif;font-weight:800;font-size:clamp(30px,3.2vw,40px);line-height:1.05;letter-spacing:-0.02em;margin:0 0 40px;max-width:26ch;text-wrap:balance">Your venue, your rates, on all four screens.</h2>
+<figure style="margin:0 0 48px">
+<img loading="lazy" decoding="async" src="assets/shot-calendar-v4.jpg" alt="The KonnexPlay owner calendar, every court hour by hour with booked and open slots" style="display:block;width:100%;height:auto;border:1px solid #0D1B3E" />
+<figcaption style="font-size:12px;letter-spacing:0.14em;font-weight:700;color:#5A6275;margin-top:14px">1 · THE CALENDAR YOUR STAFF WILL USE ALL SATURDAY</figcaption>
+</figure>
+<div style="display:grid;grid-template-columns:{{ proofCols }};gap:40px">
+<figure style="margin:0">
+<img loading="lazy" decoding="async" src="assets/shot-venue-page-v2.jpg" alt="A venue's own KonnexPlay booking website" style="display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:contain;object-position:center;border:1px solid #DDE0E5;background:#FFFFFF" />
+<figcaption style="font-size:12px;letter-spacing:0.14em;font-weight:700;color:#5A6275;margin-top:14px">2 · YOUR BOOKING WEBSITE</figcaption>
+</figure>
+<figure style="margin:0">
+<img loading="lazy" decoding="async" src="assets/shot-checkout.jpg" alt="The KonnexPlay checkout with the amount payable and the advance option" style="display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:contain;object-position:center;border:1px solid #DDE0E5;background:#FFFFFF" />
+<figcaption style="font-size:12px;letter-spacing:0.14em;font-weight:700;color:#5A6275;margin-top:14px">3 · HOW THE MONEY ARRIVES</figcaption>
+</figure>
+</div>
+<figure style="margin:48px 0 0">
+<img loading="lazy" decoding="async" src="assets/shot-analytics.jpg" alt="The KonnexPlay monthly report showing net revenue, bookings and what is still due" style="display:block;width:100%;height:auto;border:1px solid #DDE0E5" />
+<figcaption style="font-size:12px;letter-spacing:0.14em;font-weight:700;color:#5A6275;margin-top:14px">4 · THE REPORT YOU OPEN ON THE 1st</figcaption>
+</figure>
+</div>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  state = { w: 1200, name: '', phone: '', venue: '', city: '', courts: 2, sport: 'Box cricket', method: '', tried: false, sent: false, sentName: '', sentPhone: '', leadText: '' };
+  componentDidMount() {
+    this._r = () => { const w = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0); if (w !== this.state.w) this.setState({ w: w }); };
+    window.addEventListener('resize', this._r);
+    if (window.ResizeObserver) { this._ro = new ResizeObserver(this._r); this._ro.observe(document.documentElement); }
+    this._r();
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this._r); if (this._ro) this._ro.disconnect(); }
+
+  digits(v) { return String(v || '').replace(/\D/g, '').slice(0, 10); }
+  gaps() {
+    const s = this.state, g = [];
+    if (!s.name.trim()) g.push('your name');
+    if (this.digits(s.phone).length !== 10) g.push('a 10-digit mobile number');
+    if (!s.venue.trim()) g.push('your venue name');
+    if (!s.city.trim()) g.push('your city');
+    return g;
+  }
+  missing() { return this.gaps().length > 0; }
+  done() { const s = this.state; return [!!s.name.trim(), this.digits(s.phone).length === 10, !!s.venue.trim(), !!s.city.trim()].filter(Boolean).length; }
+  send() {
+    if (this.missing()) { this.setState({ tried: true }); return; }
+    const s = this.state;
+    const body = ['Name: ' + s.name, 'Mobile: +91 ' + this.digits(s.phone), 'Venue: ' + s.venue, 'City: ' + s.city, 'Courts: ' + s.courts, 'Main sport: ' + s.sport, 'Takes bookings today via: ' + (s.method || 'not given')].join('\n');
+    try {
+      const key = 'kx_demo_requests';
+      const log = JSON.parse(window.localStorage.getItem(key) || '[]');
+      log.push({ at: new Date().toISOString(), body: body });
+      window.localStorage.setItem(key, JSON.stringify(log.slice(-50)));
+    } catch (e) {}
+    const waText = 'Demo request\n' + body;
+    try {
+      const url = 'https://wa.me/917778858901?text=' + encodeURIComponent(waText);
+      const a = document.createElement('a');
+      a.href = url; a.target = '_blank'; a.rel = 'noopener'; a.style.display = 'none';
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    } catch (e) {}
+    this.setState({ sent: true, tried: false, sentName: s.name, sentPhone: '+91 ' + this.digits(s.phone), leadText: waText });
+  }
+  renderVals() {
+    const s = this.state, w = s.w, m = w < 900;
+    const first = (s.sentName || '').trim().split(' ')[0];
+    const wa = 'https://wa.me/917778858901?text=' + encodeURIComponent(s.leadText || ('Hi, I want a demo for ' + (s.venue || 'my venue') + '.'));
+    const mailHref = 'mailto:hello@konnexplay.com?subject=' + encodeURIComponent('Demo request: ' + (s.venue || '') + ', ' + (s.city || '')) + '&body=' + encodeURIComponent(s.leadText || '');
+    return {
+      cols: m ? '1fr' : '55fr 45fr',
+      formCol: m ? 'auto' : '2', textCol: m ? 'auto' : '1', textRow: m ? 'auto' : '1',
+      twoCols: w < 620 ? '1fr' : '1fr 1fr',
+      proofCols: w < 760 ? '1fr' : 'minmax(0,1fr) minmax(0,1fr)',
+      padY: m ? '64px' : '96px',
+      name: s.name, phone: s.phone, venue: s.venue, city: s.city, courts: s.courts, sport: s.sport, method: s.method,
+      setName: e => this.setState({ name: e.target.value }),
+      setPhone: e => this.setState({ phone: this.digits(e.target.value) }),
+      setVenue: e => this.setState({ venue: e.target.value }),
+      setCity: e => this.setState({ city: e.target.value }),
+      setC1: () => this.setState({ courts: 1 }),
+      cOn1: String(s.courts) === '1',
+      cBg1: String(s.courts) === '1' ? '#0D1B3E' : '#FFFFFF',
+      cFg1: String(s.courts) === '1' ? '#FFFFFF' : '#5A6275',
+      cBd1: String(s.courts) === '1' ? '#0D1B3E' : '#DDE0E5',
+      setC2: () => this.setState({ courts: 2 }),
+      cOn2: String(s.courts) === '2',
+      cBg2: String(s.courts) === '2' ? '#0D1B3E' : '#FFFFFF',
+      cFg2: String(s.courts) === '2' ? '#FFFFFF' : '#5A6275',
+      cBd2: String(s.courts) === '2' ? '#0D1B3E' : '#DDE0E5',
+      setC3: () => this.setState({ courts: 3 }),
+      cOn3: String(s.courts) === '3',
+      cBg3: String(s.courts) === '3' ? '#0D1B3E' : '#FFFFFF',
+      cFg3: String(s.courts) === '3' ? '#FFFFFF' : '#5A6275',
+      cBd3: String(s.courts) === '3' ? '#0D1B3E' : '#DDE0E5',
+      setC4: () => this.setState({ courts: 4 }),
+      cOn4: String(s.courts) === '4',
+      cBg4: String(s.courts) === '4' ? '#0D1B3E' : '#FFFFFF',
+      cFg4: String(s.courts) === '4' ? '#FFFFFF' : '#5A6275',
+      cBd4: String(s.courts) === '4' ? '#0D1B3E' : '#DDE0E5',
+      setC5: () => this.setState({ courts: 5 }),
+      cOn5: String(s.courts) === '5',
+      cBg5: String(s.courts) === '5' ? '#0D1B3E' : '#FFFFFF',
+      cFg5: String(s.courts) === '5' ? '#FFFFFF' : '#5A6275',
+      cBd5: String(s.courts) === '5' ? '#0D1B3E' : '#DDE0E5',
+      setC6: () => this.setState({ courts: '6+' }),
+      cOn6: String(s.courts) === '6+',
+      cBg6: String(s.courts) === '6+' ? '#0D1B3E' : '#FFFFFF',
+      cFg6: String(s.courts) === '6+' ? '#FFFFFF' : '#5A6275',
+      cBd6: String(s.courts) === '6+' ? '#0D1B3E' : '#DDE0E5',
+      setS0: () => this.setState({ sport: "Box cricket" }),
+      sOn0: s.sport === "Box cricket",
+      sBg0: s.sport === "Box cricket" ? '#E8FBF5' : '#FFFFFF',
+      sFg0: s.sport === "Box cricket" ? '#066B54' : '#5A6275',
+      sBd0: s.sport === "Box cricket" ? '#0DC59A' : '#DDE0E5',
+      setS1: () => this.setState({ sport: "Football turf" }),
+      sOn1: s.sport === "Football turf",
+      sBg1: s.sport === "Football turf" ? '#E8FBF5' : '#FFFFFF',
+      sFg1: s.sport === "Football turf" ? '#066B54' : '#5A6275',
+      sBd1: s.sport === "Football turf" ? '#0DC59A' : '#DDE0E5',
+      setS2: () => this.setState({ sport: "Pickleball" }),
+      sOn2: s.sport === "Pickleball",
+      sBg2: s.sport === "Pickleball" ? '#E8FBF5' : '#FFFFFF',
+      sFg2: s.sport === "Pickleball" ? '#066B54' : '#5A6275',
+      sBd2: s.sport === "Pickleball" ? '#0DC59A' : '#DDE0E5',
+      setS3: () => this.setState({ sport: "Padel" }),
+      sOn3: s.sport === "Padel",
+      sBg3: s.sport === "Padel" ? '#E8FBF5' : '#FFFFFF',
+      sFg3: s.sport === "Padel" ? '#066B54' : '#5A6275',
+      sBd3: s.sport === "Padel" ? '#0DC59A' : '#DDE0E5',
+      setS4: () => this.setState({ sport: "Badminton" }),
+      sOn4: s.sport === "Badminton",
+      sBg4: s.sport === "Badminton" ? '#E8FBF5' : '#FFFFFF',
+      sFg4: s.sport === "Badminton" ? '#066B54' : '#5A6275',
+      sBd4: s.sport === "Badminton" ? '#0DC59A' : '#DDE0E5',
+      setS5: () => this.setState({ sport: "Tennis" }),
+      sOn5: s.sport === "Tennis",
+      sBg5: s.sport === "Tennis" ? '#E8FBF5' : '#FFFFFF',
+      sFg5: s.sport === "Tennis" ? '#066B54' : '#5A6275',
+      sBd5: s.sport === "Tennis" ? '#0DC59A' : '#DDE0E5',
+      setS6: () => this.setState({ sport: "Multi-sport" }),
+      sOn6: s.sport === "Multi-sport",
+      sBg6: s.sport === "Multi-sport" ? '#E8FBF5' : '#FFFFFF',
+      sFg6: s.sport === "Multi-sport" ? '#066B54' : '#5A6275',
+      sBd6: s.sport === "Multi-sport" ? '#0DC59A' : '#DDE0E5',
+      doneLabel: this.done() + ' of 4 done',
+      doneColor: this.done() === 4 ? '#088064' : '#5A6275',
+      errText: 'Still needed: ' + this.gaps().join(', ') + '.',
+      setMethod: e => this.setState({ method: e.target.value }),
+      showErr: s.tried && this.missing(),
+      sent: s.sent, notSent: !s.sent, mailHref: mailHref,
+      thanks: 'Thanks, ' + (first || 'and welcome') + '.',
+      phoneOut: s.sentPhone || '',
+      waLink: wa,
+      submit: () => this.send(),
+      submitForm: (e) => { if (e && e.preventDefault) e.preventDefault(); this.send(); },
+      reset: () => this.setState({ name: '', phone: '', venue: '', city: '', courts: '', method: '', sent: false, tried: false })
+    };
+  }
+}
+</script>
+</body>
+</html>

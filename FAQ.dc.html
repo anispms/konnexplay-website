@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta property="og:type" content="website" />
+<meta property="og:image" content="assets/venue-cage-night.webp" />
+<title>FAQ: KonnexPlay Sports Venue Booking Software</title>
+<meta name="description" content="Answers for sports venue owners: what KonnexPlay is, who it is for, how players book without calling, payments, commission, pricing, cities, sports, and how it differs from booking marketplaces." />
+<link rel="canonical" href="https://konnexplay.com/faq" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet" />
+<style>
+html, body { margin: 0; padding: 0; background: #FAFAF9; }
+a { color: #0D1B3E; } a:hover { color: #088064; }
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is KonnexPlay?","acceptedAnswer":{"@type":"Answer","text":"KonnexPlay is a sports venue management and online booking platform for sports venue owners in India. A venue gets its own booking page where players see available slots, book, pay and get confirmed automatically, plus one live calendar, payments, a customer list and reports for the owner."}},{"@type":"Question","name":"Who is KonnexPlay for?","acceptedAnswer":{"@type":"Answer","text":"Owners and operators of box cricket arenas, football turfs, pickleball venues, padel courts, badminton halls, tennis courts and multi-sport complexes in India."}},{"@type":"Question","name":"Can players book without calling the venue?","acceptedAnswer":{"@type":"Answer","text":"Yes. Players open the venue's booking page, pick an available slot, pay online in full or an advance, and receive a confirmation automatically. The booking appears in the owner's calendar without a call or message."}},{"@type":"Question","name":"Does KonnexPlay support online payment?","acceptedAnswer":{"@type":"Answer","text":"Yes. Players pay online at booking, in full or the advance the venue sets. Money settles directly to the venue's bank account. Standard payment gateway charges apply."}},{"@type":"Question","name":"Does KonnexPlay charge commission?","acceptedAnswer":{"@type":"Answer","text":"No KonnexPlay commission on direct bookings. The price is ₹12,000 per court per year, and the ₹5,000 setup fee is waived."}},{"@type":"Question","name":"How is KonnexPlay different from a booking marketplace?","acceptedAnswer":{"@type":"Answer","text":"A marketplace lists many venues, ranks them against each other and usually charges commission; the player relationship belongs to the marketplace. KonnexPlay gives each venue its own booking page and calendar; bookings are direct, commission-free, and the customer list belongs to the venue."}},{"@type":"Question","name":"Where does KonnexPlay operate?","acceptedAnswer":{"@type":"Answer","text":"KonnexPlay is used by sports venues in Gujarat and Karnataka and is available to venues across India. Every venue is set up in person."}},{"@type":"Question","name":"What sports does KonnexPlay support?","acceptedAnswer":{"@type":"Answer","text":"Box cricket, football turf, pickleball, padel, badminton, tennis and multi-sport venues."}}]}</script>
+</helmet>
+<div style="background:#FAFAF9;font-family:Inter,sans-serif;color:#0D1B3E;-webkit-font-smoothing:antialiased">
+<section style="max-width:1200px;margin:0 auto;padding:72px 24px 40px">
+<div style="font-size:12px;letter-spacing:0.14em;font-weight:700;color:#5A6275;margin-bottom:22px">FAQ</div>
+<h1 style="font-family:Outfit,sans-serif;font-weight:800;font-size:clamp(40px,5.4vw,76px);line-height:0.96;letter-spacing:-0.04em;margin:0;max-width:20ch;text-wrap:balance">Questions venue owners ask us.</h1>
+</section>
+<section style="max-width:1200px;margin:0 auto;padding:0 24px 96px;display:grid;grid-template-columns:{{ cols }};gap:40px 80px;align-items:start">
+<div style="position:{{ stickyPos }};top:100px"><dc-import name="BookingAnim" scene="questions" speed="{{ 1100 }}" hint-size="100%,420px"></dc-import></div>
+<div>
+<sc-for list="{{ faqs }}" as="f" hint-placeholder-count="8">
+<div style="border-top:1px solid #DDE0E5;padding:28px 0">
+<h2 style="font-family:Outfit,sans-serif;font-weight:700;font-size:24px;letter-spacing:-0.02em;line-height:1.15;margin:0 0 12px">{{ f.q }}</h2>
+<p style="font-size:17px;line-height:1.75;color:#3D4457;margin:0;text-wrap:pretty">{{ f.a }}</p>
+</div>
+</sc-for>
+<div style="border-top:1px solid #DDE0E5;padding-top:36px;display:flex;gap:24px;align-items:center;flex-wrap:wrap">
+<a href="#/demo" style="background:#0DC59A;color:#061428;text-decoration:none;padding:16px 28px;font-weight:700;font-size:17px">Book a demo</a>
+<a href="#/contact" style="font-size:16px">Ask something else</a>
+</div>
+</div>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  state = { w: 1200 };
+  componentDidMount() { this._r = () => this.setState({ w: window.innerWidth }); window.addEventListener('resize', this._r); this._r(); }
+  componentWillUnmount() { window.removeEventListener('resize', this._r); }
+  renderVals() {
+    const faqs = [
+      ['What is KonnexPlay?', 'KonnexPlay is a sports venue management and online booking platform for sports venue owners in India. Your venue gets its own booking page where players see available slots, book, pay and get confirmed automatically. You get one live calendar, online payments, a customer list and reports.'],
+      ['Who is KonnexPlay for?', 'Owners and operators of box cricket arenas, football turfs, pickleball venues, padel courts, badminton halls, tennis courts and multi-sport complexes in India.'],
+      ['Can players really book without calling us?', 'Yes. A player opens your booking page from your Instagram bio, Google listing or a QR code, picks an available slot, pays in full or the advance you set, and gets a confirmation automatically. The booking appears in your calendar and on your staff\'s phones. Nobody at the venue answers a call or a message.'],
+      ['What about players who still call or walk in?', 'Your manager adds them in two taps. That booking blocks the slot everywhere the same way, so there is one calendar, not a register and a phone.'],
+      ['Where does the money from online bookings go?', 'To your bank account. Payments are collected through our payment gateway, Razorpay, and settled to the account you register with us, usually within five working days. KonnexPlay takes no commission from your direct bookings. Standard payment gateway charges apply.'],
+      ['Does KonnexPlay charge commission?', 'No KonnexPlay commission on direct bookings, and no charge per booking. The price is ₹12,000 per court per year. The ₹5,000 setup fee is waived.'],
+      ['How is this different from a booking marketplace?', 'A marketplace lists many venues, ranks them against each other and usually takes a commission; the player belongs to the marketplace. KonnexPlay gives your venue its own page and calendar. Bookings are direct and commission-free, and the customer list is yours. You can stay listed on marketplaces if you want to; the channel manager, when live, will keep them in sync.'],
+      ['My staff are not comfortable with software.', 'The manager app has one main screen: today\'s bookings. If they can use WhatsApp, they can use this. We set up at your venue in person and train staff on their own phones.'],
+      ['Where does KonnexPlay operate?', 'KonnexPlay is used by sports venues in Gujarat and Karnataka and is available to venues across India. Every venue is set up in person, and support runs on phone and WhatsApp from 9 AM to 11 PM, all seven days.'],
+      ['Which sports does it support?', 'Box cricket, football turf, pickleball, padel, badminton, tennis and multi-sport venues, with different slot lengths and rates per court.'],
+      ['Can I run tournaments on KonnexPlay?', 'Yes. Block every court for the tournament dates in a few clicks, put a seasonal rate on just those dates, collect a deposit per team online, apply discounts where you promised them, add extra charges like lights or equipment to the booking, and then filter revenue and expenses to those dates to see what the tournament actually made.'],
+      ['Can I set different rates for weekday, weekend and evening?', 'Yes. You define time bands once, each with a weekday price and a weekend price, and apply them to selected courts or a whole category. Seasonal plans with a date range override the default for festivals or tournament weeks and then expire on their own. Base, day of week, time band and seasonal rules stack, and the most specific rule wins for a slot.'],
+      ['What reports do I get?', 'Total payment received split by cash and online, revenue by source (your booking website, portals, front desk), net revenue after discount and commission, profit after expenses, payment still to collect, total discount given, every transaction with mode and reference, performance by court and by sport, and expenses. Filter by today, 7 days, 30 days, next 30 days or a custom range.'],
+      ['When does the subscription start?', 'After a 14-day onboarding period, so your 12 months begin once your team is comfortable.'],
+      ['Who owns my customer data?', 'You do. Export it any time as a spreadsheet. If you leave KonnexPlay, your list leaves with you.'],
+      ['Is the channel manager live?', 'Not yet. It is being built, and we will not switch it on at your venue until it has run cleanly at ours. KonnexPlay\'s core value, players booking directly on your booking website, does not depend on it.']
+    ].map(x => ({ q: x[0], a: x[1] }));
+    const m = this.state.w < 900;
+    return { faqs, cols: m ? '1fr' : '5fr 7fr', stickyPos: m ? 'static' : 'sticky' };
+  }
+}
+</script>
+</body>
+</html>

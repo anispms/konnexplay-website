@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet" />
+<style>
+a:focus-visible, button:focus-visible { outline: 3px solid #0DC59A; outline-offset: 2px; }
+</style>
+</helmet>
+<header style="position:fixed;top:0;left:0;right:0;z-index:40;border-bottom:1px solid {{ navBorder }};background:{{ navBg }};backdrop-filter:{{ navBlur }};font-family:Inter,sans-serif;transition:background 200ms ease,border-color 200ms ease">
+<div style="max-width:1200px;box-sizing:border-box;margin:0 auto;padding:16px 24px;display:flex;align-items:center;gap:28px">
+<a href="#/home" aria-label="KonnexPlay home" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:{{ navInk }};flex-shrink:0">
+<div style="display:grid;grid-template-columns:repeat(3,8px);grid-template-rows:repeat(3,8px);gap:2px" aria-hidden="true">
+<div style="background:#0DC59A;border-radius:2.5px"></div><div style="background:#DDE0E5;border-radius:2.5px"></div><div style="background:#0DC59A;border-radius:2.5px"></div>
+<div style="background:#0DC59A;border-radius:2.5px"></div><div style="background:#0DC59A;border-radius:2.5px"></div><div style="background:#DDE0E5;border-radius:2.5px"></div>
+<div style="background:#0DC59A;border-radius:2.5px"></div><div style="background:#DDE0E5;border-radius:2.5px"></div><div style="background:#0DC59A;border-radius:2.5px"></div>
+</div>
+<span style="font-family:Outfit,sans-serif;font-weight:700;font-size:22px;letter-spacing:-0.02em;line-height:1;color:{{ navInk }};transition:color 200ms ease">Konnex<span style="color:#0DC59A">Play</span></span>
+</a>
+<nav aria-label="Primary" style="display:{{ navDisplay }};gap:24px;min-width:0;white-space:nowrap;align-items:center;font-size:15px;font-weight:500">
+<a href="#/platform" style="color:{{ navInk }};text-decoration:none;transition:color 200ms ease">Platform</a>
+<a href="#/home?a=platform" style="color:{{ navInk }};text-decoration:none;transition:color 200ms ease">How it works</a>
+<a href="#/pricing" style="color:{{ navInk }};text-decoration:none;transition:color 200ms ease">Pricing</a>
+<a href="#/resources" style="color:{{ navInk }};text-decoration:none;transition:color 200ms ease">Resources</a>
+</nav>
+<div style="margin-left:auto;display:flex;align-items:center;gap:12px">
+<a href="#/demo" style="background:#0DC59A;color:#061428;text-decoration:none;padding:12px 20px;font-weight:600;font-size:15px;display:inline-block;white-space:nowrap">Book a demo</a>
+<button type="button" aria-label="Menu" aria-expanded="{{ menuOpen }}" onClick="{{ toggleMenu }}" style="display:{{ burgerDisplay }};border:1px solid #DDE0E5;background:#FFFFFF;padding:10px 14px;font-size:14px;font-weight:600;cursor:pointer;min-height:44px;color:#0D1B3E">{{ menuLabel }}</button>
+</div>
+</div>
+<sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+<nav aria-label="Mobile" style="border-top:1px solid #DDE0E5;background:#FFFFFF;display:flex;flex-direction:column;font-family:Outfit,sans-serif">
+<a href="#/platform" onClick="{{ closeMenu }}" style="padding:18px 24px;border-bottom:1px solid #DDE0E5;text-decoration:none;font-size:22px;font-weight:700;color:#0D1B3E;letter-spacing:-0.02em">Platform</a>
+<a href="#/home?a=platform" onClick="{{ closeMenu }}" style="padding:18px 24px;border-bottom:1px solid #DDE0E5;text-decoration:none;font-size:22px;font-weight:700;color:#0D1B3E;letter-spacing:-0.02em">How it works</a>
+<a href="#/pricing" onClick="{{ closeMenu }}" style="padding:18px 24px;border-bottom:1px solid #DDE0E5;text-decoration:none;font-size:22px;font-weight:700;color:#0D1B3E;letter-spacing:-0.02em">Pricing</a>
+<a href="#/resources" onClick="{{ closeMenu }}" style="padding:18px 24px;border-bottom:1px solid #DDE0E5;text-decoration:none;font-size:22px;font-weight:700;color:#0D1B3E;letter-spacing:-0.02em">Resources</a>
+<a href="#/demo" onClick="{{ closeMenu }}" style="margin:16px 24px 20px;background:#0DC59A;color:#061428;text-decoration:none;text-align:center;padding:18px;font-weight:700;font-size:18px">Book a demo</a>
+</nav>
+</sc-if>
+<sc-if value="{{ showBar }}" hint-placeholder-val="{{ false }}">
+<div style="position:fixed;left:0;right:0;bottom:0;z-index:50;padding:10px 12px;background:rgba(250,250,249,.96);border-top:1px solid #DDE0E5">
+<a href="#/demo" style="display:block;background:#0DC59A;color:#061428;text-decoration:none;text-align:center;padding:16px;font-weight:700;font-size:16px;font-family:Inter,sans-serif">Book a demo</a>
+</div>
+</sc-if>
+</header>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200,&quot;height&quot;:80}}">
+class Component extends DCLogic {
+  state = { w: 1200, menuOpen: false, scrolled: false, past: false, home: true };
+  componentDidMount() {
+    this._r = () => this.setState({ w: window.innerWidth });
+    /* Which element scrolls varies by host (window, documentElement, or a wrapper),
+       and a scroll event does not always reach window. Sentinels are independent of that. */
+    this._s = () => {
+      let y = Math.max(window.scrollY || 0, document.documentElement.scrollTop || 0, document.body.scrollTop || 0);
+      if (!y && this._host) { let p = this._host.parentElement; while (p) { if (p.scrollTop > y) y = p.scrollTop; p = p.parentElement; } }
+      const past = y > 80, deep = y > 700;
+      if (past !== this.state.past || deep !== this.state.scrolled) this.setState({ past: past, scrolled: deep });
+    };
+    window.addEventListener('resize', this._r);
+    window.addEventListener('scroll', this._s, true);
+    document.addEventListener('scroll', this._s, true);
+    this._r(); this._s();
+
+    this._h = () => { const r = (window.location.hash || '').replace(/^#\/?/, '').split('?')[0]; this.setState({ home: r === '' || r === 'home' }); };
+    window.addEventListener('hashchange', this._h); this._h();
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this._r);
+    window.removeEventListener('scroll', this._s, true);
+    document.removeEventListener('scroll', this._s, true);
+    window.removeEventListener('hashchange', this._h);
+  }
+  renderVals() {
+    const m = this.state.w < 1060;
+    const isDemo = /Book%20a%20demo|Book a demo/.test(window.location.pathname + decodeURIComponent(window.location.pathname));
+    const overlay = this.state.home && !this.state.past && !this.state.menuOpen;
+    return {
+      navBg: overlay ? 'transparent' : 'rgba(250,250,249,.94)',
+      navBlur: overlay ? 'none' : 'saturate(1.2) blur(8px)',
+      navBorder: overlay ? 'transparent' : '#DDE0E5',
+      navInk: overlay ? '#FFFFFF' : '#0D1B3E',
+      navDisplay: m ? 'none' : 'flex', burgerDisplay: m ? 'inline-block' : 'none',
+      menuOpen: m && this.state.menuOpen, menuLabel: this.state.menuOpen ? 'Close' : 'Menu',
+      toggleMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen })), closeMenu: () => this.setState({ menuOpen: false }),
+      showBar: this.state.w < 768 && this.state.scrolled && !this.state.menuOpen && !isDemo
+    };
+  }
+}
+</script>
+</body>
+</html>

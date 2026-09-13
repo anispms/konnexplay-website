@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta property="og:type" content="website" />
+<meta property="og:image" content="assets/shot-calendar-v4.jpg" />
+<title>Sports venue management platform | KonnexPlay</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet" />
+<style>
+html, body { margin: 0; padding: 0; background: #FAFAF9; }
+a { color: #0D1B3E; }
+a:hover { color: #088064; }
+</style>
+</helmet>
+<div style="background:#FAFAF9;font-family:Inter,sans-serif;color:#0D1B3E;-webkit-font-smoothing:antialiased">
+
+<section style="max-width:1120px;margin:0 auto;padding:64px 24px 0">
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:22px">
+<div style="display:grid;grid-template-columns:repeat(3,4px);grid-template-rows:repeat(3,4px);gap:1px">
+<div style="background:#0DC59A;border-radius:1.5px"></div><div style="background:#DDE0E5;border-radius:1.5px"></div><div style="background:#0DC59A;border-radius:1.5px"></div>
+<div style="background:#0DC59A;border-radius:1.5px"></div><div style="background:#0DC59A;border-radius:1.5px"></div><div style="background:#DDE0E5;border-radius:1.5px"></div>
+<div style="background:#0DC59A;border-radius:1.5px"></div><div style="background:#DDE0E5;border-radius:1.5px"></div><div style="background:#0DC59A;border-radius:1.5px"></div>
+</div>
+<span style="font-size:12px;letter-spacing:0.14em;font-weight:600;color:#5A6275">PLATFORM</span>
+</div>
+<h1 style="font-family:Outfit,sans-serif;font-weight:800;letter-spacing:-0.04em;font-size:clamp(40px,5.4vw,76px);line-height:0.96;margin:0 0 24px;max-width:20ch;text-wrap:balance">One platform. Every slot. No calls to answer.</h1>
+<p style="font-size:18px;line-height:1.75;color:#3D4457;margin:0 0 48px;max-width:62ch;text-wrap:pretty">KonnexPlay is a sports venue management platform with three parts: venue management, a booking engine, and a channel manager. All three share one live calendar. A player books a slot on your booking website, pays, and gets confirmed; the slot is gone everywhere KonnexPlay reaches, and nobody at your venue picked up a phone.</p>
+
+<div style="display:inline-flex;align-items:center;gap:9px;border:1px solid #DDE0E5;background:#FFFFFF;padding:9px 13px;margin-bottom:26px;font-size:12px;font-weight:600;color:#5A6275;max-width:100%">
+<span aria-hidden="true" style="width:7px;height:7px;background:#5A6275;flex-shrink:0"></span>
+<span style="text-wrap:pretty">Illustrative interface with sample data. Not a real venue&rsquo;s figures. Real product screenshots are further down this page.</span>
+</div>
+<div style="margin:0 0 64px"><div style="margin:0 0 56px">
+<div style="background:#050E26;border:1px solid #DDE0E5">
+<video autoPlay="{{ true }}" muted="{{ true }}" loop="{{ true }}" playsInline="{{ true }}" controls="{{ true }}" preload="metadata" poster="assets/venue-turf-night-wide.jpg" src="assets/film-story.mp4" aria-label="KonnexPlay film: nobody answered the phone" style="display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;background:#050E26"></video>
+</div>
+<div style="font-size:12px;letter-spacing:0.14em;font-weight:700;color:#5A6275;margin-top:14px">THE WHOLE PRODUCT IN 41 SECONDS</div>
+</div>
+<dc-import name="ProductDemo" speed="{{ 3600 }}" hint-size="100%,560px"></dc-import></div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:40px;padding-bottom:72px">
+<div style="border-top:1px solid #0D1B3E;padding-top:20px">
+<div style="font-family:Inter,sans-serif;font-weight:700;font-size:28px;line-height:1;margin-bottom:14px">01</div>
+<div style="font-size:19px;font-weight:600;margin-bottom:6px;text-wrap:pretty"><a href="#venue-management" style="color:#0D1B3E;text-decoration:none">Venue management</a></div>
+<div style="font-size:13px;letter-spacing:0.1em;font-weight:600;color:#088064;margin-bottom:12px">LIVE</div>
+<p style="font-size:17px;line-height:1.7;color:#3D4457;margin:0;text-wrap:pretty">Run courts, customers, money and staff from your phone.</p>
+</div>
+<div style="border-top:1px solid #0D1B3E;padding-top:20px">
+<div style="font-family:Inter,sans-serif;font-weight:700;font-size:28px;line-height:1;margin-bottom:14px">02</div>
+<div style="font-size:19px;font-weight:600;margin-bottom:6px;text-wrap:pretty"><a href="#booking-engine" style="color:#0D1B3E;text-decoration:none">Booking engine</a></div>
+<div style="font-size:13px;letter-spacing:0.1em;font-weight:600;color:#088064;margin-bottom:12px">LIVE</div>
+<p style="font-size:17px;line-height:1.7;color:#3D4457;margin:0;text-wrap:pretty">Your venue's own booking website, open 24 × 7.</p>
+</div>
+<div style="border-top:1px solid #0D1B3E;padding-top:20px">
+<div style="font-family:Inter,sans-serif;font-weight:700;font-size:28px;line-height:1;margin-bottom:14px">03</div>
+<div style="font-size:19px;font-weight:600;margin-bottom:6px;text-wrap:pretty"><a href="#channel-manager" style="color:#0D1B3E;text-decoration:none">Channel manager</a></div>
+<div style="font-size:13px;letter-spacing:0.1em;font-weight:600;color:#5A6275;margin-bottom:12px">COMING SOON</div>
+<p style="font-size:17px;line-height:1.7;color:#3D4457;margin:0;text-wrap:pretty">Keep the booking apps you are listed on in sync with your calendar.</p>
+</div>
+</div>
+</section>
+<img loading="lazy" decoding="async" src="assets/photo-cage-day-wide.jpg" alt="A box cricket game in progress inside a netted ground in daylight" style="display:block;width:100%;height:clamp(220px,34vw,440px);object-fit:cover;object-position:center 65%" />
+
+
+<section id="venue-management" style="border-top:1px solid #DDE0E5">
+<div style="max-width:1120px;margin:0 auto;padding:72px 24px">
+<div style="font-size:12px;letter-spacing:0.14em;font-weight:600;color:#5A6275;margin-bottom:18px">01 · VENUE MANAGEMENT</div>
+<div style="display:inline-flex;align-items:center;gap:9px;border:1px solid #DDE0E5;background:#FFFFFF;padding:9px 13px;margin-bottom:26px;font-size:12px;font-weight:600;color:#5A6275;max-width:100%">
+<span aria-hidden="true" style="width:7px;height:7px;background:#5A6275;flex-shrink:0"></span>
+<span style="text-wrap:pretty">Illustrative interface with sample data. Not a real venue&rsquo;s figures. Real product screenshots are further down this page.</span>
+</div>
+<h2 style="font-family:Outfit,sans-serif;font-weight:800;letter-spacing:-0.035em;font-size:clamp(30px,3.8vw,54px);line-height:1.1;margin:0 0 24px;max-width:20ch;text-wrap:balance">Run every court from your phone.</h2>
+<p style="font-size:18px;line-height:1.78;color:#3D4457;margin:0 0 52px;max-width:64ch;text-wrap:pretty">One calendar for every court, an owner app for you and a manager app for your staff. Take phone, WhatsApp and walk-in bookings in seconds, collect advances, sell memberships, see who your regulars are, and know what came in and what went out.</p>
+
+<div style="font-size:12px;letter-spacing:0.14em;font-weight:600;color:#5A6275;margin-bottom:20px">WHAT IS INSIDE</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:0 56px;margin-bottom:64px">
+<div style="border-top:1px solid #DDE0E5;padding:15px 0;font-size:17px">Court-wise weekly calendar</div>
+<div style="border-top:1px solid #DDE0E5;padding:15px 0;font-size:17px">Monthly revenue reports</div>
+<div style="border-top:1px solid #DDE0E5;padding:15px 0;font-size:17px">Owner app and manager app</div>
+<div style="border-top:1px solid #DDE0E5;padding:15px 0;font-size:17px">Expense tracking</div>
+<div style="border-top:1px solid #DDE0E5;padding:15px 0;font-size:17px">Advance collection</div>
+<div style="border-top:1px solid #DDE0E5;padding:15px 0;font-size:17px">Staff logins with limited access</div>
+<div style="border-top:1px solid #DDE0E5;padding:15px 0;font-size:17px">Memberships and member rates</div>
+<div style="border-top:1px solid #DDE0E5;padding:15px 0;font-size:17px">Booking alerts on your phone</div>
+<div style="border-top:1px solid #DDE0E5;padding:15px 0;font-size:17px">Customer list with visit history</div>
+<div style="border-top:1px solid #DDE0E5;padding:15px 0;font-size:17px">Export to spreadsheet</div>
+<div style="border-top:1px solid #DDE0E5;padding:15px 0;font-size:17px">Regular-player reports</div>
+<div style="border-top:1px solid #DDE0E5;border-bottom:1px solid #DDE0E5;padding:15px 0;font-size:17px">In-person setup and staff training</div>
+<div style="border-top:1px solid #DDE0E5;border-bottom:1px solid #DDE0E5;padding:15px 0;font-size:17px">Dues tracking</div>
+</div>
+
+<div style="display:grid;grid-template-columns:{{ screensCols }};gap:28px">
+
+<div>
+<div style="border:1px solid #DDE0E5;background:#FAFAF9;overflow:hidden">
+<div style="padding:12px 12px 10px;background:#FFFFFF;border-bottom:1px solid #DDE0E5">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
+<div style="font-family:Inter,sans-serif;font-size:12px;font-weight:700;line-height:1.2">Whitefield Box Arena</div>
+<div style="width:20px;height:20px;background:#0DC59A;color:#0D1B3E;font-family:Inter,sans-serif;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center">R</div>
+</div>
+<div style="font-size:9px;font-weight:700;color:#5A6275;margin-top:3px">Saturday, 12 September</div>
+</div>
+<div style="padding:12px">
+<div style="background:#0DC59A;color:#0D1B3E;padding:11px 12px">
+<div style="font-size:8.5px;font-weight:700;letter-spacing:.06em">COLLECTED TODAY</div>
+<div style="font-family:Inter,sans-serif;font-size:21px;font-weight:700;line-height:1.1;margin-top:3px">₹18,400</div>
+<div style="font-size:9px;font-weight:700;margin-top:2px">₹3,200 still due</div>
+</div>
+<div style="display:flex;gap:6px;margin-top:10px">
+<div style="flex:1;background:#FFFFFF;border:1px solid #DDE0E5;padding:8px 9px">
+<div style="font-family:Inter,sans-serif;font-size:14px;font-weight:700;line-height:1">14</div>
+<div style="font-size:8px;font-weight:700;color:#5A6275;margin-top:2px">Bookings</div>
+</div>
+<div style="flex:1;background:#FFFFFF;border:1px solid #DDE0E5;padding:8px 9px">
+<div style="font-family:Inter,sans-serif;font-size:14px;font-weight:700;line-height:1">3</div>
+<div style="font-size:8px;font-weight:700;color:#5A6275;margin-top:2px">Slots open</div>
+</div>
+</div>
+<div style="font-family:Inter,sans-serif;font-size:10px;font-weight:700;margin:12px 0 7px">Next up</div>
+<div style="display:flex;flex-direction:column;gap:6px">
+<div style="background:#FFFFFF;border:1px solid #DDE0E5;padding:8px 10px;display:flex;align-items:center;gap:8px">
+<div style="font-family:Inter,sans-serif;font-size:10px;font-weight:700;min-width:38px">7:00 PM</div>
+<div style="flex:1;min-width:0">
+<div style="font-size:9.5px;font-weight:700">Hardik P.</div>
+<div style="font-size:8px;font-weight:700;color:#5A6275">Court 2 · 1 hr</div>
+</div>
+<div style="background:#E8FBF5;color:#066B54;padding:3px 6px;font-size:8px;font-weight:700">Paid</div>
+</div>
+<div style="background:#FFFFFF;border:1px solid #DDE0E5;padding:8px 10px;display:flex;align-items:center;gap:8px">
+<div style="font-family:Inter,sans-serif;font-size:10px;font-weight:700;min-width:38px">8:00 PM</div>
+<div style="flex:1;min-width:0">
+<div style="font-size:9.5px;font-weight:700">Nirav Shah</div>
+<div style="font-size:8px;font-weight:700;color:#5A6275">Court 1 · 2 hrs</div>
+</div>
+<div style="background:#FFF1E3;color:#8A4A0F;padding:3px 6px;font-size:8px;font-weight:700">₹600 due</div>
+</div>
+<div style="background:#FFFFFF;border:1px solid #DDE0E5;padding:8px 10px;display:flex;align-items:center;gap:8px">
+<div style="font-family:Inter,sans-serif;font-size:10px;font-weight:700;min-width:38px">9:00 PM</div>
+<div style="flex:1;min-width:0">
+<div style="font-size:9.5px;font-weight:700">Surat Smashers</div>
+<div style="font-size:8px;font-weight:700;color:#5A6275">Court 3 · 1 hr</div>
+</div>
+<div style="background:#E8FBF5;color:#066B54;padding:3px 6px;font-size:8px;font-weight:700">Paid</div>
+</div>
+</div>
+</div>
+</div>
+<div style="font-size:14px;color:#3D4457;margin-top:12px">Owner app</div>
+</div>
+
+<div>
+<div style="border:1px solid #DDE0E5;background:#FAFAF9;overflow:hidden">
+<div style="background:#FFFFFF;border-bottom:1px solid #DDE0E5;padding:12px 13px">
+<div style="font-family:Inter,sans-serif;font-size:13px;font-weight:700">Court calendar</div>
+<div style="font-size:9.5px;font-weight:700;color:#5A6275;margin-top:2px">Saturday, 12 September</div>
+</div>
+<div style="padding:11px 13px 13px">
+<div style="display:grid;grid-template-columns:34px repeat(3,minmax(0,1fr));gap:5px;margin-bottom:5px">
+<div></div>
+<div style="font-size:8px;font-weight:700;color:#5A6275;letter-spacing:.04em">CRT 1</div>
+<div style="font-size:8px;font-weight:700;color:#5A6275;letter-spacing:.04em">CRT 2</div>
+<div style="font-size:8px;font-weight:700;color:#5A6275;letter-spacing:.04em">TURF</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:5px">
+<div style="display:grid;grid-template-columns:34px repeat(3,minmax(0,1fr));gap:5px">
+<div style="font-size:8.5px;font-weight:700;color:#5A6275;display:flex;align-items:center">5 PM</div>
+<div style="background:#0DC59A;padding:7px 5px;font-size:8px;font-weight:700;color:#0D1B3E;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">Ankit R.</div>
+<div style="background:#FFFFFF;border:1px solid #DDE0E5;padding:7px 5px;font-size:8px;font-weight:700;color:#5A6275">Open</div>
+<div style="background:#0DC59A;padding:7px 5px;font-size:8px;font-weight:700;color:#0D1B3E;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">Riya M.</div>
+</div>
+<div style="display:grid;grid-template-columns:34px repeat(3,minmax(0,1fr));gap:5px">
+<div style="font-size:8.5px;font-weight:700;color:#5A6275;display:flex;align-items:center">6 PM</div>
+<div style="background:#0DC59A;padding:7px 5px;font-size:8px;font-weight:700;color:#0D1B3E;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">Ankit R.</div>
+<div style="background:#0DC59A;padding:7px 5px;font-size:8px;font-weight:700;color:#0D1B3E;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">Corporate</div>
+<div style="background:#FFF1E3;border:1px solid #F0DCC4;padding:7px 5px;font-size:8px;font-weight:700;color:#8A4A0F;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">₹200 adv</div>
+</div>
+<div style="display:grid;grid-template-columns:34px repeat(3,minmax(0,1fr));gap:5px">
+<div style="font-size:8.5px;font-weight:700;color:#5A6275;display:flex;align-items:center">7 PM</div>
+<div style="background:#0DC59A;padding:7px 5px;font-size:8px;font-weight:700;color:#0D1B3E;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">Smashers</div>
+<div style="background:#0DC59A;padding:7px 5px;font-size:8px;font-weight:700;color:#0D1B3E;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">Corporate</div>
+<div style="background:#FFFFFF;border:1px solid #DDE0E5;padding:7px 5px;font-size:8px;font-weight:700;color:#5A6275">Open</div>
+</div>
+<div style="display:grid;grid-template-columns:34px repeat(3,minmax(0,1fr));gap:5px">
+<div style="font-size:8.5px;font-weight:700;color:#5A6275;display:flex;align-items:center">8 PM</div>
+<div style="background:#0DC59A;padding:7px 5px;font-size:8px;font-weight:700;color:#0D1B3E;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">Nirav S.</div>
+<div style="background:#0DC59A;padding:7px 5px;font-size:8px;font-weight:700;color:#0D1B3E;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">Nirav S.</div>
+<div style="background:#0DC59A;padding:7px 5px;font-size:8px;font-weight:700;color:#0D1B3E;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">Jay D.</div>
+</div>
+<div style="display:grid;grid-template-columns:34px repeat(3,minmax(0,1fr));gap:5px">
+<div style="font-size:8.5px;font-weight:700;color:#5A6275;display:flex;align-items:center">9 PM</div>
+<div style="background:#FFF1E3;border:1px solid #F0DCC4;padding:7px 5px;font-size:8px;font-weight:700;color:#8A4A0F;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">₹500 adv</div>
+<div style="background:#0DC59A;padding:7px 5px;font-size:8px;font-weight:700;color:#0D1B3E;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">Meet T.</div>
+<div style="background:#FFFFFF;border:1px solid #DDE0E5;padding:7px 5px;font-size:8px;font-weight:700;color:#5A6275">Open</div>
+</div>
+<div style="display:grid;grid-template-columns:34px repeat(3,minmax(0,1fr));gap:5px">
+<div style="font-size:8.5px;font-weight:700;color:#5A6275;display:flex;align-items:center">10 PM</div>
+<div style="background:#FFFFFF;border:1px solid #DDE0E5;padding:7px 5px;font-size:8px;font-weight:700;color:#5A6275">Open</div>
+<div style="background:#0DC59A;padding:7px 5px;font-size:8px;font-weight:700;color:#0D1B3E;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">Meet T.</div>
+<div style="background:#0DC59A;padding:7px 5px;font-size:8px;font-weight:700;color:#0D1B3E;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">League</div>
+</div>
+</div>
+</div>
+</div>
+<div style="font-size:14px;color:#3D4457;margin-top:12px">Calendar</div>
+</div>
+
+<div>
+<div style="border:1px solid #DDE0E5;background:#FAFAF9;overflow:hidden">
+<div style="background:#FFFFFF;border-bottom:1px solid #DDE0E5;padding:12px 13px">
+<div style="font-family:Inter,sans-serif;font-size:13px;font-weight:700">Customers</div>
+<div style="font-size:9.5px;font-weight:700;color:#5A6275;margin-top:2px">Every booking adds a player</div>
+</div>
+<div style="padding:10px 13px 13px">
+<div style="display:grid;grid-template-columns:minmax(0,1.4fr) 34px minmax(0,1fr);gap:8px;font-size:8px;font-weight:700;color:#5A6275;letter-spacing:.04em;padding-bottom:7px">
+<div>PLAYER</div><div>VISITS</div><div>LAST</div>
+</div>
+<div style="display:grid;grid-template-columns:minmax(0,1.4fr) 34px minmax(0,1fr);gap:8px;align-items:center;padding:8px 0;border-top:1px solid #DDE0E5">
+<div style="font-size:10px;font-weight:700;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">Hardik Patel</div>
+<div style="font-family:Inter,sans-serif;font-size:11px;font-weight:700">38</div>
+<div style="font-size:9px;font-weight:700;color:#5A6275">2 days ago</div>
+</div>
+<div style="display:grid;grid-template-columns:minmax(0,1.4fr) 34px minmax(0,1fr);gap:8px;align-items:center;padding:8px 0;border-top:1px solid #DDE0E5">
+<div style="font-size:10px;font-weight:700;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">Riya Mehta</div>
+<div style="font-family:Inter,sans-serif;font-size:11px;font-weight:700">26</div>
+<div style="font-size:9px;font-weight:700;color:#5A6275">Yesterday</div>
+</div>
+<div style="display:grid;grid-template-columns:minmax(0,1.4fr) 34px minmax(0,1fr);gap:8px;align-items:center;padding:8px 0;border-top:1px solid #DDE0E5">
+<div style="font-size:10px;font-weight:700;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">Nirav Shah</div>
+<div style="font-family:Inter,sans-serif;font-size:11px;font-weight:700">19</div>
+<div style="font-size:9px;font-weight:700;color:#5A6275">5 days ago</div>
+</div>
+<div style="display:grid;grid-template-columns:minmax(0,1.4fr) 34px minmax(0,1fr);gap:8px;align-items:center;padding:8px 0;border-top:1px solid #DDE0E5">
+<div style="font-size:10px;font-weight:700;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">Jay Desai</div>
+<div style="font-family:Inter,sans-serif;font-size:11px;font-weight:700">14</div>
+<div style="font-size:9px;font-weight:700;color:#8A4A0F">March 2026</div>
+</div>
+<div style="display:grid;grid-template-columns:minmax(0,1.4fr) 34px minmax(0,1fr);gap:8px;align-items:center;padding:8px 0;border-top:1px solid #DDE0E5;border-bottom:1px solid #DDE0E5">
+<div style="font-size:10px;font-weight:700;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">Meet Trivedi</div>
+<div style="font-family:Inter,sans-serif;font-size:11px;font-weight:700">11</div>
+<div style="font-size:9px;font-weight:700;color:#8A4A0F">April 2026</div>
+</div>
+</div>
+</div>
+<div style="font-size:14px;color:#3D4457;margin-top:12px">Customers</div>
+</div>
+
+<div>
+<div style="border:1px solid #DDE0E5;background:#FAFAF9;overflow:hidden">
+<div style="background:#FFFFFF;border-bottom:1px solid #DDE0E5;padding:12px 13px">
+<div style="font-family:Inter,sans-serif;font-size:13px;font-weight:700">Revenue</div>
+<div style="font-size:9.5px;font-weight:700;color:#5A6275;margin-top:2px">This month, to date</div>
+</div>
+<div style="padding:12px 13px 13px">
+<div style="background:#0DC59A;color:#0D1B3E;padding:10px 11px;margin-bottom:8px">
+<div style="font-size:8.5px;font-weight:700;letter-spacing:.05em">COLLECTED THIS MONTH</div>
+<div style="font-family:Inter,sans-serif;font-size:20px;font-weight:700;line-height:1.1;margin-top:2px">Your total</div>
+</div>
+<div style="display:flex;gap:8px;margin-bottom:14px">
+<div style="flex:1;background:#FFFFFF;border:1px solid #DDE0E5;padding:9px 10px">
+<div style="font-size:8px;font-weight:700;letter-spacing:.05em;color:#5A6275">DUES</div>
+<div style="font-family:Inter,sans-serif;font-size:14px;font-weight:700;margin-top:2px">Still due</div>
+</div>
+<div style="flex:1;background:#FFFFFF;border:1px solid #DDE0E5;padding:9px 10px">
+<div style="font-size:8px;font-weight:700;letter-spacing:.05em;color:#5A6275">EXPENSES</div>
+<div style="font-family:Inter,sans-serif;font-size:14px;font-weight:700;margin-top:2px">Recorded</div>
+</div>
+</div>
+<div style="display:flex;align-items:flex-end;gap:8px;height:80px;border-bottom:1px solid #DDE0E5">
+<div style="flex:1;height:52%;background:#E3E6EA"></div>
+<div style="flex:1;height:61%;background:#E3E6EA"></div>
+<div style="flex:1;height:48%;background:#E3E6EA"></div>
+<div style="flex:1;height:74%;background:#E3E6EA"></div>
+<div style="flex:1;height:83%;background:#E3E6EA"></div>
+<div style="flex:1;height:96%;background:#0DC59A"></div>
+</div>
+<div style="display:flex;gap:8px;padding-top:6px">
+<div style="flex:1;text-align:center;font-size:8.5px;font-weight:700;color:#5A6275">Apr</div>
+<div style="flex:1;text-align:center;font-size:8.5px;font-weight:700;color:#5A6275">May</div>
+<div style="flex:1;text-align:center;font-size:8.5px;font-weight:700;color:#5A6275">Jun</div>
+<div style="flex:1;text-align:center;font-size:8.5px;font-weight:700;color:#5A6275">Jul</div>
+<div style="flex:1;text-align:center;font-size:8.5px;font-weight:700;color:#5A6275">Aug</div>
+<div style="flex:1;text-align:center;font-size:8.5px;font-weight:700;color:#5A6275">Sep</div>
+</div>
+</div>
+</div>
+<div style="font-size:14px;color:#3D4457;margin-top:12px">Reports</div>
+</div>
+
+</div>
+</div>
+</section>
+
+<section id="booking-engine" style="border-top:1px solid #DDE0E5">
+<div style="max-width:1120px;margin:0 auto;padding:72px 24px 0">
+<div style="display:inline-flex;align-items:center;gap:9px;border:1px solid #DDE0E5;background:#FFFFFF;padding:9px 13px;margin-bottom:26px;font-size:12px;font-weight:600;color:#5A6275;max-width:100%">
+<span aria-hidden="true" style="width:7px;height:7px;background:#5A6275;flex-shrink:0"></span>
+<span style="text-wrap:pretty">Illustrative interface with sample data. A drawn example of a venue&rsquo;s booking website, not a real venue.</span>
+</div>
+</div>
+<div style="max-width:1120px;margin:0 auto;padding:0 24px 72px;display:flex;gap:64px;flex-wrap:wrap-reverse;align-items:flex-start">
+<div style="flex:1 1 280px;min-width:240px;max-width:300px">
+<div style="border:1px solid #DDE0E5;background:#FAFAF9;overflow:hidden">
+<div style="height:96px;background:linear-gradient(180deg,#0D1B3E,#2A3859);position:relative">
+<div style="position:absolute;left:12px;bottom:10px;right:12px;color:#FFFFFF">
+<div style="font-family:Inter,sans-serif;font-size:15px;font-weight:700;line-height:1.15">Whitefield Box Arena</div>
+<div style="font-size:9.5px;font-weight:700;margin-top:2px">Vesu, Surat · 2.4 km</div>
+</div>
+</div>
+<div style="padding:12px 13px">
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">
+<span style="background:#EDF1F5;color:#3D4457;padding:5px 9px;font-size:9px;font-weight:700">Floodlights</span>
+<span style="background:#EDF1F5;color:#3D4457;padding:5px 9px;font-size:9px;font-weight:700">Parking</span>
+<span style="background:#EDF1F5;color:#3D4457;padding:5px 9px;font-size:9px;font-weight:700">Washroom</span>
+</div>
+<div style="font-family:Inter,sans-serif;font-size:11.5px;font-weight:700;margin-bottom:7px">Select a date</div>
+<div style="display:flex;gap:6px;margin-bottom:14px">
+<div style="flex:1;background:#0DC59A;padding:7px 0;text-align:center;color:#0D1B3E"><div style="font-size:7.5px;font-weight:700">SAT</div><div style="font-family:Inter,sans-serif;font-size:13px;font-weight:700">12</div></div>
+<div style="flex:1;background:#FFFFFF;border:1px solid #DDE0E5;padding:7px 0;text-align:center"><div style="font-size:7.5px;font-weight:700;color:#5A6275">SUN</div><div style="font-family:Inter,sans-serif;font-size:13px;font-weight:700">13</div></div>
+<div style="flex:1;background:#FFFFFF;border:1px solid #DDE0E5;padding:7px 0;text-align:center"><div style="font-size:7.5px;font-weight:700;color:#5A6275">MON</div><div style="font-family:Inter,sans-serif;font-size:13px;font-weight:700">14</div></div>
+<div style="flex:1;background:#FFFFFF;border:1px solid #DDE0E5;padding:7px 0;text-align:center"><div style="font-size:7.5px;font-weight:700;color:#5A6275">TUE</div><div style="font-family:Inter,sans-serif;font-size:13px;font-weight:700">15</div></div>
+</div>
+<div style="font-family:Inter,sans-serif;font-size:11.5px;font-weight:700;margin-bottom:7px">Pick your time</div>
+<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px">
+<div style="background:#FFFFFF;border:1px solid #DDE0E5;padding:8px 0;text-align:center"><div style="font-size:10.5px;font-weight:700">5 PM</div><div style="font-size:8px;font-weight:700;color:#5A6275">from ₹700</div></div>
+<div style="background:#E3E6EA;border:1px solid #E3E6EA;padding:8px 0;text-align:center;color:#5A6275"><div style="font-size:10.5px;font-weight:700;text-decoration:line-through">6 PM</div><div style="font-size:8px;font-weight:700">Booked</div></div>
+<div style="background:#FFFFFF;border:1px solid #DDE0E5;padding:8px 0;text-align:center"><div style="font-size:10.5px;font-weight:700">7 PM</div><div style="font-size:8px;font-weight:700;color:#5A6275">from ₹700</div></div>
+<div style="background:#0DC59A;border:1px solid #0DC59A;padding:8px 0;text-align:center;color:#0D1B3E"><div style="font-size:10.5px;font-weight:700">8 PM</div><div style="font-size:8px;font-weight:700">Selected</div></div>
+<div style="background:#0DC59A;border:1px solid #0DC59A;padding:8px 0;text-align:center;color:#0D1B3E"><div style="font-size:10.5px;font-weight:700">9 PM</div><div style="font-size:8px;font-weight:700">Selected</div></div>
+<div style="background:#E3E6EA;border:1px solid #E3E6EA;padding:8px 0;text-align:center;color:#5A6275"><div style="font-size:10.5px;font-weight:700;text-decoration:line-through">10 PM</div><div style="font-size:8px;font-weight:700">Booked</div></div>
+</div>
+</div>
+<div style="border-top:1px solid #DDE0E5;background:#FFFFFF;padding:11px 13px;display:flex;align-items:center;justify-content:space-between;gap:8px">
+<div>
+<div style="font-family:Inter,sans-serif;font-size:11.5px;font-weight:700">8 to 10 PM · 2 hrs</div>
+<div style="font-size:9px;font-weight:700;color:#5A6275">Pay ₹300 advance</div>
+</div>
+<div style="background:#0D1B3E;color:#FFFFFF;padding:9px 13px;font-family:Inter,sans-serif;font-size:11px;font-weight:700">₹1,400</div>
+</div>
+</div>
+<div style="border:1px solid #DDE0E5;border-top:0;background:#FAFAF9;padding:10px 12px;font-size:12px;line-height:1.5;color:#3D4457">Powered by KonnexPlay. Own a venue? <a href="#/demo" style="color:#0D1B3E">Get your own booking page.</a></div>
+</div>
+<div style="flex:1 1 460px;min-width:280px">
+<div style="font-size:12px;letter-spacing:0.14em;font-weight:600;color:#5A6275;margin-bottom:18px">02 · BOOKING ENGINE</div>
+<h2 style="font-family:Outfit,sans-serif;font-weight:800;letter-spacing:-0.035em;font-size:clamp(30px,3.8vw,54px);line-height:1.1;margin:0 0 24px;max-width:20ch;text-wrap:balance">Your venue's own booking website.</h2>
+<p style="font-size:18px;line-height:1.78;color:#3D4457;margin:0 0 36px;max-width:60ch;text-wrap:pretty">Every KonnexPlay venue gets its own booking website at your-venue.konnexplay.com, with your venue name, your courts, your rates and your live slots. Players pick a slot and pay online at any hour, the money is settled to your bank account, usually within five working days, and KonnexPlay keeps no part of it. Standard payment gateway charges apply.</p>
+<div style="border-top:1px solid #DDE0E5;padding:16px 0;font-size:17px;line-height:1.6;max-width:56ch">One link and one QR code for your Instagram bio, Google listing, WhatsApp status and counter standee</div>
+<div style="border-top:1px solid #DDE0E5;padding:16px 0;font-size:17px;line-height:1.6;max-width:56ch">Players get a booking confirmation automatically</div>
+<div style="border-top:1px solid #DDE0E5;border-bottom:1px solid #DDE0E5;padding:16px 0;font-size:17px;line-height:1.6;max-width:56ch">Every booking saves the player's name and number to your customer list</div>
+</div>
+</div>
+</section>
+
+<section id="channel-manager" style="background:#0D1B3E;color:#FAFAF9">
+<div style="max-width:1120px;margin:0 auto;padding:80px 24px">
+<div style="display:flex;gap:64px;flex-wrap:wrap;align-items:flex-start">
+<div style="flex:1 1 520px;min-width:300px">
+<div style="font-size:12px;letter-spacing:0.14em;font-weight:600;color:#0DC59A;margin-bottom:20px">03 · CHANNEL MANAGER · COMING SOON</div>
+<h2 style="font-family:Outfit,sans-serif;font-weight:800;letter-spacing:-0.035em;font-size:clamp(30px,3.8vw,54px);line-height:1.1;margin:0 0 26px;color:#FFFFFF;text-wrap:balance">One booking updates everywhere.</h2>
+<p style="font-size:18px;line-height:1.78;color:#D6DCE8;margin:0 0 20px;max-width:58ch;text-wrap:pretty">Hotels solved this years ago. A hotel updates one screen, and MakeMyTrip, Booking.com and its own website all show the same room availability. Sports venues in India still do not have this. KonnexPlay is building it.</p>
+<p style="font-size:18px;line-height:1.78;color:#D6DCE8;margin:0;max-width:58ch;text-wrap:pretty">When a slot is booked on KonnexPlay, it will be blocked on every app you are listed on. When it is booked on an app, it will be blocked on KonnexPlay. No double bookings, and no more keeping five calendars by hand.</p>
+</div>
+<div style="flex:0 1 300px;min-width:240px">
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+<div style="aspect-ratio:1;background:#0DC59A;border-radius:6px"></div><div style="aspect-ratio:1;background:#2A3859;border-radius:6px"></div><div style="aspect-ratio:1;background:#0DC59A;border-radius:6px"></div><div style="aspect-ratio:1;background:#0DC59A;border-radius:6px"></div>
+<div style="aspect-ratio:1;background:#2A3859;border-radius:6px"></div><div style="aspect-ratio:1;background:#0DC59A;border-radius:6px"></div><div style="aspect-ratio:1;background:#0DC59A;border-radius:6px"></div><div style="aspect-ratio:1;background:#2A3859;border-radius:6px"></div>
+<div style="aspect-ratio:1;background:#0DC59A;border-radius:6px"></div><div style="aspect-ratio:1;background:#0DC59A;border-radius:6px"></div><div style="aspect-ratio:1;background:#2A3859;border-radius:6px"></div><div style="aspect-ratio:1;background:#0DC59A;border-radius:6px"></div>
+<div style="aspect-ratio:1;background:#0DC59A;border-radius:6px"></div><div style="aspect-ratio:1;background:#2A3859;border-radius:6px"></div><div style="aspect-ratio:1;background:#0DC59A;border-radius:6px"></div><div style="aspect-ratio:1;background:#0DC59A;border-radius:6px"></div>
+<div style="aspect-ratio:1;background:#2A3859;border-radius:6px"></div><div style="aspect-ratio:1;background:#0DC59A;border-radius:6px"></div><div style="aspect-ratio:1;background:#2A3859;border-radius:6px"></div><div style="aspect-ratio:1;background:#0DC59A;border-radius:6px"></div>
+<div style="aspect-ratio:1;background:#0DC59A;border-radius:6px"></div><div style="aspect-ratio:1;background:#0DC59A;border-radius:6px"></div><div style="aspect-ratio:1;background:#0DC59A;border-radius:6px"></div><div style="aspect-ratio:1;background:#2A3859;border-radius:6px"></div>
+</div>
+<div style="margin-top:14px;font-size:12px;letter-spacing:0.08em;color:#8E9AB5">TEAL BOOKED · GREY OPEN</div>
+</div>
+</div>
+
+<div style="margin-top:56px">
+<div style="border-bottom:1px solid #2A3859;padding:16px 0;font-size:17px;color:#FFFFFF">PlaySpots, API in progress</div>
+<div style="border-bottom:1px solid #2A3859;padding:16px 0;font-size:17px;color:#FFFFFF">Pllayer, Hudle, KheloMore, in discussion</div>
+<div style="border-bottom:1px solid #2A3859;padding:16px 0;font-size:17px;color:#FFFFFF">Playo and District by Zomato, next on the roadmap</div>
+</div>
+
+<div style="margin-top:40px;max-width:62ch">
+<div style="font-size:12px;letter-spacing:0.14em;font-weight:600;color:#0DC59A;margin-bottom:12px">THE HONEST VERSION</div>
+<p style="font-size:15px;line-height:1.75;color:#C3CBDC;margin:0">These integrations are being built now and are not live today. We will not switch one on at your venue until it has run cleanly at ours. Ask us for the current status on a call and we will tell you exactly where it stands.</p>
+<p style="font-size:15px;line-height:1.75;color:#C3CBDC;margin:18px 0 0">We checked 171 sports venues in Surat in July 2026. Only 2 were listed on more than one booking app. The other 169 are invisible to every player searching somewhere else.</p>
+</div>
+
+<div style="margin-top:36px">
+<a href="#/channel-manager" style="color:#0DC59A;font-size:17px">Read more about the channel manager</a>
+</div>
+</div>
+</section>
+
+<section style="border-top:1px solid #DDE0E5">
+<div style="max-width:1120px;margin:0 auto;padding:72px 24px">
+<h2 style="font-family:Outfit,sans-serif;font-weight:800;letter-spacing:-0.035em;font-size:clamp(30px,3.8vw,54px);line-height:1.12;margin:0 0 30px;max-width:24ch;text-wrap:balance">See all three parts in a 20-minute demo.</h2>
+<div style="display:flex;gap:24px;align-items:center;flex-wrap:wrap">
+<a href="#/demo" style="background:#0DC59A;color:#0D1B3E;text-decoration:none;padding:15px 26px;font-weight:600;font-size:17px">Book a demo</a>
+<a href="https://wa.me/917778858901?text=Hi%2C%20I%20run%20a%20sports%20venue%20and%20would%20like%20a%20KonnexPlay%20demo." style="color:#0D1B3E;font-size:17px">WhatsApp +91 77788 58901</a>
+</div>
+</div>
+</section>
+<section id="venues" data-screen-label="06 Owner platform" style="background:#FFFFFF;border-top:1px solid #DDE0E5">
+<div style="max-width:1200px;margin:0 auto;padding:96px 24px">
+<div style="font-size:12px;letter-spacing:0.14em;font-weight:700;color:#5A6275;margin-bottom:22px">06 · THE OWNER PLATFORM</div>
+<div style="display:inline-flex;align-items:center;gap:9px;border:1px solid #DDE0E5;background:#FFFFFF;padding:9px 13px;margin-bottom:26px;font-size:12px;font-weight:600;color:#5A6275;max-width:100%">
+<span aria-hidden="true" style="width:7px;height:7px;background:#5A6275;flex-shrink:0"></span>
+<span style="text-wrap:pretty">Illustrative interface with sample data. Not a real venue&rsquo;s figures. The screenshots below are real product screens.</span>
+</div>
+<div style="display:grid;grid-template-columns:{{ cols75 }};gap:32px 80px;align-items:end;margin-bottom:48px">
+<h2 style="font-family:Outfit,sans-serif;font-weight:800;font-size:clamp(34px,4.2vw,60px);line-height:0.98;letter-spacing:-0.035em;margin:0;max-width:20ch;text-wrap:balance">Every booking. Every slot. One place.</h2>
+<p style="font-size:17px;line-height:1.6;color:#3D4457;margin:0;max-width:56ch;text-wrap:pretty">This is the owner side, running on its own. Today's collection, the court calendar, a payment landing, your customer list and your revenue.</p>
+</div>
+<dc-import name="ProductDemo" speed="{{ 3600 }}" hint-size="100%,560px"></dc-import>
+<div style="display:grid;grid-template-columns:{{ cols3 }};gap:32px 48px;margin-top:56px">
+<div style="border-top:1px solid #DDE0E5;padding-top:18px"><div style="font-family:Outfit,sans-serif;font-weight:700;font-size:20px;letter-spacing:-0.02em">Live availability</div><p style="font-size:16px;line-height:1.6;color:#3D4457;margin:6px 0 0">What is booked and what is still open, on every phone at once.</p></div>
+<div style="border-top:1px solid #DDE0E5;padding-top:18px"><div style="font-family:Outfit,sans-serif;font-weight:700;font-size:20px;letter-spacing:-0.02em">Payments and advances</div><p style="font-size:16px;line-height:1.6;color:#3D4457;margin:6px 0 0">Collected online at booking, settled to your bank account.</p></div>
+<div style="border-top:1px solid #DDE0E5;padding-top:18px"><div style="font-family:Outfit,sans-serif;font-weight:700;font-size:20px;letter-spacing:-0.02em">Automatic confirmation</div><p style="font-size:16px;line-height:1.6;color:#3D4457;margin:6px 0 0">The player is told the moment the slot is theirs. You send nothing.</p></div>
+<div style="border-top:1px solid #DDE0E5;padding-top:18px"><div style="font-family:Outfit,sans-serif;font-weight:700;font-size:20px;letter-spacing:-0.02em">Your customer list</div><p style="font-size:16px;line-height:1.6;color:#3D4457;margin:6px 0 0">Every booking saves a name, a number and a visit history you own.</p></div>
+<div style="border-top:1px solid #DDE0E5;padding-top:18px"><div style="font-family:Outfit,sans-serif;font-weight:700;font-size:20px;letter-spacing:-0.02em">Revenue and occupancy</div><p style="font-size:16px;line-height:1.6;color:#3D4457;margin:6px 0 0">Know what came in, what is due and how full your slots are.</p></div>
+<div style="border-top:1px solid #DDE0E5;padding-top:18px"><div style="font-family:Outfit,sans-serif;font-weight:700;font-size:20px;letter-spacing:-0.02em">Staff logins</div><p style="font-size:16px;line-height:1.6;color:#3D4457;margin:6px 0 0">Managers see what they need. You see everything.</p></div>
+</div>
+<div style="margin-top:36px"><a href="#/platform" style="font-weight:600;font-size:16px">See the full platform</a></div>
+</div>
+</section>
+
+<section data-screen-label="Real screens" style="background:#F1F3F6;border-top:1px solid #DDE0E5">
+<div style="max-width:1200px;margin:0 auto;padding:96px 24px">
+<div style="font-size:12px;letter-spacing:0.14em;font-weight:700;color:#5A6275;margin-bottom:22px">THE REAL PRODUCT</div>
+<div style="display:grid;grid-template-columns:{{ cols75 }};gap:32px 80px;align-items:end;margin-bottom:48px">
+<h2 style="font-family:Outfit,sans-serif;font-weight:800;font-size:clamp(34px,4.2vw,60px);line-height:0.98;letter-spacing:-0.035em;margin:0;max-width:22ch;text-wrap:balance">Screens from a venue running on KonnexPlay today.</h2>
+<p style="font-size:17px;line-height:1.6;color:#3D4457;margin:0;max-width:56ch;text-wrap:pretty">Not mockups. This is the live product at a venue, with its own courts, rates and bookings.</p>
+</div>
+<div style="display:grid;grid-template-columns:{{ cols2 }};gap:40px">
+<figure style="margin:0">
+<img loading="lazy" decoding="async" src="assets/shot-calendar-v4.jpg" alt="KonnexPlay grid calendar showing courts hour by hour with rates and booked slots" style="display:block;width:100%;height:auto;aspect-ratio:1366/637;object-fit:cover;border:1px solid #DDE0E5;background:#FFFFFF" />
+<figcaption style="font-size:14px;color:#5A6275;margin-top:10px">The grid calendar. Every court, every hour, with the rate on each slot and who booked it.</figcaption>
+</figure>
+<figure style="margin:0">
+<img loading="lazy" decoding="async" src="assets/shot-inventory.jpg" alt="KonnexPlay inventory calendar with per-court hourly slots, generate slots and block controls" style="display:block;width:100%;height:auto;aspect-ratio:1363/638;object-fit:cover;border:1px solid #DDE0E5;background:#FFFFFF" />
+<figcaption style="font-size:14px;color:#5A6275;margin-top:10px">Inventory calendar. Generate a whole day of slots in one click, block any slot instantly.</figcaption>
+</figure>
+<figure style="margin:0">
+<img loading="lazy" decoding="async" src="assets/shot-rates.jpg" alt="KonnexPlay add rate plan panel with time bands and weekday and weekend prices" style="display:block;width:100%;height:auto;aspect-ratio:1366/647;object-fit:cover;border:1px solid #DDE0E5;background:#FFFFFF" />
+<figcaption style="font-size:14px;color:#5A6275;margin-top:10px">Rate plans. Lay out the day's time bands once, with a weekday and a weekend price for each.</figcaption>
+</figure>
+<figure style="margin:0">
+<img loading="lazy" decoding="async" src="assets/shot-analytics.jpg" alt="KonnexPlay analytics showing net revenue, bookings, profit, expenses and payment to collect" style="display:block;width:100%;height:auto;aspect-ratio:1355/523;object-fit:cover;border:1px solid #DDE0E5;background:#FFFFFF" />
+<figcaption style="font-size:14px;color:#5A6275;margin-top:10px">Analytics. Net revenue, profit after expenses, and exactly what is still to collect.</figcaption>
+</figure>
+<figure style="margin:0">
+<img loading="lazy" decoding="async" src="assets/shot-source-mix.jpg" alt="KonnexPlay revenue trend and source mix charts split by direct website, portals and front desk" style="display:block;width:100%;height:auto;aspect-ratio:1366/646;object-fit:cover;border:1px solid #DDE0E5;background:#FFFFFF" />
+<figcaption style="font-size:14px;color:#5A6275;margin-top:10px">Source mix. How much revenue came from your own booking website, portals and the front desk.</figcaption>
+</figure>
+<figure style="margin:0">
+<img loading="lazy" decoding="async" src="assets/shot-payments.jpg" alt="KonnexPlay payment detail report listing every payment with mode, reference, amount and status" style="display:block;width:100%;height:auto;aspect-ratio:1362/643;object-fit:cover;border:1px solid #DDE0E5;background:#FFFFFF" />
+<figcaption style="font-size:14px;color:#5A6275;margin-top:10px">Payment detail report. Every payment, by mode, with discounts and references.</figcaption>
+</figure>
+</div>
+</div>
+</section>
+
+<section id="rates" data-screen-label="Rate control" style="background:#0D1B3E;color:#FFFFFF">
+<div style="max-width:1200px;margin:0 auto;padding:96px 24px">
+<div style="font-size:12px;letter-spacing:0.14em;font-weight:700;color:#0DC59A;margin-bottom:22px">PRICING CONTROL</div>
+<div style="display:grid;grid-template-columns:{{ cols75 }};gap:32px 80px;align-items:end;margin-bottom:52px">
+<h2 style="font-family:Outfit,sans-serif;font-weight:800;font-size:clamp(34px,4.2vw,60px);line-height:0.98;letter-spacing:-0.035em;margin:0;max-width:22ch;text-wrap:balance">Change a whole season of rates before your tea gets cold.</h2>
+<p style="font-size:17px;line-height:1.6;color:#D6DCE8;margin:0;max-width:56ch;text-wrap:pretty">Your morning rate, evening rate, weekend rate and festival rate are all different. Set them once as rules and every slot on every court prices itself.</p>
+</div>
+<div style="display:grid;grid-template-columns:{{ cols3 }};gap:0 48px">
+<div style="border-top:1px solid rgba(255,255,255,.25);padding:22px 0"><div style="font-family:Outfit,sans-serif;font-weight:700;font-size:20px;letter-spacing:-0.01em">All 24 hours in three clicks</div><p style="font-size:16px;line-height:1.6;color:#AAB5CC;margin:8px 0 0">Generate a full day of slots for a court, or block a range, instead of touching them one by one.</p></div>
+<div style="border-top:1px solid rgba(255,255,255,.25);padding:22px 0"><div style="font-family:Outfit,sans-serif;font-weight:700;font-size:20px;letter-spacing:-0.01em">Bulk rate updates</div><p style="font-size:16px;line-height:1.6;color:#AAB5CC;margin:8px 0 0">Apply a rate to selected courts or to a whole category at once. No court-by-court editing.</p></div>
+<div style="border-top:1px solid rgba(255,255,255,.25);padding:22px 0"><div style="font-family:Outfit,sans-serif;font-weight:700;font-size:20px;letter-spacing:-0.01em">Time band rates</div><p style="font-size:16px;line-height:1.6;color:#AAB5CC;margin:8px 0 0">Morning, afternoon and floodlit evening priced separately, as bands you define once.</p></div>
+<div style="border-top:1px solid rgba(255,255,255,.25);padding:22px 0"><div style="font-family:Outfit,sans-serif;font-weight:700;font-size:20px;letter-spacing:-0.01em">Weekday and weekend</div><p style="font-size:16px;line-height:1.6;color:#AAB5CC;margin:8px 0 0">Every band carries a weekday price and a weekend price. Saturday prices itself.</p></div>
+<div style="border-top:1px solid rgba(255,255,255,.25);padding:22px 0"><div style="font-family:Outfit,sans-serif;font-weight:700;font-size:20px;letter-spacing:-0.01em">Seasonal rate plans</div><p style="font-size:16px;line-height:1.6;color:#AAB5CC;margin:8px 0 0">Give a plan a date range for a tournament week, a festival or the monsoon. It wins over the default for those days, then expires on its own.</p></div>
+<div style="border-top:1px solid rgba(255,255,255,.25);padding:22px 0"><div style="font-family:Outfit,sans-serif;font-weight:700;font-size:20px;letter-spacing:-0.01em">Rules, with priority</div><p style="font-size:16px;line-height:1.6;color:#AAB5CC;margin:8px 0 0">Base, day of week, time band and seasonal rules stack, and the most specific rule wins for a given slot.</p></div>
+</div>
+</div>
+</section>
+
+<section id="tournaments" data-screen-label="Tournaments" style="background:#FAFAF9;border-top:1px solid #DDE0E5">
+<div style="max-width:1200px;margin:0 auto;padding:96px 24px;display:grid;grid-template-columns:{{ cols57 }};gap:48px 80px;align-items:start">
+<div>
+<div style="font-size:12px;letter-spacing:0.14em;font-weight:700;color:#5A6275;margin-bottom:22px">TOURNAMENTS</div>
+<h2 style="font-family:Outfit,sans-serif;font-weight:800;font-size:clamp(34px,4.2vw,60px);line-height:0.98;letter-spacing:-0.035em;margin:0 0 24px;max-width:20ch;text-wrap:balance">A tournament weekend, without losing the rest of the month.</h2>
+<p style="font-size:18px;line-height:1.65;color:#3D4457;margin:0 0 20px;max-width:56ch;text-wrap:pretty">Tournaments are the fastest growing thing at Indian venues and the hardest to run on a register. Sixteen teams, two days, every court blocked, a different rate, deposits to collect and refund, and regular players who still want their Sunday slot.</p>
+<p style="font-size:18px;line-height:1.65;color:#3D4457;margin:0;max-width:56ch;text-wrap:pretty">KonnexPlay handles the mechanics, so a tournament costs you a weekend of work instead of a month of it.</p>
+</div>
+<div>
+<div style="border-top:1px solid #DDE0E5;padding:20px 0;font-size:17px;line-height:1.55"><strong style="font-weight:600">Block the whole weekend in three clicks.</strong> Generate and block every slot across every court for the tournament dates, instead of marking ninety-six slots by hand.</div>
+<div style="border-top:1px solid #DDE0E5;padding:20px 0;font-size:17px;line-height:1.55"><strong style="font-weight:600">Put a tournament rate on those dates only.</strong> A seasonal rate plan with a date range overrides your normal price for the event, then expires by itself.</div>
+<div style="border-top:1px solid #DDE0E5;padding:20px 0;font-size:17px;line-height:1.55"><strong style="font-weight:600">Collect team deposits online.</strong> Take a deposit per team at registration, so a team that drops out does not cost you the slot.</div>
+<div style="border-top:1px solid #DDE0E5;padding:20px 0;font-size:17px;line-height:1.55"><strong style="font-weight:600">Give the discounts you promised.</strong> Discount a sponsor team or an early entry, and see exactly what was discounted in the payment report.</div>
+<div style="border-top:1px solid #DDE0E5;padding:20px 0;font-size:17px;line-height:1.55"><strong style="font-weight:600">Add extra charges cleanly.</strong> Lights, balls, referees, cafe or equipment go on the booking, not on a scrap of paper.</div>
+<div style="border-top:1px solid #DDE0E5;border-bottom:1px solid #DDE0E5;padding:20px 0;font-size:17px;line-height:1.55"><strong style="font-weight:600">Know what the tournament made.</strong> Filter revenue, payments and expenses to those dates and read the profit, not a feeling.</div>
+<div style="margin-top:28px;font-size:15px;color:#5A6275">Every team captain who registers is saved to your customer list, so next season's invitation is one message away.</div>
+</div>
+</div>
+</section>
+
+<section data-screen-label="Reporting" style="background:#FFFFFF;border-top:1px solid #DDE0E5">
+<div style="max-width:1200px;margin:0 auto;padding:96px 24px">
+<div style="font-size:12px;letter-spacing:0.14em;font-weight:700;color:#5A6275;margin-bottom:22px">THE NUMBERS</div>
+<div style="display:grid;grid-template-columns:{{ cols75 }};gap:32px 80px;align-items:end;margin-bottom:48px">
+<h2 style="font-family:Outfit,sans-serif;font-weight:800;font-size:clamp(34px,4.2vw,60px);line-height:0.98;letter-spacing:-0.035em;margin:0;max-width:22ch;text-wrap:balance">Every rupee, split the way you actually think about it.</h2>
+<p style="font-size:17px;line-height:1.6;color:#3D4457;margin:0;max-width:56ch;text-wrap:pretty">Not one revenue number. Cash against online, your website against the front desk, discounts given, deposits held, expenses paid, and what is still to collect.</p>
+</div>
+<div style="display:grid;grid-template-columns:{{ cols3 }};gap:0 48px">
+<div style="border-top:1px solid #DDE0E5;padding:20px 0;font-size:17px">Total payment received, split cash and online</div>
+<div style="border-top:1px solid #DDE0E5;padding:20px 0;font-size:17px">Revenue by source: your booking website, portals, front desk</div>
+<div style="border-top:1px solid #DDE0E5;padding:20px 0;font-size:17px">Net revenue after discount and commission</div>
+<div style="border-top:1px solid #DDE0E5;padding:20px 0;font-size:17px">Profit after recorded expenses</div>
+<div style="border-top:1px solid #DDE0E5;padding:20px 0;font-size:17px">Payment still to collect, across all bookings</div>
+<div style="border-top:1px solid #DDE0E5;padding:20px 0;font-size:17px">Total discount given, so nothing leaks quietly</div>
+<div style="border-top:1px solid #DDE0E5;padding:20px 0;font-size:17px">Every transaction with date, mode, reference and status</div>
+<div style="border-top:1px solid #DDE0E5;padding:20px 0;font-size:17px">Deposits and extra charges on the booking</div>
+<div style="border-top:1px solid #DDE0E5;padding:20px 0;font-size:17px">Today, 7 days, 30 days, next 30 days or a custom range</div>
+<div style="border-top:1px solid #DDE0E5;border-bottom:1px solid #DDE0E5;padding:20px 0;font-size:17px">Performance by court and by sport</div>
+<div style="border-top:1px solid #DDE0E5;border-bottom:1px solid #DDE0E5;padding:20px 0;font-size:17px">Expenses: rent, salaries, utilities and more</div>
+<div style="border-top:1px solid #DDE0E5;border-bottom:1px solid #DDE0E5;padding:20px 0;font-size:17px">Staff logins with five fixed roles, per venue or across venues</div>
+</div>
+</div>
+</section>
+
+<section data-screen-label="10 Retention" style="background:#FAFAF9">
+<div style="max-width:1200px;margin:0 auto;padding:96px 24px;display:grid;grid-template-columns:{{ cols57 }};gap:48px 80px;align-items:start">
+<div>
+<div style="font-size:12px;letter-spacing:0.14em;font-weight:700;color:#5A6275;margin-bottom:22px">09 · CUSTOMER RETENTION</div>
+<h2 style="font-family:Outfit,sans-serif;font-weight:800;font-size:clamp(34px,4.2vw,60px);line-height:0.98;letter-spacing:-0.035em;margin:0 0 24px;text-wrap:balance">Today's player can become tomorrow's booking.</h2>
+<p style="font-size:18px;line-height:1.65;color:#3D4457;margin:0;max-width:56ch;text-wrap:pretty">Every booking creates a customer record you own. You see who comes back and who has gone quiet. Memberships and member rates give regulars a reason to keep their Saturday with you.</p>
+</div>
+<dc-import name="BookingAnim" scene="lifecycle" speed="{{ 1300 }}" hint-size="100%,380px"></dc-import>
+</div>
+</section>
+
+<section data-screen-label="08 Your own link" style="background:#FAFAF9;border-top:1px solid #DDE0E5">
+<div style="max-width:1200px;margin:0 auto;padding:96px 24px;display:grid;grid-template-columns:{{ cols75 }};gap:48px 80px;align-items:center">
+<div>
+<div style="font-size:12px;letter-spacing:0.14em;font-weight:700;color:#5A6275;margin-bottom:22px">07 · MORE BOOKINGS FROM YOUR OWN LINK</div>
+<h2 style="font-family:Outfit,sans-serif;font-weight:800;font-size:clamp(34px,4.2vw,60px);line-height:0.98;letter-spacing:-0.035em;margin:0 0 24px;text-wrap:balance">One link. Every place a player finds you.</h2>
+<p style="font-size:18px;line-height:1.65;color:#3D4457;margin:0 0 28px;max-width:48ch;text-wrap:pretty">Your venue gets its own booking website at your-venue.konnexplay.com. Put the link where players already are, and they book themselves.</p>
+<div style="display:flex;flex-wrap:wrap;gap:10px">
+<span style="border:1.5px solid #0D1B3E;padding:10px 16px;font-weight:600;font-size:15px">Instagram bio</span>
+<span style="border:1.5px solid #0D1B3E;padding:10px 16px;font-weight:600;font-size:15px">Google listing</span>
+<span style="border:1.5px solid #0D1B3E;padding:10px 16px;font-weight:600;font-size:15px">WhatsApp status</span>
+<span style="border:1.5px solid #0D1B3E;padding:10px 16px;font-weight:600;font-size:15px">QR code at the gate</span>
+<span style="border:1.5px solid #0D1B3E;padding:10px 16px;font-weight:600;font-size:15px">Your website</span>
+</div>
+</div>
+<img loading="lazy" decoding="async" src="assets/venue-pickleball-1.jpg" width="1600" height="1200" alt="Outdoor pickleball courts with nets in Surat in evening light" style="display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover" />
+</div>
+</section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">class Component extends DCLogic {
+  state = { wide: true };
+  componentDidMount() {
+    const kick = () => document.querySelectorAll('video').forEach(v => {
+      v.muted = true; v.defaultMuted = true; v.setAttribute('muted', '');
+      if (!v._kx) {
+        v._kx = 1;
+        ['canplay', 'loadeddata', 'loadedmetadata'].forEach(ev => v.addEventListener(ev, () => { const q = v.play(); if (q && q.catch) q.catch(() => {}); }));
+      }
+      if (v.paused) { const q = v.play(); if (q && q.catch) q.catch(() => {}); }
+    });
+    [80, 500, 1500, 3000].forEach(t => setTimeout(kick, t));
+    document.addEventListener('pointerdown', kick, { once: true });
+    if (window.ResizeObserver) { this._vro = new ResizeObserver(kick); this._vro.observe(document.documentElement); }
+    this.kickVideos = kick;
+    this._r = () => this.setState({ wide: window.innerWidth >= 1000 });
+    window.addEventListener('resize', this._r);
+    this._r();
+  }
+  componentWillUnmount() { if (this._vro) this._vro.disconnect(); window.removeEventListener('resize', this._r); }
+  renderVals() {
+    const w = (typeof window !== 'undefined' ? window.innerWidth : 1200), m = w < 900;
+    return { screensCols: this.state.wide ? 'repeat(4,minmax(0,1fr))' : 'repeat(2,minmax(0,1fr))',
+      cols57: m ? '1fr' : '5fr 7fr', cols75: m ? '1fr' : '7fr 5fr',
+      cols3: w < 700 ? '1fr' : 'repeat(3,minmax(0,1fr))', cols2: w < 600 ? '1fr' : '1fr 1fr' };
+  }
+}</script>
+</body>
+</html>

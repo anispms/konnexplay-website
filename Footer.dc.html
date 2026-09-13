@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet" />
+<style>
+footer a:focus-visible { outline: 3px solid #0DC59A; outline-offset: 3px; }
+</style>
+</helmet>
+<footer style="background:#0D1B3E;color:#FFFFFF;font-family:Inter,sans-serif">
+<div style="max-width:1200px;margin:0 auto;padding:72px 24px 32px;display:grid;grid-template-columns:{{ mainCols }};gap:48px 40px">
+
+<div>
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:18px">
+<div style="display:grid;grid-template-columns:repeat(3,8px);grid-template-rows:repeat(3,8px);gap:2px" aria-hidden="true">
+<div style="background:#0DC59A;border-radius:2.5px"></div><div style="background:rgba(255,255,255,.3);border-radius:2.5px"></div><div style="background:#0DC59A;border-radius:2.5px"></div>
+<div style="background:#0DC59A;border-radius:2.5px"></div><div style="background:#0DC59A;border-radius:2.5px"></div><div style="background:rgba(255,255,255,.3);border-radius:2.5px"></div>
+<div style="background:#0DC59A;border-radius:2.5px"></div><div style="background:rgba(255,255,255,.3);border-radius:2.5px"></div><div style="background:#0DC59A;border-radius:2.5px"></div>
+</div>
+<span style="font-family:Outfit,sans-serif;font-weight:700;font-size:21px;letter-spacing:-0.02em">Konnex<span style="color:#0DC59A">Play</span></span>
+</div>
+<p style="font-size:15px;line-height:1.65;color:#AEB9CE;margin:0 0 24px;max-width:34ch;text-wrap:pretty">Sports venue management software for India. Your players book and pay themselves; you get one live calendar and the money in your own bank account.</p>
+<div style="display:flex;flex-direction:column;gap:10px;font-size:15px">
+<a href="tel:+917778858901" style="color:#FFFFFF;text-decoration:none;font-weight:600">+91 77788 58901</a>
+<a href="mailto:hello@konnexplay.com" style="color:#FFFFFF;text-decoration:none">hello@konnexplay.com</a>
+<span style="color:#8E9AB5;font-size:13px">Phone and WhatsApp, 9 AM to 11 PM, all days</span>
+</div>
+<a href="#/demo" style="display:inline-block;margin-top:24px;background:#0DC59A;color:#061428;text-decoration:none;padding:13px 22px;font-weight:700;font-size:15px;transition:background 140ms ease" style-hover="background:#0AA983">Book a demo</a>
+</div>
+
+<div>
+<div style="font-size:11px;letter-spacing:0.14em;font-weight:700;color:#8E9AB5;margin-bottom:16px">PLATFORM</div>
+<div style="display:flex;flex-direction:column;gap:11px;font-size:15px">
+<a href="#/platform" style="color:#E3E8F2;text-decoration:none">Platform</a>
+<a href="#/home?a=platform" style="color:#E3E8F2;text-decoration:none">How it works</a>
+<a href="#/platform" style="color:#E3E8F2;text-decoration:none">Tournaments and rate plans</a>
+<a href="#/home?a=money" style="color:#E3E8F2;text-decoration:none">What commission costs</a>
+<a href="#/pricing" style="color:#E3E8F2;text-decoration:none">Pricing</a>
+<a href="#/channel-manager" style="color:#E3E8F2;text-decoration:none">Channel manager <span style="color:#8E9AB5;font-size:12px">in development</span></a>
+</div>
+</div>
+
+<div>
+<div style="font-size:11px;letter-spacing:0.14em;font-weight:700;color:#8E9AB5;margin-bottom:16px">SPORTS</div>
+<div style="display:flex;flex-direction:column;gap:11px;font-size:15px">
+<a href="#/sport/box-cricket" style="color:#E3E8F2;text-decoration:none">Box cricket</a>
+<a href="#/sport/football-turf" style="color:#E3E8F2;text-decoration:none">Football turf</a>
+<a href="#/sport/pickleball" style="color:#E3E8F2;text-decoration:none">Pickleball</a>
+<a href="#/sport/padel" style="color:#E3E8F2;text-decoration:none">Padel</a>
+<a href="#/sport/badminton" style="color:#E3E8F2;text-decoration:none">Badminton</a>
+<a href="#/sport/tennis" style="color:#E3E8F2;text-decoration:none">Tennis</a>
+</div>
+</div>
+
+<div>
+<div style="font-size:11px;letter-spacing:0.14em;font-weight:700;color:#8E9AB5;margin-bottom:16px">CITIES</div>
+<div style="display:flex;flex-direction:column;gap:11px;font-size:15px">
+<a href="#/india" style="color:#E3E8F2;text-decoration:none">India</a>
+<a href="#/city/surat" style="color:#E3E8F2;text-decoration:none">Surat</a>
+<a href="#/city/vadodara" style="color:#E3E8F2;text-decoration:none">Vadodara</a>
+<a href="#/city/bharuch" style="color:#E3E8F2;text-decoration:none">Bharuch</a>
+<a href="#/city/valsad" style="color:#E3E8F2;text-decoration:none">Valsad</a>
+<a href="#/city/bangalore" style="color:#E3E8F2;text-decoration:none">Bangalore</a>
+</div>
+</div>
+
+<div>
+<div style="font-size:11px;letter-spacing:0.14em;font-weight:700;color:#8E9AB5;margin-bottom:16px">COMPANY</div>
+<div style="display:flex;flex-direction:column;gap:11px;font-size:15px">
+<a href="KonnexPlay%20Story.dc.html" style="color:#E3E8F2;text-decoration:none">Film: nobody answered</a>
+<a href="Tournament%20Film.dc.html" style="color:#E3E8F2;text-decoration:none">Film: a tournament weekend</a>
+<a href="Rates%20Film.dc.html" style="color:#E3E8F2;text-decoration:none">Film: rates in three clicks</a>
+<a href="Channel%20Film.dc.html" style="color:#E3E8F2;text-decoration:none">Film: every court, every channel</a>
+<a href="Booking%20Film.dc.html" style="color:#E3E8F2;text-decoration:none">Film: how a player books</a>
+<a href="#/about" style="color:#E3E8F2;text-decoration:none">About</a>
+<a href="#/research" style="color:#E3E8F2;text-decoration:none">2026 Surat venue report</a>
+<a href="#/resources" style="color:#E3E8F2;text-decoration:none">Resources</a>
+<a href="#/faq" style="color:#E3E8F2;text-decoration:none">FAQ</a>
+<a href="#/contact" style="color:#E3E8F2;text-decoration:none">Contact</a>
+<a href="https://www.instagram.com/konnex_play/" rel="noopener" style="color:#E3E8F2;text-decoration:none">Instagram</a>
+</div>
+</div>
+
+</div>
+
+<div style="max-width:1200px;margin:0 auto;padding:0 24px 40px">
+<div style="border-top:1px solid rgba(255,255,255,.15);padding-top:24px;display:flex;gap:14px 32px;flex-wrap:wrap;align-items:center;justify-content:space-between;font-size:13px;color:#8E9AB5">
+<span>© 2026 Konnex Play Private Limited · Surat, Gujarat</span>
+<div style="display:flex;gap:12px 24px;flex-wrap:wrap">
+<a href="#/legal?a=privacy" style="color:#8E9AB5;text-decoration:none">Privacy</a>
+<a href="#/legal?a=terms" style="color:#8E9AB5;text-decoration:none">Terms</a>
+<a href="#/legal?a=refunds" style="color:#8E9AB5;text-decoration:none">Cancellation and refunds</a>
+</div>
+</div>
+</div>
+</footer>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200,&quot;height&quot;:520}}">
+class Component extends DCLogic {
+  state = { w: 1200 };
+  componentDidMount() {
+    this._r = () => { const w = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0); if (w !== this.state.w) this.setState({ w: w }); };
+    window.addEventListener('resize', this._r);
+    if (window.ResizeObserver) { this._ro = new ResizeObserver(this._r); this._ro.observe(document.documentElement); }
+    this._r();
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this._r); if (this._ro) this._ro.disconnect(); }
+  renderVals() {
+    const w = this.state.w;
+    return { mainCols: w < 640 ? '1fr' : (w < 1000 ? '1fr 1fr' : '1.5fr 1fr 1fr 1fr 1fr') };
+  }
+}
+</script>
+</body>
+</html>

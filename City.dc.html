@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta property="og:type" content="website" />
+<meta property="og:image" content="assets/venue-turf-night-wide.jpg" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet" />
+<style>
+html, body { margin: 0; padding: 0; background: #FAFAF9; }
+a { color: #0D1B3E; } a:hover { color: #088064; }
+a:focus-visible { outline: 3px solid #0DC59A; outline-offset: 2px; }
+</style>
+</helmet>
+<div style="background:#FAFAF9;font-family:Inter,sans-serif;color:#0D1B3E;-webkit-font-smoothing:antialiased">
+<section style="max-width:1200px;margin:0 auto;padding:28px 24px 0;font-size:13px;color:#5A6275"><a href="#/home" style="color:#5A6275">Home</a> / <a href="#/india" style="color:#5A6275">India</a> / {{ city }}</section>
+
+<section style="max-width:1200px;margin:0 auto;padding:40px 24px 72px;display:grid;grid-template-columns:{{ cols75 }};gap:48px 80px;align-items:end">
+<div>
+<div style="font-size:12px;letter-spacing:0.14em;font-weight:700;color:#088064;margin-bottom:22px">SPORTS VENUE BOOKING SOFTWARE · {{ cityUpper }}</div>
+<h1 style="font-family:Outfit,sans-serif;font-weight:800;font-size:clamp(40px,5.4vw,76px);line-height:0.96;letter-spacing:-0.04em;margin:0 0 24px;text-wrap:balance">Sports venue booking software in {{ city }}.</h1>
+<p style="font-size:18px;line-height:1.65;color:#3D4457;margin:0 0 32px;max-width:52ch;text-wrap:pretty">{{ intro }}</p>
+<a href="#/demo" style="background:#0DC59A;color:#061428;text-decoration:none;padding:18px 32px;font-weight:700;font-size:17px;display:inline-block">Book a 20-minute demo</a>
+</div>
+<dc-import name="BookingAnim" scene="slot" speed="{{ 1700 }}" hint-size="100%,300px" style="width:100%;max-width:420px;justify-self:end"></dc-import>
+</section>
+
+<img loading="lazy" decoding="async" src="{{ photo }}" alt="{{ photoAlt }}" style="display:block;width:100%;height:clamp(240px,42vw,520px);object-fit:cover;object-position:center 45%" />
+
+<section style="max-width:1200px;margin:0 auto;padding:96px 24px;display:grid;grid-template-columns:{{ cols57 }};gap:40px 80px;align-items:start">
+<div>
+<div style="font-size:12px;letter-spacing:0.14em;font-weight:700;color:#5A6275;margin-bottom:18px">IN {{ cityUpper }}</div>
+<h2 style="font-family:Outfit,sans-serif;font-weight:800;font-size:clamp(30px,3.6vw,52px);line-height:1;letter-spacing:-0.035em;margin:0;text-wrap:balance">{{ localH2 }}</h2>
+</div>
+<div>
+<p style="font-size:18px;line-height:1.65;color:#3D4457;margin:0 0 24px;text-wrap:pretty">{{ local }}</p>
+<div style="border-top:1px solid #DDE0E5;padding:14px 0;font-size:17px;display:flex;justify-content:space-between;gap:16px"><span>Setup</span><span style="font-weight:600">In person, at your venue</span></div>
+<div style="border-top:1px solid #DDE0E5;padding:14px 0;font-size:17px;display:flex;justify-content:space-between;gap:16px"><span>Price</span><span style="font-weight:600">₹12,000 per court per year</span></div>
+<div style="border-top:1px solid #DDE0E5;border-bottom:1px solid #DDE0E5;padding:14px 0;font-size:17px;display:flex;justify-content:space-between;gap:16px"><span>Commission on direct bookings</span><span style="font-weight:600;color:#088064">None</span></div>
+<sc-if value="{{ isSurat }}" hint-placeholder-val="{{ false }}"><p style="font-size:15px;line-height:1.7;color:#5A6275;margin:24px 0 0">KonnexPlay was founded in Surat in 2026. <a href="#/research">Read our July 2026 study of 171 sports venues in Surat.</a></p></sc-if>
+</div>
+</section>
+
+<section style="background:#FFFFFF;border-top:1px solid #DDE0E5">
+<div style="max-width:1200px;margin:0 auto;padding:72px 24px">
+<div style="font-size:12px;letter-spacing:0.14em;font-weight:700;color:#5A6275;margin-bottom:22px">SPORTS WE SERVE IN {{ cityUpper }}</div>
+<div style="display:grid;grid-template-columns:{{ cols3 }};gap:0 40px">
+<a href="#/sport/box-cricket" style="border-top:1px solid #DDE0E5;padding:18px 0;text-decoration:none;font-family:Outfit,sans-serif;font-weight:700;font-size:26px;letter-spacing:-0.02em">Box cricket</a>
+<a href="#/sport/football-turf" style="border-top:1px solid #DDE0E5;padding:18px 0;text-decoration:none;font-family:Outfit,sans-serif;font-weight:700;font-size:26px;letter-spacing:-0.02em">Football turf</a>
+<a href="#/sport/pickleball" style="border-top:1px solid #DDE0E5;padding:18px 0;text-decoration:none;font-family:Outfit,sans-serif;font-weight:700;font-size:26px;letter-spacing:-0.02em">Pickleball</a>
+<a href="#/sport/padel" style="border-top:1px solid #DDE0E5;border-bottom:1px solid #DDE0E5;padding:18px 0;text-decoration:none;font-family:Outfit,sans-serif;font-weight:700;font-size:26px;letter-spacing:-0.02em">Padel</a>
+<a href="#/sport/badminton" style="border-top:1px solid #DDE0E5;border-bottom:1px solid #DDE0E5;padding:18px 0;text-decoration:none;font-family:Outfit,sans-serif;font-weight:700;font-size:26px;letter-spacing:-0.02em">Badminton</a>
+<a href="#/sport/tennis" style="border-top:1px solid #DDE0E5;border-bottom:1px solid #DDE0E5;padding:18px 0;text-decoration:none;font-family:Outfit,sans-serif;font-weight:700;font-size:26px;letter-spacing:-0.02em">Tennis</a>
+</div>
+<div style="margin-top:28px;display:flex;gap:16px 28px;flex-wrap:wrap;font-size:15px"><a href="#/platform">Platform</a><a href="#/pricing">Pricing</a><a href="#/city/surat">Surat</a><a href="#/city/vadodara">Vadodara</a><a href="#/city/bharuch">Bharuch</a><a href="#/city/valsad">Valsad</a><a href="#/city/bangalore">Bangalore</a></div>
+</div>
+</section>
+
+<section style="background:#0D1B3E;color:#FFFFFF">
+<div style="max-width:1200px;margin:0 auto;padding:96px 24px">
+<h2 style="font-family:Outfit,sans-serif;font-weight:800;font-size:clamp(32px,4.4vw,64px);line-height:0.96;letter-spacing:-0.035em;margin:0 0 24px;max-width:20ch;text-wrap:balance">Run a venue in {{ city }}? Twenty minutes is all we need.</h2>
+<a href="#/demo" style="background:#0DC59A;color:#061428;text-decoration:none;padding:18px 32px;font-weight:700;font-size:17px;display:inline-block">Book a demo</a>
+</div>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;city&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Surat&quot;,&quot;Vadodara&quot;,&quot;Bharuch&quot;,&quot;Valsad&quot;,&quot;Bangalore&quot;],&quot;default&quot;:&quot;Surat&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { w: 1200 };
+  componentDidMount() { this._r = () => this.setState({ w: window.innerWidth }); window.addEventListener('resize', this._r); this._r(); }
+  componentWillUnmount() { window.removeEventListener('resize', this._r); }
+  DATA = {
+    Surat: { photo: 'assets/venue-cage-night.webp', photoAlt: 'Players in a floodlit box cricket cage at night in Surat', intro: 'KonnexPlay is built in Surat and live at venues across the city. Box cricket arenas, turfs, pickleball and badminton venues get their own booking page where players see open slots, book, pay and get confirmed automatically.', localH2: 'Our home city, and where we learned the problem.', local: 'One of our founders ran a box cricket community in Surat for close to five years before KonnexPlay. In July 2026 we surveyed 171 sports venues in the city to understand how they take bookings. We set up every Surat venue in person and train staff on their own phones.' },
+    Vadodara: { photo: 'assets/venue-turf-night-wide.jpg', photoAlt: 'A floodlit turf at night', intro: 'KonnexPlay is live at sports venues in Vadodara. Turfs, box cricket arenas and courts get their own booking page where players see open slots, book, pay and get confirmed automatically, without a call to the venue.', localH2: 'Set up in person, from Surat, by road.', local: 'Vadodara is a two-hour drive from our base in Surat. We come to your venue, load your courts and rates, put your booking link on your Instagram and Google listing, and train your staff before we leave.' },
+    Bharuch: { photo: 'assets/venue-cage-tall-2.jpg', photoAlt: 'A tall box cricket cage against a bright sky', intro: 'KonnexPlay is live at sports venues in Bharuch. Box cricket arenas and turfs get their own booking page where players see open slots, book, pay and get confirmed automatically.', localH2: 'An hour from Surat. Set up the same week.', local: 'Bharuch venues are set up in person by the same team that built KonnexPlay. Your courts and rates are loaded on site and your staff trained on their own phones.' },
+    Valsad: { photo: 'assets/photo-cage-day-wide.jpg', photoAlt: 'Players batting inside a box cricket cage in daylight', intro: 'KonnexPlay is live at sports venues in Valsad. Box cricket arenas, turfs and courts get their own booking page where players see open slots, book, pay and get confirmed automatically.', localH2: 'South Gujarat venues, set up in person.', local: 'Valsad is on our regular route from Surat. We set up your venue on site, connect your booking link to your Instagram and Google listing, and train your staff before we leave.' },
+    Bangalore: { photo: 'assets/venue-pickleball-2.jpg', photoAlt: 'Outdoor pickleball courts in evening light', intro: 'KonnexPlay is live at sports venues in Bangalore. Turfs, pickleball, padel and badminton venues get their own booking page where players see open slots, book, pay and get confirmed automatically.', localH2: 'Our first city outside Gujarat.', local: 'Bangalore venues run many courts, long hours and players who expect to book online. KonnexPlay is set up on site and your staff trained in person. We do not have an office in Bangalore; our team travels for setup.' }
+  };
+  renderVals() {
+    const city = this.props.city ?? 'Surat';
+    const d = this.DATA[city] || this.DATA.Surat;
+    const w = this.state.w;
+    return Object.assign({ city, cityUpper: city.toUpperCase(), isSurat: city === 'Surat', cols75: w < 900 ? '1fr' : '7fr 5fr', cols57: w < 900 ? '1fr' : '5fr 7fr', cols3: w < 700 ? '1fr' : 'repeat(3,minmax(0,1fr))' }, d);
+  }
+}
+</script>
+</body>
+</html>
