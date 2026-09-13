@@ -120,6 +120,18 @@
     keyboardPause(v);
   }
 
+  /**
+   * Is this video somewhere the visitor can see?
+   *
+   * Unknown counts as yes, so a browser without IntersectionObserver behaves
+   * as it always did.
+   */
+  function onScreen(v) {
+    if (!v) return false;
+    if (v.__kxOnScreen === undefined) return true;
+    return !!v.__kxOnScreen;
+  }
+
   function attempt(v) {
     try {
       var p = v.play();
@@ -140,8 +152,12 @@
     // A stalled network can leave it paused with no further events.
     var tries = 0;
     var t = setInterval(function () {
-      if (++tries > 10 || v.__kxUserPaused) { clearInterval(t); return; }
+      if (++tries > 10 || v.__kxUserPaused || !v.isConnected) { clearInterval(t); return; }
       if (!v.paused) { clearInterval(t); return; }
+      // A video the observer paused for being off screen is paused for a good
+      // reason. Retrying it here restarted decoding on something nobody could
+      // see, which is what this retry is supposed to avoid.
+      if (!onScreen(v)) return;
       attempt(v);
     }, 1500);
   }
@@ -165,7 +181,7 @@
       var vids = document.querySelectorAll('video');
       for (var i = 0; i < vids.length; i++) {
         var v = vids[i];
-        if (v.__kxAmbient && v.paused && !v.__kxUserPaused) {
+        if (v.__kxAmbient && v.paused && !v.__kxUserPaused && onScreen(v)) {
           try { v.play().catch(function () {}); } catch (e) {}
         }
       }
@@ -176,24 +192,49 @@
   }
 
   /* Play only while on screen, and resume when the tab comes back. */
-  function watch(v) {
-    if (window.IntersectionObserver) {
-      new IntersectionObserver(
-        function (entries) {
-          entries.forEach(function (en) {
-            if (en.isIntersecting) {
-              if (v.paused && !v.__kxUserPaused) attempt(v);
-            } else if (!v.paused) {
-              try { v.pause(); } catch (e) {}
-            }
-          });
-        },
-        { threshold: 0.1 }
-      ).observe(v);
-    }
+  /* One observer for every ambient video, rather than one each. It also
+     records where each video is, which the other paths now consult. */
+  var vidIO = null;
+  function videoObserver() {
+    if (vidIO || !window.IntersectionObserver) return vidIO;
+    vidIO = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (en) {
+          var v = en.target;
+          v.__kxOnScreen = en.isIntersecting;
+          if (en.isIntersecting) {
+            if (v.paused && !v.__kxUserPaused) attempt(v);
+          } else if (!v.paused) {
+            try { v.pause(); } catch (e) {}
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+    return vidIO;
+  }
+
+  /* A single listener for the whole page. There used to be one per video,
+     never removed, so on a site that swaps pages without reloading they piled
+     up and each one kept a video that had left the page alive. */
+  var resumeBound = false;
+  function bindResume() {
+    if (resumeBound) return;
+    resumeBound = true;
     document.addEventListener('visibilitychange', function () {
-      if (document.visibilityState === 'visible' && v.paused && !v.__kxUserPaused) attempt(v);
+      if (document.visibilityState !== 'visible') return;
+      var vids = document.querySelectorAll('video');
+      for (var i = 0; i < vids.length; i++) {
+        var v = vids[i];
+        if (v.__kxAmbient && v.paused && !v.__kxUserPaused && onScreen(v)) attempt(v);
+      }
     });
+  }
+
+  function watch(v) {
+    var io = videoObserver();
+    if (io) { v.__kxOnScreen = false; io.observe(v); }
+    bindResume();
   }
 
   function keyboardPause(v) {
