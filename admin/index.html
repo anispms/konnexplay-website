@@ -75,6 +75,8 @@
   code{background:#EEF2F7; padding:1px 5px; border-radius:3px; font-size:12.5px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
   .dirty{display:none; font-size:12px; color:#8A6A12; background:#FFF3D6; border:1px solid #F0DFB5; padding:4px 10px; border-radius:999px}
   .dirty.show{display:inline-block}
+  /* Disabled means "there is nothing to do", not "something went wrong". */
+  button.primary:disabled{opacity:.55; cursor:default}
 
   /* The three preview buttons were 27px tall. A thumb needs more. */
   @media (max-width: 900px){
@@ -465,11 +467,28 @@
     }, 350);
   }
 
+  /**
+   * Put the number of pending changes on the button, and disable it when there
+   * are none. Never enables it when there is no token: connecting owns that.
+   */
+  function refreshSaveButton() {
+    var btn = $('save');
+    if (!btn) return;
+    if (!token) { btn.textContent = 'Save and publish'; btn.disabled = true; return; }
+    var n = 0;
+    try { n = changeList(formToContent()).length; } catch (e) { n = 0; }
+    btn.disabled = n === 0;
+    btn.textContent = n === 0
+      ? 'Nothing to publish'
+      : 'Publish ' + n + (n === 1 ? ' change' : ' changes');
+  }
+
   function markDirty() {
     dirty = true;
     $('dirty').className = 'dirty show';
     pushPreview();
     validate();
+    refreshSaveButton();
   }
 
   /* ---------- GitHub ---------- */
@@ -509,6 +528,7 @@
         try { syncAnalyticsHelp(); } catch (e) {}
         dirty = false;
         $('dirty').className = 'dirty';
+        refreshSaveButton();
       });
   }
 
@@ -665,10 +685,11 @@
         content = next;
         dirty = false;
         $('dirty').className = 'dirty';
+        refreshSaveButton();
         msg('ok', 'Saved. The live site updates in about a minute. Your preview already shows the change.');
       })
       .catch(function (e) { msg('err', e.message); })
-      .then(function () { $('save').disabled = false; });
+      .then(function () { refreshSaveButton(); });
   }
 
   function connect(quiet) {
@@ -694,7 +715,7 @@
         try { localStorage.setItem(TOKEN_KEY, token); } catch (e) {}
         $('connPill').textContent = 'Connected';
         $('connPill').className = 'pill on';
-        $('save').disabled = false;
+        refreshSaveButton();
         $('forget').style.display = '';
         var sh = $('saveHint'); if (sh) sh.style.display = 'none';
         msg('ok', 'Connected. You can save changes now.');
@@ -795,7 +816,7 @@
   });
   $('save').addEventListener('click', save);
   $('revert').addEventListener('click', function () {
-    if (content) { contentToForm(content); dirty = false; $('dirty').className = 'dirty'; pushPreview(); validate(); clearMsg(); }
+    if (content) { contentToForm(content); dirty = false; $('dirty').className = 'dirty'; pushPreview(); validate(); clearMsg(); refreshSaveButton(); }
   });
   $('forget').addEventListener('click', function () {
     try { localStorage.removeItem(TOKEN_KEY); } catch (e) {}
