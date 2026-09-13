@@ -46,12 +46,16 @@
   function build() {
     if (document.getElementById('kx-actionbar')) return;
     var digits = currentNumber();
+    /* This used to search document.body.innerText for the number. Reading the
+       whole document's text forces a full layout and text pass, one of the
+       most expensive things you can ask a browser for, and it happened during
+       the load. The digits were already resolved on the line above; the
+       readable form is just those digits spaced out, and it is only ever used
+       for the Call link's aria-label. */
     var display = DEFAULT_DISPLAY;
-    try {
-      var t = document.body.innerText || '';
-      var m = t.match(/\+91[\s ]?\d{5}[\s ]?\d{5}/);
-      if (m) display = m[0];
-    } catch (e) {}
+    if (digits && digits.length === 12 && digits.indexOf('91') === 0) {
+      display = '+91 ' + digits.slice(2, 7) + ' ' + digits.slice(7);
+    }
 
     var bar = document.createElement('nav');
     bar.id = 'kx-actionbar';
