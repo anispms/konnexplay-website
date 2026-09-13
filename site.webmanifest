@@ -1,0 +1,30 @@
+{
+  "name": "KonnexPlay",
+  "short_name": "KonnexPlay",
+  "description": "Sports venue management and booking software for venues in India.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#FAFAF9",
+  "theme_color": "#0D1B3E",
+  "lang": "en-IN",
+  "icons": [
+    {
+      "src": "assets/konnexplay-mark-64.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/konnexplay-mark-1024.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/konnexplay-mark-1024.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
