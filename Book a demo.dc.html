@@ -199,6 +199,26 @@ class Component extends DCLogic {
     } catch (e) {}
     const waText = 'Demo request\n' + body;
     try {
+      const endpoint = window.KX_LEAD_ENDPOINT;
+      if (endpoint) {
+        const payload = {
+          name: s.name, phone: '+91 ' + this.digits(s.phone), venue: s.venue,
+          city: s.city, courts: String(s.courts || ''), sport: s.sport,
+          method: s.method || '', company: s.company || '',
+          page: location.href, referrer: document.referrer || ''
+        };
+        const enc = Object.keys(payload).map(function (k) {
+          return encodeURIComponent(k) + '=' + encodeURIComponent(payload[k]);
+        }).join('&');
+        fetch(endpoint, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: enc
+        }).catch(function () {});
+      }
+    } catch (e) {}
+    try {
       const url = 'https://wa.me/917778858901?text=' + encodeURIComponent(waText);
       const a = document.createElement('a');
       a.href = url; a.target = '_blank'; a.rel = 'noopener'; a.style.display = 'none';
