@@ -28,5 +28,13 @@
   "analytics": {
     "provider": "",
     "id": ""
+  },
+  "zoho": {
+    "enabled": false,
+    "region": "in",
+    "xnQsjsdp": "",
+    "xmIwtLD": "",
+    "actionType": "",
+    "leadSource": "Website"
   }
 }

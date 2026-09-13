@@ -207,6 +207,17 @@ class Component extends DCLogic {
   send() {
     if (this.missing()) { this.setState({ tried: true }); return; }
     const s = this.state;
+    const lead = {
+      name: s.name,
+      phone: '+91 ' + this.digits(s.phone),
+      venue: s.venue,
+      city: s.city,
+      courts: String(s.courts || ''),
+      sport: s.sport,
+      method: s.method || '',
+      page: location.href,
+      referrer: document.referrer || ''
+    };
     const body = ['Name: ' + s.name, 'Mobile: +91 ' + this.digits(s.phone), 'Venue: ' + s.venue, 'City: ' + s.city, 'Courts: ' + s.courts, 'Main sport: ' + s.sport, 'Takes bookings today via: ' + (s.method || 'not given')].join('\n');
     try {
       const key = 'kx_demo_requests';
@@ -218,12 +229,9 @@ class Component extends DCLogic {
     try {
       const endpoint = window.KX_LEAD_ENDPOINT;
       if (endpoint) {
-        const payload = {
-          name: s.name, phone: '+91 ' + this.digits(s.phone), venue: s.venue,
-          city: s.city, courts: String(s.courts || ''), sport: s.sport,
-          method: s.method || '', company: (function () { try { var h = document.querySelector('input[name="company"]'); return h ? h.value : ''; } catch (e) { return ''; } })(),
-          page: location.href, referrer: document.referrer || ''
-        };
+        const payload = Object.assign({}, lead, {
+          company: (function () { try { var h = document.querySelector('input[name="company"]'); return h ? h.value : ''; } catch (e) { return ''; } })()
+        });
         const enc = Object.keys(payload).map(function (k) {
           return encodeURIComponent(k) + '=' + encodeURIComponent(payload[k]);
         }).join('&');
@@ -235,7 +243,13 @@ class Component extends DCLogic {
         }).catch(function () {});
       }
     } catch (e) {}
-    const savedToServer = !!window.KX_LEAD_ENDPOINT;
+    let sentToZoho = false;
+    try {
+      if (window.KX_ZOHO_READY && window.KX_ZOHO_READY()) {
+        sentToZoho = !!window.KX_ZOHO_SUBMIT(lead);
+      }
+    } catch (e) {}
+    const savedToServer = !!window.KX_LEAD_ENDPOINT || sentToZoho;
     if (!savedToServer) {
       // No endpoint configured: WhatsApp is the only way this reaches anyone.
       try {

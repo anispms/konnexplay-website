@@ -143,6 +143,7 @@
     if (c && c.leads && typeof c.leads.endpoint === 'string') {
       window.KX_LEAD_ENDPOINT = c.leads.endpoint;
     }
+    if (c && c.zoho) { window.KX_ZOHO = c.zoho; }
     if (c && c.analytics && c.analytics.provider && c.analytics.id) {
       window.KX_ANALYTICS = c.analytics;
       if (!document.getElementById('kx-analytics')) {

@@ -80,3 +80,78 @@ business, which is worth watching once the site has traffic.
   deployments → edit → Version: New version**. Creating a brand new deployment
   instead would give you a different URL, and you would have to update
   `config.js` again.
+
+---
+
+# Zoho CRM
+
+Every demo request can also create a Lead in Zoho CRM. This works on the free
+edition, and it runs alongside the Google Sheet and the email rather than
+replacing them.
+
+## Why it is done with a web form, not the API
+
+Calling the Zoho API from the website would mean putting a client secret and a
+refresh token into JavaScript that anyone can read with View Source. That is a
+working key to your CRM, published on a public page.
+
+Zoho's Web Forms exist for exactly this. The form posts to Zoho using tokens
+that only identify that one form and are useless anywhere else. Nothing secret
+leaves the CRM.
+
+## Setup, about ten minutes
+
+**1. Create the web form.** In Zoho CRM go to **Setup**, then **Developer
+Space**, then **Webforms**, and create a new form for the **Leads** module.
+
+**2. Add these fields to it.** The names must match, because the site posts
+under exactly these labels:
+
+| Zoho field | What the site sends |
+| --- | --- |
+| Last Name | Surname, or the whole name if only one word was typed |
+| First Name | First name, when there is one |
+| Company | The venue name |
+| Phone | Mobile number with +91 |
+| City | City |
+| Lead Source | Whatever you set as the lead source label |
+| Description | Court count, main sport, how they take bookings today, the page they came from, and the referrer |
+
+Last Name and Company are mandatory on a Zoho Lead. The site never sends them
+empty: a one-word name goes into Last Name, and a missing venue becomes "Not
+stated", so a lead is never rejected for a blank required field.
+
+**3. Save and choose "Self hosted"** when Zoho asks where the form will live.
+It will show you the generated HTML.
+
+**4. Copy three values out of that HTML.** Look for hidden inputs named:
+
+- `xnQsjsdp`
+- `xmIwtLD`
+- `actionType`
+
+**5. Paste them into the admin panel** under Zoho CRM, set the data centre to
+match your account, switch it On, and save.
+
+## The data centre matters
+
+An Indian Zoho account lives on **crm.zoho.in**, not crm.zoho.com. Check the
+address bar while signed in to Zoho and pick the matching option. The wrong
+data centre fails silently: the form posts, nothing errors, and no lead ever
+appears.
+
+## Checking it works
+
+Submit a test request through the live site with your own number, then open
+**Leads** in Zoho. The record should appear within a few seconds, with the
+court count and sport in the Description.
+
+If nothing arrives, the usual causes in order are: the wrong data centre, a
+token pasted with a trailing space, or a field in the Zoho form that is marked
+mandatory but is not in the table above.
+
+## Duplicate leads
+
+If you have both the Google Sheet and Zoho switched on, each request is
+recorded in both. That is deliberate. The sheet is a plain backup you own
+outright, and it keeps working if a Zoho form is ever deleted or reconfigured.

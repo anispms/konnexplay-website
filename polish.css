@@ -1,3 +1,14 @@
+/* At 360px the logo (154px) plus Book a demo (134px) plus Menu (67px) plus
+   spacing needs 404px, so Menu was pushed off the right edge of the screen.
+   The sticky action bar already carries Book a demo on phones, so the header
+   copy of it is duplication that costs the Menu button its place. Hide it and
+   the header fits with room to spare. */
+@media (max-width: 560px) {
+  header div[style*="margin-left: auto"] > a[href="#/demo"] {
+    display: none !important;
+  }
+}
+
 
 /* The header was authored with 24px side padding and a 28px gap. At 390px
    that needs 418px of room, so the Menu button was cut off past the right

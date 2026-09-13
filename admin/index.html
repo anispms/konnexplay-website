@@ -172,6 +172,50 @@
     </div>
 
     <div class="group">
+      <h2>Zoho CRM</h2>
+      <label>
+        <span>Send demo requests to Zoho CRM</span>
+        <select id="zohoEnabled" style="width:100%;padding:10px 12px;font:15px Inter,sans-serif;border:1.5px solid var(--line);border-radius:6px;background:#fff;min-height:44px;color:var(--ink)">
+          <option value="">Off</option>
+          <option value="yes">On</option>
+        </select>
+        <small>Creates a Lead in Zoho for every demo request, alongside the sheet and the email. Works on the free edition.</small>
+      </label>
+      <label>
+        <span>Zoho data centre</span>
+        <select id="zohoRegion" style="width:100%;padding:10px 12px;font:15px Inter,sans-serif;border:1.5px solid var(--line);border-radius:6px;background:#fff;min-height:44px;color:var(--ink)">
+          <option value="in">India, crm.zoho.in</option>
+          <option value="com">Global, crm.zoho.com</option>
+          <option value="eu">Europe, crm.zoho.eu</option>
+          <option value="au">Australia, crm.zoho.com.au</option>
+          <option value="jp">Japan, crm.zoho.jp</option>
+        </select>
+        <small>Look at the address bar when you are signed in to Zoho. An Indian account is almost always crm.zoho.in. The wrong one fails silently.</small>
+      </label>
+      <label>
+        <span>Form token 1 (xnQsjsdp)</span>
+        <input type="text" id="zohoXnq" placeholder="Paste from your Zoho web form">
+        <em class="err" id="err-zohoXnq"></em>
+      </label>
+      <label>
+        <span>Form token 2 (xmIwtLD)</span>
+        <input type="text" id="zohoXmi" placeholder="Paste from your Zoho web form">
+        <em class="err" id="err-zohoXmi"></em>
+      </label>
+      <label>
+        <span>Action type</span>
+        <input type="text" id="zohoActionType" placeholder="TGVhZHM=">
+        <small>All three come from the web form Zoho generates. Setup: Zoho CRM, then Setup, then Developer Space, then Webforms. Build a Leads form, then copy the three hidden values out of the code Zoho gives you. Full steps in <code>backend/README.md</code>.</small>
+        <em class="err" id="err-zohoActionType"></em>
+      </label>
+      <label>
+        <span>Lead source label</span>
+        <input type="text" id="zohoLeadSource" placeholder="Website">
+        <small>How these leads are labelled in Zoho, so you can tell them apart from ones you add by hand.</small>
+      </label>
+    </div>
+
+    <div class="group">
       <h2>Analytics</h2>
       <label>
         <span>Measurement service</span>
@@ -228,7 +272,13 @@
     address: ['company', 'address'],
     endpoint: ['leads', 'endpoint'],
     analyticsProvider: ['analytics', 'provider'],
-    analyticsId: ['analytics', 'id']
+    analyticsId: ['analytics', 'id'],
+    zohoEnabled: ['zoho', 'enabled'],
+    zohoRegion: ['zoho', 'region'],
+    zohoXnq: ['zoho', 'xnQsjsdp'],
+    zohoXmi: ['zoho', 'xmIwtLD'],
+    zohoActionType: ['zoho', 'actionType'],
+    zohoLeadSource: ['zoho', 'leadSource']
   };
 
   var $ = function (id) { return document.getElementById(id); };
@@ -264,6 +314,21 @@
     starter: function (v) { return /^[\d,]+$/.test(v) ? '' : 'Numbers and commas only, for example 12,000'; },
     pro: function (v) { return /^[\d,]+$/.test(v) ? '' : 'Numbers and commas only, for example 18,000'; },
     setupWaived: function (v) { return /^[\d,]+$/.test(v) ? '' : 'Numbers and commas only, for example 5,000'; },
+    zohoXnq: function (v) {
+      if ((($('zohoEnabled') || {}).value || '') !== 'yes') return '';
+      if (!v) return 'Needed when Zoho is on. Copy it from the web form code Zoho gives you.';
+      return '';
+    },
+    zohoXmi: function (v) {
+      if ((($('zohoEnabled') || {}).value || '') !== 'yes') return '';
+      if (!v) return 'Needed when Zoho is on. Copy it from the web form code Zoho gives you.';
+      return '';
+    },
+    zohoActionType: function (v) {
+      if ((($('zohoEnabled') || {}).value || '') !== 'yes') return '';
+      if (!v) return 'Needed when Zoho is on. Usually TGVhZHM= for a Leads form.';
+      return '';
+    },
     analyticsId: function (v) {
       var p = ($('analyticsProvider') || {}).value || '';
       if (!p) return '';
@@ -314,6 +379,7 @@
       var el = $(id);
       if (el) set(c, FIELDS[id], el.value.trim());
     });
+    set(c, ['zoho', 'enabled'], ($('zohoEnabled').value || '') === 'yes');
     // Digits are derived, never typed, so the two can never disagree.
     var d = ($('phoneDisplay').value || '').replace(/\D/g, '');
     if (d) set(c, ['contact', 'phoneDigits'], d.length === 10 ? '91' + d : d);
@@ -325,6 +391,8 @@
       var el = $(id);
       if (el) el.value = get(c, FIELDS[id]);
     });
+    var ze = $('zohoEnabled');
+    if (ze) ze.value = get(c, ['zoho', 'enabled']) === 'true' ? 'yes' : '';
   }
 
   /* ---------- preview ---------- */
