@@ -283,7 +283,7 @@
       </div>
       <button class="primary" id="save" type="button" disabled>Save and publish</button>
       <button class="ghost" id="revert" type="button">Undo my changes</button>
-      <p id="saveHint" style="margin:8px 0 0;font-size:13px;color:#8A6A12;flex-basis:100%">Paste your GitHub token above and press Connect to enable saving.</p>
+      <p id="saveHint" style="margin:8px 0 0;font-size:13px;color:var(--ink-2);flex-basis:100%">Edit freely. You will be asked to connect once, the first time you publish.</p>
     </div>
   </section>
 
@@ -475,7 +475,8 @@
   function refreshSaveButton() {
     var btn = $('save');
     if (!btn) return;
-    if (!KX_PANEL.getToken()) { btn.textContent = 'Save and publish'; btn.disabled = true; return; }
+    // No token check here any more. The button reflects whether there is
+    // anything to publish; the token is asked for on the way, if it is needed.
     var n = 0;
     try { n = changeList(formToContent()).length; } catch (e) { n = 0; }
     // changeList already folds in anything edited in the preview, so there
@@ -640,9 +641,27 @@
     try { wrap.querySelector('.kx-go').focus(); } catch (e) {}
   }
 
+  /**
+   * Publishing is the only thing here that needs GitHub. If there is no token
+   * yet, ask once, at the moment it matters, and then carry on with what was
+   * being published rather than making the owner start again.
+   */
+  function askForTokenThen(go) {
+    setupFolded(false);
+    $('token').focus();
+    msg('info', 'One thing first: paste your GitHub token above. It is asked once and remembered in this browser.');
+    var timer = setInterval(function () {
+      if (!token) return;
+      clearInterval(timer);
+      clearMsg();
+      go();
+    }, 400);
+    setTimeout(function () { clearInterval(timer); }, 5 * 60 * 1000);
+  }
+
   function save() {
     if (!validate()) { msg('err', 'Fix the highlighted fields first.'); return; }
-    if (!token) { msg('err', 'Connect with a GitHub token before saving.'); return; }
+    if (!token) { askForTokenThen(save); return; }
 
     var next = formToContent();
     var rows = changeList(next);
@@ -764,6 +783,8 @@
       })
       .catch(function (e) {
         token = '';
+        // A token that was refused is exactly when the setup is worth reading.
+        setupFolded(false);
         $('save').disabled = true;
         $('connPill').textContent = 'Not connected';
         $('connPill').className = 'pill';
@@ -802,6 +823,15 @@
   syncAnalyticsHelp();
 
   $('setupShow').addEventListener('click', function () { setupFolded(false); $('token').focus(); });
+
+  /* A pasted token connects itself. Being asked to confirm that you pasted
+     what you just pasted is a step that does nothing. */
+  $('token').addEventListener('input', function () {
+    var v = this.value.trim();
+    clearTimeout(window.__kxTokenT);
+    if (v.length < 20) return;
+    window.__kxTokenT = setTimeout(function () { connect(false); }, 400);
+  });
   $('connect').addEventListener('click', function () { connect(false); });
 
   $('diag').addEventListener('click', function () {
@@ -901,7 +931,11 @@
   // Restore a saved token, then load the current settings.
   try {
     var saved = localStorage.getItem(TOKEN_KEY);
+    // Folded from the start. Publishing unfolds it if a token turns out to be
+    // needed; nothing else here needs one.
+    setupFolded(true);
     if (saved) { $('token').value = saved; connect(true); }
+    else { $('setupDone').style.display = 'none'; }
   } catch (e) {}
 
   loadContent()
