@@ -27,7 +27,8 @@ const OURS = [
   'zoho.js',
   'update-check.js',
   'anchors.js',
-  'sw-register.js'
+  'sw-register.js',
+  'lightbox.js'
 ];
 
 function sha(buf) {
