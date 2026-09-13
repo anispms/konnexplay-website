@@ -182,3 +182,83 @@ header a:focus-visible {
   #kx-actionbar { display: none !important; }
   body { padding-bottom: 0 !important; }
 }
+
+/* ---------------------------------------------------------------------------
+   Demo form on phones.
+
+   The fields were drawn as a bare underline: transparent background, a single
+   1.5px line, square corners. On a wide screen that reads as restraint. On a
+   phone it reads as unfinished, because every other form a venue owner fills
+   in on that device is a proper bordered box. It also gives the thumb no
+   visible target, only a line to aim beneath.
+
+   These rules apply below 900px only. The desktop design is untouched.
+   --------------------------------------------------------------------------- */
+
+@media (max-width: 900px) {
+  /* The four text fields. */
+  input[name="name"],
+  input[name="venue"],
+  input[name="city"] {
+    background: #F7F8FA !important;
+    border: 1.5px solid #DDE0E5 !important;
+    border-radius: 10px !important;
+    padding: 13px 14px !important;
+    min-height: 52px !important;
+  }
+
+  /* The mobile field is a wrapper holding "+91" and the input, so the box goes
+     on the wrapper and the input inside stays bare. */
+  span[style*="border-bottom: 1.5px solid"] {
+    background: #F7F8FA !important;
+    border: 1.5px solid #DDE0E5 !important;
+    border-radius: 10px !important;
+    padding: 0 14px !important;
+    min-height: 52px !important;
+    align-items: center !important;
+  }
+  span[style*="border-bottom: 1.5px solid"] > span {
+    padding-bottom: 0 !important;
+  }
+  span[style*="border-bottom: 1.5px solid"] > input {
+    padding: 13px 0 !important;
+  }
+
+  /* A field being worked on should say so. */
+  input[name="name"]:focus,
+  input[name="venue"]:focus,
+  input[name="city"]:focus {
+    background: #FFFFFF !important;
+    border-color: #0DC59A !important;
+  }
+  span[style*="border-bottom: 1.5px solid"]:focus-within {
+    background: #FFFFFF !important;
+    border-color: #0DC59A !important;
+  }
+
+  /* A field the visitor has been told to fix reads red, not grey. */
+  input[aria-invalid="true"] {
+    border-color: #B3261E !important;
+    background: #FDF5F5 !important;
+  }
+
+  /* The bookings dropdown was the one field left as a bare underline, which
+     looked like an oversight sitting under four boxed fields. */
+  select[style*="border-style: none none solid"],
+  select[style*="border-width: 0px 0px 1.5px"] {
+    background: #F7F8FA !important;
+    border: 1.5px solid #DDE0E5 !important;
+    border-radius: 10px !important;
+    padding: 13px 14px !important;
+    min-height: 52px !important;
+  }
+  select:focus {
+    background: #FFFFFF !important;
+    border-color: #0DC59A !important;
+  }
+
+  /* Rounded corners on the submit button to match the fields. */
+  button[type="submit"] {
+    border-radius: 10px !important;
+  }
+}
