@@ -16,7 +16,22 @@
 <template id="__bundler_thumbnail" data-bg-color="#061428"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#061428"/><polygon points="40,32 40,68 70,50" fill="#0DC59A"/></svg></template>
 <title>Rates in three clicks | KonnexPlay</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&family=Outfit:wght@600..800&display=swap" rel="stylesheet" />
-<style>html, body { margin: 0; padding: 0; background: #061428; }</style>
+<style>
+/* The animation tool draws its own control bar over the film: play, restart,
+   a scrubber, a running time and an Export video button. That is authoring
+   chrome. On a public page it turns a film into a video player, which is the
+   opposite of what these are for.
+
+   Export offers a visitor a download of the film. That goes on any screen.
+
+   The rest only goes when the film will actually play by itself. Someone who
+   has asked for less movement gets a film that does not move, so taking their
+   play button away would leave them looking at one frozen frame. */
+[data-omelette-chrome] [title="Export video"] { display: none !important; }
+@media (prefers-reduced-motion: no-preference) {
+  [data-omelette-chrome] { display: none !important; }
+}
+html, body { margin: 0; padding: 0; background: #061428; }</style>
 <script>window.OM_SCENES = '[{"name":"Problem","dur":4.5,"desc":"Diwali week means new prices across 144 slots"},{"name":"Bands","dur":5,"desc":"The day is set once as morning, afternoon and floodlit bands"},{"name":"Apply","dur":5,"desc":"The plan is applied to every court at once"},{"name":"Live","dur":5.5,"desc":"Every slot reprices itself and players see the new price"}]';</script>
 <script>window.OM_PLAYBACK = '{"mode":"loop"}';</script>
 </helmet>
