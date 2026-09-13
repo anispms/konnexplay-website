@@ -106,6 +106,8 @@
       </label>
       <button class="ghost" id="connect" type="button">Connect</button>
       <button class="ghost" id="forget" type="button" style="display:none">Forget token</button>
+      <button class="ghost" id="diag" type="button">Check my access</button>
+      <pre id="diagOut" style="display:none;white-space:pre-wrap;background:#EEF2F7;border:1px solid #DDE0E5;border-radius:6px;padding:12px;margin:12px 0 0;font:12.5px ui-monospace,SFMono-Regular,Menlo,monospace;color:#0D1B3E"></pre>
     </div>
 
     <div class="msg" id="msg" role="status" aria-live="polite"></div>
@@ -378,13 +380,20 @@
       })
       .then(function (res) {
         if (!res.ok) {
-          if (res.status === 401 || res.status === 403) {
-            throw new Error('GitHub refused the token. Check it has Contents: Read and write on this repository.');
+          var gh = (res.j && res.j.message) ? ' GitHub said: "' + res.j.message + '"' : '';
+          if (res.status === 401) {
+            throw new Error('The token was rejected as invalid or expired. If you pressed Regenerate on GitHub, the old token stopped working: paste the new one.' + gh);
+          }
+          if (res.status === 403) {
+            throw new Error('The token is valid but not allowed to write here. Check Repository access lists konnexplay-website, not another repository.' + gh);
+          }
+          if (res.status === 404) {
+            throw new Error('GitHub cannot see this repository through that token. That is almost always Repository access pointing at the wrong repository.' + gh);
           }
           if (res.status === 409 || res.status === 422) {
-            throw new Error('Someone else changed the file. Reload this page and make your change again.');
+            throw new Error('The file changed since this page loaded. Reload and make your change again.' + gh);
           }
-          throw new Error((res.j && res.j.message) || ('GitHub said ' + res.status));
+          throw new Error('GitHub returned ' + res.status + '.' + gh);
         }
         sha = res.j.content.sha;
         content = next;
@@ -403,13 +412,18 @@
     msg('info', 'Checking the token...');
     api('/repos/' + OWNER + '/' + REPO)
       .then(function (r) {
-        if (r.status === 401) throw new Error('That token was not accepted. It may be wrong or expired.');
-        if (!r.ok) throw new Error('GitHub said ' + r.status + '.');
+        if (r.status === 401) {
+          throw new Error('That token was not accepted. It is wrong, or it expired, or it was regenerated on GitHub after you pasted it.');
+        }
+        if (r.status === 404) {
+          throw new Error('That token cannot see ' + OWNER + '/' + REPO + '. On GitHub, open the token, press Edit next to Access, and make sure Repository access lists ' + REPO + '.');
+        }
+        if (!r.ok) throw new Error('GitHub returned ' + r.status + ' while checking the token.');
         return r.json();
       })
       .then(function (repo) {
         if (!repo.permissions || !repo.permissions.push) {
-          throw new Error('That token can read but not write. Set Contents to Read and write.');
+          throw new Error('That token can read ' + REPO + ' but not write to it. Set Repository permissions, Contents, to Read and write.');
         }
         try { localStorage.setItem(TOKEN_KEY, token); } catch (e) {}
         $('connPill').textContent = 'Connected';
@@ -429,6 +443,57 @@
   });
 
   $('connect').addEventListener('click', function () { connect(false); });
+
+  $('diag').addEventListener('click', function () {
+    var out = $('diagOut');
+    out.style.display = 'block';
+    var t = $('token').value.trim();
+    var lines = [];
+    lines.push('Repository this panel writes to: ' + OWNER + '/' + REPO);
+    lines.push('Branch: ' + BRANCH + '    File: ' + FILE);
+    lines.push('Token pasted: ' + (t ? 'yes, ' + t.length + ' characters, starts ' + t.slice(0, 11) + '...' : 'no'));
+    out.textContent = lines.join('\n') + '\n\nChecking with GitHub...';
+    if (!t) { out.textContent = lines.join('\n') + '\n\nPaste a token first.'; return; }
+
+    var saved = token;
+    token = t;
+    fetch('https://api.github.com/repos/' + OWNER + '/' + REPO, {
+      headers: { Accept: 'application/vnd.github+json', Authorization: 'Bearer ' + t, 'X-GitHub-Api-Version': '2022-11-28' }
+    })
+      .then(function (r) { return r.json().then(function (j) { return { status: r.status, j: j }; }); })
+      .then(function (res) {
+        lines.push('');
+        lines.push('GitHub HTTP status: ' + res.status);
+        if (res.status === 200) {
+          var p = res.j.permissions || {};
+          lines.push('Repository reached: ' + res.j.full_name);
+          lines.push('Can read:  ' + (p.pull ? 'yes' : 'no'));
+          lines.push('Can write: ' + (p.push ? 'yes' : 'NO  <-- this is the problem'));
+          lines.push('');
+          lines.push(p.push
+            ? 'Access is correct. Press Connect, then Save and publish.'
+            : 'Open the token on GitHub and set Repository permissions, Contents, to Read and write.');
+        } else if (res.status === 404) {
+          lines.push('GitHub says it cannot find ' + OWNER + '/' + REPO + ' for this token.');
+          lines.push('');
+          lines.push('That means Repository access is pointing somewhere else.');
+          lines.push('On the token page press Edit next to "Access on ' + OWNER + '",');
+          lines.push('choose Only select repositories, and pick ' + REPO + '.');
+        } else if (res.status === 401) {
+          lines.push('GitHub rejected the token itself.');
+          lines.push('If you pressed Regenerate, copy the new token and paste it here.');
+        } else {
+          lines.push('Message: ' + (res.j && res.j.message ? res.j.message : '(none)'));
+        }
+        out.textContent = lines.join('\n');
+      })
+      .catch(function (e) {
+        lines.push('');
+        lines.push('Could not reach GitHub: ' + e.message);
+        out.textContent = lines.join('\n');
+      })
+      .then(function () { token = saved; });
+  });
   $('save').addEventListener('click', save);
   $('revert').addEventListener('click', function () {
     if (content) { contentToForm(content); dirty = false; $('dirty').className = 'dirty'; pushPreview(); validate(); clearMsg(); }
