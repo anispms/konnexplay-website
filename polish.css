@@ -283,3 +283,25 @@ header div[style*="z-index:50"][style*="bottom:0"],
 header div[style*="z-index: 50"][style*="bottom: 0"] {
   display: none !important;
 }
+
+/* ---------------------------------------------------------------------------
+   Images squashed into tall slivers.
+
+   My own regression. To stop the page jumping as images load I added width and
+   height attributes to every image. An HTML height attribute becomes a CSS
+   height declaration, and an explicit height beats a CSS aspect-ratio, because
+   the ratio only applies when one dimension is auto.
+
+   Thirteen images across five pages already declared "aspect-ratio: 16 / 9" in
+   their own styles. Those ratios were being ignored, so on a phone a 1600x1200
+   venue photo rendered 340 wide and 1200 tall: a vertical strip showing about a
+   quarter of the picture. On a wide screen it looked fine, which is why every
+   automated check passed.
+
+   Letting height resolve automatically hands control back to the declared
+   ratio. The attributes stay, so the space is still reserved and the page still
+   does not jump.
+   --------------------------------------------------------------------------- */
+img[style*="aspect-ratio"] {
+  height: auto !important;
+}
