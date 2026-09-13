@@ -171,6 +171,25 @@
       </label>
     </div>
 
+    <div class="group">
+      <h2>Analytics</h2>
+      <label>
+        <span>Measurement service</span>
+        <select id="analyticsProvider" style="width:100%;padding:10px 12px;font:15px Inter,sans-serif;border:1.5px solid var(--line);border-radius:6px;background:#fff;min-height:44px;color:var(--ink)">
+          <option value="">Off, measure nothing</option>
+          <option value="plausible">Plausible, no cookies</option>
+          <option value="ga4">Google Analytics 4</option>
+        </select>
+        <small>Plausible needs no cookie banner and shows a simpler report. Google Analytics is free and more detailed. Either one tells you which sport and city pages bring venue owners in.</small>
+      </label>
+      <label>
+        <span id="analyticsIdLabel">Site identifier</span>
+        <input type="text" id="analyticsId" placeholder="konnexplay.com">
+        <small id="analyticsIdHelp">For Plausible this is your domain, exactly as you added it there. For Google Analytics it is the measurement ID, which starts with G-.</small>
+        <em class="err" id="err-analyticsId"></em>
+      </label>
+    </div>
+
     <div class="actions">
       <button class="primary" id="save" type="button" disabled>Save and publish</button>
       <button class="ghost" id="revert" type="button">Undo my changes</button>
@@ -207,7 +226,9 @@
     pro: ['pricing', 'pro'],
     setupWaived: ['pricing', 'setupWaived'],
     address: ['company', 'address'],
-    endpoint: ['leads', 'endpoint']
+    endpoint: ['leads', 'endpoint'],
+    analyticsProvider: ['analytics', 'provider'],
+    analyticsId: ['analytics', 'id']
   };
 
   var $ = function (id) { return document.getElementById(id); };
@@ -243,6 +264,14 @@
     starter: function (v) { return /^[\d,]+$/.test(v) ? '' : 'Numbers and commas only, for example 12,000'; },
     pro: function (v) { return /^[\d,]+$/.test(v) ? '' : 'Numbers and commas only, for example 18,000'; },
     setupWaived: function (v) { return /^[\d,]+$/.test(v) ? '' : 'Numbers and commas only, for example 5,000'; },
+    analyticsId: function (v) {
+      var p = ($('analyticsProvider') || {}).value || '';
+      if (!p) return '';
+      if (!v) return 'Add the identifier, or set the service to Off.';
+      if (p === 'ga4' && !/^G-[A-Z0-9]{6,}$/i.test(v)) return 'A Google Analytics ID looks like G-XXXXXXX.';
+      if (p === 'plausible' && !/^[a-z0-9.-]+\.[a-z]{2,}$/i.test(v)) return 'Use the bare domain, like konnexplay.com, with no https:// and no slash.';
+      return '';
+    },
     endpoint: function (v) {
       if (!v) return '';
       if (!/^https:\/\/script\.google\.com\/macros\/s\/[^/]+\/exec$/.test(v)) {
@@ -353,6 +382,7 @@
         sha = j.sha;
         content = JSON.parse(b64decode(j.content));
         contentToForm(content);
+        try { syncAnalyticsHelp(); } catch (e) {}
         dirty = false;
         $('dirty').className = 'dirty';
       });
@@ -448,8 +478,30 @@
 
   Object.keys(FIELDS).forEach(function (id) {
     var el = $(id);
-    if (el) el.addEventListener('input', markDirty);
+    if (!el) return;
+    el.addEventListener('input', markDirty);
+    if (el.tagName === 'SELECT') el.addEventListener('change', function () { syncAnalyticsHelp(); markDirty(); });
   });
+
+  function syncAnalyticsHelp() {
+    var p = ($('analyticsProvider') || {}).value || '';
+    var lab = $('analyticsIdLabel'), inp = $('analyticsId'), help = $('analyticsIdHelp');
+    if (!lab || !inp || !help) return;
+    if (p === 'ga4') {
+      lab.textContent = 'Measurement ID';
+      inp.placeholder = 'G-XXXXXXXXXX';
+      help.textContent = 'From Google Analytics: Admin, then Data streams, then your web stream. It starts with G-.';
+    } else if (p === 'plausible') {
+      lab.textContent = 'Domain';
+      inp.placeholder = 'konnexplay.com';
+      help.textContent = 'The domain exactly as you added it in Plausible. No https:// and no trailing slash.';
+    } else {
+      lab.textContent = 'Site identifier';
+      inp.placeholder = '';
+      help.textContent = 'Choose a service above first. While this is Off, nothing is loaded and no cookie is set.';
+    }
+  }
+  syncAnalyticsHelp();
 
   $('connect').addEventListener('click', function () { connect(false); });
 
