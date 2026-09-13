@@ -262,3 +262,24 @@ header a:focus-visible {
     border-radius: 10px !important;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   The stray mobile call-to-action.
+
+   Nav.dc.html puts a sticky "Book a demo" bar inside <header>, positioned
+   fixed with bottom:0. The header carries backdrop-filter, and an ancestor
+   with backdrop-filter becomes the containing block for fixed descendants. So
+   bottom:0 resolved to the bottom of the 77px header, not the bottom of the
+   screen: the bar rendered across the top of the page, over the header, with
+   the section heading underneath it hidden. It has been doing that since
+   before any of my changes.
+
+   It is also now redundant. The action bar at the foot of the screen already
+   carries Call, WhatsApp and Book a demo, and that one is positioned against
+   the viewport, so it lands where it should. Hiding the trapped one removes
+   the overlap and the duplicate button in a single step.
+   --------------------------------------------------------------------------- */
+header div[style*="z-index:50"][style*="bottom:0"],
+header div[style*="z-index: 50"][style*="bottom: 0"] {
+  display: none !important;
+}
