@@ -104,7 +104,18 @@
       if (v.preload === 'none') v.preload = 'auto';
     } catch (e) {}
 
+    // Phones get the lighter cut where one exists: half the bytes, and on a
+    // small screen the difference is not visible.
+    try {
+      var src = v.getAttribute('src') || '';
+      if (window.innerWidth < 768 && /assets\/film-story\.mp4$/.test(src)) {
+        v.setAttribute('src', src.replace('film-story.mp4', 'film-story-480.mp4'));
+        v.load();
+      }
+    } catch (e) {}
+
     attempt(v);
+    retryWhenReady(v);
     watch(v);
     keyboardPause(v);
   }
@@ -118,24 +129,49 @@
     }
   }
 
+  /* A phone often refuses the first request simply because nothing is buffered
+     yet. Retry as data arrives rather than giving up on one rejection. */
+  function retryWhenReady(v) {
+    ['loadeddata', 'canplay', 'canplaythrough'].forEach(function (ev) {
+      v.addEventListener(ev, function () {
+        if (v.paused && !v.__kxUserPaused) attempt(v);
+      });
+    });
+    // A stalled network can leave it paused with no further events.
+    var tries = 0;
+    var t = setInterval(function () {
+      if (++tries > 10 || v.__kxUserPaused) { clearInterval(t); return; }
+      if (!v.paused) { clearInterval(t); return; }
+      attempt(v);
+    }, 1500);
+  }
+
   /* If the browser refused, the next thing the visitor does counts as a
-     gesture and lets us start. Once only, then the listeners go away. */
+     gesture and lets us start.
+     This used to latch: the flag was set once for the whole page and never
+     cleared, so the first video to fail consumed the single retry. A video
+     further down the page, on another route, then had no way to recover and
+     simply sat on its poster forever. The listeners are now torn down and the
+     flag released after each attempt, so every video gets its own chance. */
   var armed = false;
+  var EVENTS = ['touchstart', 'pointerdown', 'scroll', 'keydown'];
+
   function armGesture() {
     if (armed) return;
     armed = true;
-    var events = ['touchstart', 'pointerdown', 'scroll', 'keydown'];
     var go = function () {
-      events.forEach(function (e) { window.removeEventListener(e, go, true); });
+      EVENTS.forEach(function (e) { window.removeEventListener(e, go, true); });
+      armed = false;
       var vids = document.querySelectorAll('video');
       for (var i = 0; i < vids.length; i++) {
-        if (vids[i].__kxAmbient && vids[i].paused) {
-          try { vids[i].play().catch(function () {}); } catch (e) {}
+        var v = vids[i];
+        if (v.__kxAmbient && v.paused && !v.__kxUserPaused) {
+          try { v.play().catch(function () {}); } catch (e) {}
         }
       }
     };
-    events.forEach(function (e) {
-      window.addEventListener(e, go, { capture: true, passive: true, once: false });
+    EVENTS.forEach(function (e) {
+      window.addEventListener(e, go, { capture: true, passive: true });
     });
   }
 
