@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-IN">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
 <script src="./config.js"></script>
+<script src="./perf.js"></script>
 </head>
 <body>
 <x-dc>
@@ -199,9 +200,9 @@ class Component extends DCLogic {
   seo(route, arg, cityName, sportName) {
     const B = ' | KonnexPlay';
     const map = {
-      home: ['Sports Venue Management & Booking Software in India', 'Let players book their slots while you run your venue. Live availability, online payments and automatic confirmation for box cricket, turf, pickleball, padel, badminton and tennis venues. ₹12,000 per court per year, no commission on your own bookings.', ''],
+      home: ['Sports Venue Booking Software in India', 'Players book and pay online while you run the venue. One live calendar for every court, for box cricket, turf, pickleball, padel and badminton.', ''],
       platform: ['The Platform: One Calendar, Every Court', 'Your own booking website, live slot availability, online payments and advances, one calendar for every court, and the report you open on the 1st.', 'platform'],
-      pricing: ['Pricing: ₹12,000 per Court per Year', 'Two plans, both with no KonnexPlay commission on your own bookings. Starter at ₹12,000 per court per year; Pro adds rate plans, memberships, tournaments and profit reports.', 'pricing'],
+      pricing: ['Pricing: ₹12,000 per Court per Year', 'Two plans, neither charging commission on your own bookings. Starter is ₹12,000 per court per year; Pro adds rate plans and tournaments.', 'pricing'],
       demo: ['Book a 20-Minute Demo', 'See KonnexPlay set up on your own courts and rates in twenty minutes: the booking website, the calendar your staff will use, payments and reports.', 'book-a-demo'],
       faq: ['Questions Venue Owners Ask Us', 'How players book without calling, where the money goes, what it costs, how rates and tournaments work, and what KonnexPlay does not do.', 'faq'],
       about: ['About Us', 'Built in Surat by people who ran a box cricket community and lost too many games to a phone nobody answered.', 'about'],
@@ -242,6 +243,9 @@ class Component extends DCLogic {
     set('meta[property="og:title"]', 'content', t + B);
     set('meta[property="og:description"]', 'content', d);
     set('meta[property="og:url"]', 'content', 'https://konnexplay.com/' + p);
+    set('meta[name="twitter:card"]', 'content', 'summary_large_image');
+    set('meta[name="twitter:title"]', 'content', t + B);
+    set('meta[name="twitter:description"]', 'content', d);
   }
   renderVals() {
     const r = this.state.route;
