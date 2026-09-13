@@ -32,9 +32,10 @@
   "zoho": {
     "enabled": false,
     "region": "in",
-    "xnQsjsdp": "",
-    "xmIwtLD": "",
-    "actionType": "",
-    "leadSource": "Website"
+    "xnQsjsdp": "751dc465cc5325b2518f24e72a4039c009112398125ef1d32ed3fabf46feb749",
+    "xmIwtLD": "1e9a48f443d98d61409bbb5dd80099db64c3ec7393a9bd9e4a1e8952f3ecbe58c1662deec536615b7c4be01d439077ff",
+    "actionType": "TGVhZHM=",
+    "leadSource": "Website",
+    "leadStatus": "Not Contacted"
   }
 }

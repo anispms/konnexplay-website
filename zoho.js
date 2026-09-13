@@ -36,7 +36,8 @@
       xnQsjsdp: z.xnQsjsdp,
       xmIwtLD: z.xmIwtLD,
       actionType: z.actionType,
-      leadSource: z.leadSource || 'Website'
+      leadSource: z.leadSource || 'Website',
+      leadStatus: z.leadStatus || 'Not Contacted'
     };
   }
 
@@ -112,9 +113,15 @@
       hidden(form, 'Last Name', n.last);
       if (n.first) hidden(form, 'First Name', n.first);
       hidden(form, 'Company', lead.venue || 'Not stated');
+      // Both, because Phone and Mobile are separate fields in Zoho and the
+      // form decides which one it wants. Whichever it does not have is ignored.
       hidden(form, 'Phone', lead.phone || '');
+      hidden(form, 'Mobile', lead.phone || '');
       hidden(form, 'City', lead.city || '');
       hidden(form, 'Lead Source', c.leadSource);
+      // Forms often mark Lead Status mandatory, and a missing mandatory field
+      // is refused in silence. A new lead has not been contacted yet.
+      hidden(form, 'Lead Status', c.leadStatus || 'Not Contacted');
       hidden(form, 'Description', notes);
 
       document.body.appendChild(form);
