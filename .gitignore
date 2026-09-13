@@ -2,3 +2,6 @@ Konnex Website/
 KonnexPlay website (standalone).html
 Venue photos and design assets.zip
 *.bak
+
+# Local preview server config, not part of the site.
+.claude/

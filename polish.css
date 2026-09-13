@@ -376,3 +376,210 @@ img[style*="aspect-ratio"] {
   span:has(> input[name="phone"]) { gap: 6px !important; }
   span:has(> input[name="phone"]) > span:first-child { font-size: 16px !important; }
 }
+
+/* ==========================================================================
+   Product screenshots, set in a window.
+
+   A raw capture with a one pixel grey border reads as a placeholder. The same
+   capture inside a browser window, lifted off the page, reads as a product.
+   The window is drawn here in CSS so it costs nothing to download, and the
+   screen takes its shape from the picture (shots.js sets --kx-ar) so nothing
+   is ever cropped and there are no grey bars either.
+   ========================================================================== */
+
+.kx-shot {
+  position: relative;
+  border-radius: 14px;
+  background: #FFFFFF;
+  border: 1px solid rgba(13, 27, 62, .10);
+  box-shadow:
+    0 1px 2px rgba(13, 27, 62, .05),
+    0 10px 24px -10px rgba(13, 27, 62, .16),
+    0 36px 70px -30px rgba(13, 27, 62, .30);
+  overflow: hidden;
+  isolation: isolate;
+  transform: translateZ(0);
+}
+
+/* A soft pool of brand colour under the window, so it is not sitting flat
+   on a white page. */
+.kx-shot::before {
+  content: "";
+  position: absolute;
+  inset: auto 6% -18px 6%;
+  height: 42px;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(13, 197, 154, .30), rgba(13, 197, 154, 0));
+  opacity: 0;
+  transition: opacity 900ms ease 180ms;
+  pointer-events: none;
+}
+.kx-shot.is-in::before { opacity: 1; }
+
+/* The title bar. */
+.kx-shot-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 36px;
+  padding: 0 13px;
+  background: linear-gradient(180deg, #FBFCFD 0%, #F1F3F7 100%);
+  border-bottom: 1px solid rgba(13, 27, 62, .09);
+}
+.kx-shot-dots { display: flex; gap: 6px; flex: none; }
+.kx-shot-dots i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #D3D7E0;
+  box-shadow: inset 0 0 0 1px rgba(13, 27, 62, .06);
+}
+.kx-shot-url {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  max-width: 260px;
+  padding: 3px 12px;
+  border-radius: 999px;
+  background: rgba(13, 27, 62, .05);
+  font: 500 11.5px/1.5 Inter, system-ui, -apple-system, sans-serif;
+  color: #5A6275;
+  letter-spacing: .01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.kx-shot-url svg { width: 10px; height: 10px; flex: none; color: #0DC59A; }
+
+/* The glass. Its shape comes from the picture inside it. */
+.kx-shot-screen {
+  position: relative;
+  width: 100%;
+  aspect-ratio: var(--kx-ar, 16 / 10);
+  background: #FFFFFF;
+  overflow: hidden;
+}
+.kx-shot-screen > .kx-shot-img,
+.kx-shot-screen > img.kx-shot-img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  aspect-ratio: auto !important;
+  object-fit: contain !important;
+  object-position: center top !important;
+  border: 0 !important;
+  background: #FFFFFF;
+}
+
+/* The stacked homepage screenshots keep cross-fading inside the window. */
+.kx-shot-stacked .kx-shot-screen > .kx-shot-img { position: absolute; inset: 0; }
+
+/* ---- Arrival ---------------------------------------------------------- */
+
+.kx-shot {
+  opacity: 0;
+  transform: translateY(20px) scale(.984);
+  transition:
+    opacity 760ms cubic-bezier(.22, .61, .36, 1),
+    transform 760ms cubic-bezier(.22, .61, .36, 1),
+    box-shadow 420ms ease;
+  will-change: opacity, transform;
+}
+.kx-shot.is-in { opacity: 1; transform: none; will-change: auto; }
+
+/* One sweep of light across the glass as it settles, the way a screen
+   catches the light when you turn it towards you. */
+.kx-shot-screen::after {
+  content: "";
+  position: absolute;
+  top: -60%;
+  bottom: -60%;
+  left: -35%;
+  width: 28%;
+  z-index: 2;
+  pointer-events: none;
+  transform: translateX(-40%) rotate(14deg);
+  background: linear-gradient(90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, .58) 50%,
+    rgba(255, 255, 255, 0) 100%);
+  opacity: 0;
+}
+.kx-shot.is-in .kx-shot-screen::after { animation: kx-sheen 1150ms cubic-bezier(.3, .5, .2, 1) 420ms 1; }
+
+@keyframes kx-sheen {
+  0%   { opacity: 0;  transform: translateX(-40%) rotate(14deg); }
+  18%  { opacity: 1; }
+  82%  { opacity: 1; }
+  100% { opacity: 0;  transform: translateX(560%) rotate(14deg); }
+}
+
+/* Inside the stack, the screenshot coming forward lifts slightly as it
+   fades in, so the change reads as a movement rather than a flicker. */
+.kx-shot-stacked .kx-shot-img {
+  transform: translateY(9px) scale(.995);
+  transition: opacity 300ms ease, transform 620ms cubic-bezier(.22, .61, .36, 1);
+}
+.kx-shot-stacked .kx-shot-img.is-live { transform: none; }
+
+/* A mouse gets a little depth back on hover. Touch does not. */
+@media (hover: hover) and (pointer: fine) {
+  .kx-shot.is-in {
+    transition:
+      opacity 760ms cubic-bezier(.22, .61, .36, 1),
+      transform 380ms cubic-bezier(.22, .61, .36, 1),
+      box-shadow 380ms ease;
+  }
+  .kx-shot.is-in:hover {
+    transform: translateY(-5px);
+    box-shadow:
+      0 1px 2px rgba(13, 27, 62, .05),
+      0 18px 36px -12px rgba(13, 27, 62, .20),
+      0 52px 92px -34px rgba(13, 27, 62, .34);
+  }
+}
+
+/* The window is a frame, not a control. Keep the chrome out of the way on a
+   phone, where every pixel of the screenshot counts. */
+@media (max-width: 560px) {
+  .kx-shot { border-radius: 11px; }
+  .kx-shot-bar { height: 29px; padding: 0 10px; gap: 9px; }
+  .kx-shot-dots i { width: 7px; height: 7px; }
+  .kx-shot-url { font-size: 10.5px; padding: 2px 9px; max-width: 62%; }
+}
+
+/* On a phone the screenshot is drawn about a quarter of its real size, so the
+   slot times and rupee figures inside it are not readable in place. Tapping
+   opens it full screen; say so, rather than leaving people to guess. */
+@media (hover: none) and (pointer: coarse) {
+  .kx-shot-screen::before {
+    content: "Tap to enlarge";
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    z-index: 3;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(13, 27, 62, .72);
+    color: #FFFFFF;
+    font: 600 10.5px/1.4 Inter, system-ui, -apple-system, sans-serif;
+    letter-spacing: .04em;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 600ms ease 900ms;
+  }
+  .kx-shot.is-in .kx-shot-screen::before { opacity: 1; }
+}
+
+/* Someone who has asked for less movement gets the window, not the motion. */
+@media (prefers-reduced-motion: reduce) {
+  .kx-shot {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .kx-shot.is-in .kx-shot-screen::after { animation: none; }
+  .kx-shot-stacked .kx-shot-img { transform: none; transition: opacity 300ms ease; }
+}

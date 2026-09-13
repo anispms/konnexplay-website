@@ -28,7 +28,8 @@ const OURS = [
   'update-check.js',
   'anchors.js',
   'sw-register.js',
-  'lightbox.js'
+  'lightbox.js',
+  'shots.js'
 ];
 
 function sha(buf) {
