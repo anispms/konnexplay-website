@@ -24,7 +24,8 @@ const OURS = [
   'content-apply.js',
   'polish.css',
   'actionbar.js',
-  'zoho.js'
+  'zoho.js',
+  'update-check.js'
 ];
 
 function sha(buf) {
@@ -48,6 +49,14 @@ if (cfg.indexOf(line) === -1) {
 }
 fs.writeFileSync('config.js', cfg);
 console.log('build id (' + pages.length + ' page files) -> ' + BUILD);
+
+/* A tiny file the open page polls, so a browser already showing the site
+   learns that a new version exists instead of silently staying stale. */
+fs.writeFileSync(
+  'version.json',
+  JSON.stringify({ build: BUILD, published: new Date().toISOString() }, null, 2) + '\n'
+);
+console.log('version.json written');
 
 /* ---- 2. content hashes in index.html ---- */
 
