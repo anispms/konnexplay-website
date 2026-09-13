@@ -1,3 +1,15 @@
+
+/* The header was authored with 24px side padding and a 28px gap. At 390px
+   that needs 418px of room, so the Menu button was cut off past the right
+   edge of the screen. Tighten only the spacing, on small phones only. */
+@media (max-width: 480px) {
+  header > div[style*="max-width: 1200px"],
+  header > div[style*="max-width:1200px"] {
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    gap: 10px !important;
+  }
+}
 /* Mobile polish.
    The design build was authored at desktop width, so stacked link lists
    inherited desktop line-heights: every footer and menu link measures about

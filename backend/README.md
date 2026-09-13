@@ -1,13 +1,14 @@
 # Lead capture
 
-Every demo request lands in a Google Sheet you own, and you get an email the
-moment it arrives. No third-party service, no signup, no monthly cost. It uses
+Every demo request lands in a Google Sheet you own, and an email goes to
+anis@konnexplay.com the moment it arrives. No third-party service, no signup, no monthly cost. It uses
 the Google account you already have.
 
-Until you finish this setup the site still works. The demo form hands the lead
-to WhatsApp exactly as it does today. What you gain by setting it up is a saved
-record and an email alert, so a lead survives even when the visitor never
-presses send in WhatsApp.
+Until you finish this setup the form falls back to handing the lead to
+WhatsApp, which only reaches you if the visitor presses send. Once the URL is
+in place the form stops doing that: it saves the request, emails you, and
+simply confirms to the visitor that you will call. WhatsApp stays on the
+confirmation as an option for anyone in a hurry.
 
 ## Setup, about five minutes
 
@@ -19,8 +20,9 @@ its header row on the first submission.
 Script**. A new tab opens with an empty `Code.gs`.
 
 **3. Paste the code.** Delete whatever is in `Code.gs`, then paste the entire
-contents of `leads-apps-script.gs` from this folder. Check the `NOTIFY_EMAIL`
-value near the top is the address you want alerts sent to. Save.
+contents of `leads-apps-script.gs` from this folder. The `NOTIFY_EMAIL` value near the
+top is already set to anis@konnexplay.com; change it there if you ever want
+alerts somewhere else. Save.
 
 **4. Deploy it.** Click **Deploy → New deployment**. Pick type **Web app**.
 Set these two options, which matter:

@@ -36,6 +36,15 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
 <div>
 <div style="font-family:Outfit,sans-serif;font-weight:800;font-size:clamp(26px,3vw,34px);letter-spacing:-0.02em;margin-bottom:14px;text-wrap:balance">{{ thanks }}</div>
+<sc-if value="{{ savedToServer }}" hint-placeholder-val="{{ false }}">
+<p style="font-size:17px;line-height:1.6;color:#3D4457;margin:0 0 18px">We have your details. Roshan will call you on <strong style="font-weight:600">{{ phoneOut }}</strong> to fix a time that suits your venue.</p>
+<div style="background:#F1FAF6;border-left:3px solid #0DC59A;padding:14px 16px;margin:0 0 22px;font-size:15px;line-height:1.55;color:#3D4457">In a hurry? Message us and we will answer today.
+<div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:10px">
+<a href="{{ waLink }}" target="_blank" rel="noopener" style="background:#0DC59A;color:#062B22;padding:11px 18px;font-size:15px;font-weight:600;text-decoration:none;min-height:44px;display:inline-flex;align-items:center">WhatsApp us</a>
+<a href="tel:+917778858901" style="border:1.5px solid #0D1B3E;color:#0D1B3E;padding:11px 18px;font-size:15px;font-weight:600;text-decoration:none;min-height:44px;display:inline-flex;align-items:center">Call +91 77788 58901</a>
+</div></div>
+</sc-if>
+<sc-if value="{{ needsWhatsApp }}" hint-placeholder-val="{{ true }}">
 <p style="font-size:17px;line-height:1.6;color:#3D4457;margin:0 0 18px">WhatsApp just opened with your details filled in. <strong style="font-weight:600">Press send there</strong> and Roshan will call you on <strong style="font-weight:600">{{ phoneOut }}</strong> to fix a time.</p>
 <div style="background:#F4F6F8;border-left:3px solid #0DC59A;padding:14px 16px;margin:0 0 22px;font-size:15px;line-height:1.55;color:#3D4457">Did WhatsApp not open? Use one of these and we will have it straight away.
 <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:10px">
@@ -43,6 +52,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 <a href="tel:+917778858901" style="border:1.5px solid #0D1B3E;color:#0D1B3E;padding:11px 18px;font-size:15px;font-weight:600;text-decoration:none;min-height:44px;display:inline-flex;align-items:center">Call +91 77788 58901</a>
 <a href="{{ mailHref }}" style="border:1.5px solid #0D1B3E;color:#0D1B3E;padding:11px 18px;font-size:15px;font-weight:600;text-decoration:none;min-height:44px;display:inline-flex;align-items:center">Email instead</a>
 </div></div>
+</sc-if>
+
 <div style="border-top:1px solid #DDE0E5;padding:14px 0;font-size:16px">Next: we set up your courts and rates before the call</div>
 <div style="border-top:1px solid #DDE0E5;padding:14px 0;font-size:16px">Then: twenty minutes, on your own venue's data</div>
 <div style="border-top:1px solid #DDE0E5;border-bottom:1px solid #DDE0E5;padding:14px 0;font-size:16px">If you want it sooner, WhatsApp <a href="{{ waLink }}" rel="noopener" style="font-weight:600">+91 77788 58901</a></div>
@@ -51,6 +62,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 </sc-if>
 <sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
 <form onSubmit="{{ submitForm }}">
+<div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden"><label>Company<input type="text" name="company" tabindex="-1" autocomplete="off"></label></div>
 <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:26px">
 <div>
 <div style="font-size:11px;letter-spacing:0.14em;font-weight:700;color:#088064;margin-bottom:8px">BOOK YOUR DEMO</div>
@@ -62,25 +74,25 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 <div style="display:grid;gap:22px">
 <label style="display:block">
 <span style="display:block;font-size:11px;letter-spacing:0.14em;font-weight:700;color:#5A6275;margin-bottom:7px">YOUR NAME</span>
-<input type="text" autoComplete="name" value="{{ name }}" onChange="{{ setName }}" placeholder="Rahul Mehta" style="width:100%;box-sizing:border-box;border:0;border-bottom:1.5px solid #C9CBD1;border-radius:0;background:transparent;padding:9px 0 11px;font-size:19px;font-weight:500;color:#0D1B3E;min-height:46px;outline:none;transition:border-color 140ms ease" style-focus="border-bottom:2px solid #0DC59A;padding-bottom:10.5px" />
+<input type="text" autoComplete="name" value="{{ name }}" onChange="{{ setName }}" placeholder="Rahul Mehta" style="width:100%;box-sizing:border-box;border:0;border-bottom:1.5px solid #C9CBD1;border-radius:0;background:transparent;padding:9px 0 11px;font-size:19px;font-weight:500;color:#0D1B3E;min-height:46px;outline:none;transition:border-color 140ms ease" style-focus="border-bottom:2px solid #0DC59A;padding-bottom:10.5px" / name="name" id="kx-name" autocomplete="name" autocapitalize="words" enterkeyhint="next">
 </label>
 
 <label style="display:block">
 <span style="display:block;font-size:11px;letter-spacing:0.14em;font-weight:700;color:#5A6275;margin-bottom:7px">MOBILE</span>
 <span style="display:flex;align-items:baseline;gap:10px;border-bottom:1.5px solid #C9CBD1;transition:border-color 140ms ease" style-focus-within="border-bottom:2px solid #0DC59A">
 <span style="font-size:19px;font-weight:600;color:#5A6275;padding-bottom:11px">+91</span>
-<input type="tel" inputMode="numeric" autoComplete="tel" maxLength="10" value="{{ phone }}" onChange="{{ setPhone }}" placeholder="98250 41267" style="flex:1;min-width:0;box-sizing:border-box;border:0;background:transparent;padding:9px 0 11px;font-size:19px;font-weight:500;color:#0D1B3E;min-height:46px;outline:none;letter-spacing:0.02em" />
+<input type="tel" inputMode="numeric" autoComplete="tel" maxLength="10" value="{{ phone }}" onChange="{{ setPhone }}" placeholder="98250 41267" style="flex:1;min-width:0;box-sizing:border-box;border:0;background:transparent;padding:9px 0 11px;font-size:19px;font-weight:500;color:#0D1B3E;min-height:46px;outline:none;letter-spacing:0.02em" / name="phone" id="kx-phone" autocomplete="tel-national" enterkeyhint="next" maxlength="11">
 </span>
 </label>
 
 <label style="display:block">
 <span style="display:block;font-size:11px;letter-spacing:0.14em;font-weight:700;color:#5A6275;margin-bottom:7px">VENUE NAME</span>
-<input type="text" value="{{ venue }}" onChange="{{ setVenue }}" placeholder="Riverfront Arena" style="width:100%;box-sizing:border-box;border:0;border-bottom:1.5px solid #C9CBD1;border-radius:0;background:transparent;padding:9px 0 11px;font-size:19px;font-weight:500;color:#0D1B3E;min-height:46px;outline:none;transition:border-color 140ms ease" style-focus="border-bottom:2px solid #0DC59A;padding-bottom:10.5px" />
+<input type="text" value="{{ venue }}" onChange="{{ setVenue }}" placeholder="Riverfront Arena" style="width:100%;box-sizing:border-box;border:0;border-bottom:1.5px solid #C9CBD1;border-radius:0;background:transparent;padding:9px 0 11px;font-size:19px;font-weight:500;color:#0D1B3E;min-height:46px;outline:none;transition:border-color 140ms ease" style-focus="border-bottom:2px solid #0DC59A;padding-bottom:10.5px" / name="venue" id="kx-venue" autocomplete="organization" autocapitalize="words" enterkeyhint="next">
 </label>
 
 <label style="display:block">
 <span style="display:block;font-size:11px;letter-spacing:0.14em;font-weight:700;color:#5A6275;margin-bottom:7px">CITY</span>
-<input type="text" value="{{ city }}" onChange="{{ setCity }}" placeholder="Surat" style="width:100%;box-sizing:border-box;border:0;border-bottom:1.5px solid #C9CBD1;border-radius:0;background:transparent;padding:9px 0 11px;font-size:19px;font-weight:500;color:#0D1B3E;min-height:46px;outline:none;transition:border-color 140ms ease" style-focus="border-bottom:2px solid #0DC59A;padding-bottom:10.5px" />
+<input type="text" value="{{ city }}" onChange="{{ setCity }}" placeholder="Surat" style="width:100%;box-sizing:border-box;border:0;border-bottom:1.5px solid #C9CBD1;border-radius:0;background:transparent;padding:9px 0 11px;font-size:19px;font-weight:500;color:#0D1B3E;min-height:46px;outline:none;transition:border-color 140ms ease" style-focus="border-bottom:2px solid #0DC59A;padding-bottom:10.5px" / name="city" id="kx-city" autocomplete="address-level2" autocapitalize="words" enterkeyhint="done">
 </label>
 
 <div>
@@ -172,7 +184,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{}">
 class Component extends DCLogic {
-  state = { w: 1200, name: '', phone: '', venue: '', city: '', courts: 2, sport: 'Box cricket', method: '', tried: false, sent: false, sentName: '', sentPhone: '', leadText: '' };
+  state = { w: 1200, name: '', phone: '', venue: '', city: '', courts: 2, sport: 'Box cricket', method: '', tried: false, sent: false, sentName: '', sentPhone: '', leadText: '', savedToServer: false };
   componentDidMount() {
     this._r = () => { const w = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0); if (w !== this.state.w) this.setState({ w: w }); };
     window.addEventListener('resize', this._r);
@@ -209,7 +221,7 @@ class Component extends DCLogic {
         const payload = {
           name: s.name, phone: '+91 ' + this.digits(s.phone), venue: s.venue,
           city: s.city, courts: String(s.courts || ''), sport: s.sport,
-          method: s.method || '', company: s.company || '',
+          method: s.method || '', company: (function () { try { var h = document.querySelector('input[name="company"]'); return h ? h.value : ''; } catch (e) { return ''; } })(),
           page: location.href, referrer: document.referrer || ''
         };
         const enc = Object.keys(payload).map(function (k) {
@@ -223,13 +235,17 @@ class Component extends DCLogic {
         }).catch(function () {});
       }
     } catch (e) {}
-    try {
-      const url = 'https://wa.me/917778858901?text=' + encodeURIComponent(waText);
-      const a = document.createElement('a');
-      a.href = url; a.target = '_blank'; a.rel = 'noopener'; a.style.display = 'none';
-      document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    } catch (e) {}
-    this.setState({ sent: true, tried: false, sentName: s.name, sentPhone: '+91 ' + this.digits(s.phone), leadText: waText });
+    const savedToServer = !!window.KX_LEAD_ENDPOINT;
+    if (!savedToServer) {
+      // No endpoint configured: WhatsApp is the only way this reaches anyone.
+      try {
+        const url = 'https://wa.me/917778858901?text=' + encodeURIComponent(waText);
+        const a = document.createElement('a');
+        a.href = url; a.target = '_blank'; a.rel = 'noopener'; a.style.display = 'none';
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      } catch (e) {}
+    }
+    this.setState({ sent: true, tried: false, sentName: s.name, sentPhone: '+91 ' + this.digits(s.phone), leadText: waText, savedToServer: savedToServer });
   }
   renderVals() {
     const s = this.state, w = s.w, m = w < 900;
@@ -318,6 +334,7 @@ class Component extends DCLogic {
       setMethod: e => this.setState({ method: e.target.value }),
       showErr: s.tried && this.missing(),
       sent: s.sent, notSent: !s.sent, mailHref: mailHref,
+      savedToServer: !!s.savedToServer, needsWhatsApp: !s.savedToServer,
       thanks: 'Thanks, ' + (first || 'and welcome') + '.',
       phoneOut: s.sentPhone || '',
       waLink: wa,

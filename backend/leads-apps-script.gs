@@ -8,7 +8,7 @@
  */
 
 /** Email address that should be told about each new lead. */
-var NOTIFY_EMAIL = 'hello@konnexplay.com';
+var NOTIFY_EMAIL = 'anis@konnexplay.com';
 
 /** Tab name inside the spreadsheet. Created automatically. */
 var SHEET_NAME = 'Leads';
