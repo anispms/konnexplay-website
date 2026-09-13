@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>KonnexPlay site settings</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0D1B3E; --ink-2:#3D4457; --muted:#5A6275; --line:#DDE0E5;
+    --paper:#FFFFFF; --shell:#F4F6F8; --brand:#0DC59A; --brand-ink:#062B22;
+    --danger:#B3261E; --ok:#0F7B4F;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{
+    font:15px/1.55 Inter,system-ui,-apple-system,sans-serif;
+    color:var(--ink); background:var(--shell);
+    display:grid; grid-template-rows:auto 1fr; height:100vh; overflow:hidden;
+  }
+  header{
+    background:var(--ink); color:#fff; padding:12px 20px;
+    display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+  }
+  header h1{font:700 17px/1.2 Outfit,sans-serif; margin:0; letter-spacing:-.01em}
+  header .sp{flex:1}
+  .pill{font-size:12px; padding:4px 10px; border-radius:999px; background:rgba(255,255,255,.14); color:#E3E8F2}
+  .pill.on{background:var(--brand); color:var(--brand-ink); font-weight:600}
+  main{display:grid; grid-template-columns:minmax(340px,420px) 1fr; min-height:0}
+  @media (max-width:900px){
+    body{overflow:auto; height:auto}
+    main{grid-template-columns:1fr}
+    .preview{height:70vh}
+  }
+  .panel{background:var(--paper); border-right:1px solid var(--line); overflow-y:auto; padding:0 0 28px}
+  .group{border-bottom:1px solid var(--line); padding:18px 20px}
+  .group h2{font:700 12px/1 Inter,sans-serif; letter-spacing:.14em; color:var(--muted); margin:0 0 14px; text-transform:uppercase}
+  label{display:block; margin:0 0 13px}
+  label span{display:block; font-size:13px; color:var(--ink-2); margin-bottom:5px; font-weight:500}
+  label small{display:block; font-size:12px; color:var(--muted); font-weight:400; margin-top:4px; line-height:1.45}
+  input[type=text]{
+    width:100%; padding:10px 12px; font:15px Inter,sans-serif; color:var(--ink);
+    border:1.5px solid var(--line); border-radius:6px; background:#fff; min-height:44px;
+  }
+  input[type=text]:focus{outline:none; border-color:var(--brand); box-shadow:0 0 0 3px rgba(13,197,154,.16)}
+  input.bad{border-color:var(--danger)}
+  .err{color:var(--danger); font-size:12px; margin-top:4px; display:none}
+  .err.show{display:block}
+  .actions{position:sticky; bottom:0; background:var(--paper); border-top:1px solid var(--line); padding:14px 20px; display:flex; gap:10px; flex-wrap:wrap}
+  button{
+    font:600 15px Inter,sans-serif; padding:12px 18px; border-radius:6px; cursor:pointer;
+    min-height:46px; border:1.5px solid transparent;
+  }
+  .primary{background:var(--brand); color:var(--brand-ink)}
+  .primary:disabled{background:#C9CFD6; color:#6B7280; cursor:not-allowed}
+  .ghost{background:#fff; color:var(--ink); border-color:var(--ink)}
+  .preview{position:relative; background:#fff; min-height:0}
+  .preview iframe{width:100%; height:100%; border:0; display:block}
+  .previewbar{
+    position:absolute; top:10px; right:14px; z-index:2; display:flex; gap:8px; align-items:center;
+    background:rgba(13,27,62,.9); color:#fff; padding:6px 10px; border-radius:999px; font-size:12px;
+  }
+  .previewbar button{font-size:12px; padding:5px 10px; min-height:0; background:transparent; color:#fff; border:1px solid rgba(255,255,255,.4); border-radius:999px}
+  .previewbar button[aria-pressed=true]{background:#fff; color:var(--ink); font-weight:600}
+  .msg{padding:11px 14px; border-radius:6px; font-size:14px; margin:0 20px 14px; line-height:1.5; display:none}
+  .msg.show{display:block}
+  .msg.ok{background:#E7F5EE; color:var(--ok); border:1px solid #B9E0CD}
+  .msg.err{background:#FBEAE9; color:var(--danger); border:1px solid #F0C3C0}
+  .msg.info{background:#EEF2F7; color:var(--ink-2); border:1px solid var(--line)}
+  .setup{padding:18px 20px; background:#FFF8E8; border-bottom:1px solid #F0DFB5}
+  .setup h2{color:#8A6A12}
+  .setup p{margin:0 0 12px; font-size:13.5px; color:#6B5410; line-height:1.55}
+  .setup a{color:#6B5410}
+  code{background:#EEF2F7; padding:1px 5px; border-radius:3px; font-size:12.5px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .dirty{display:none; font-size:12px; color:#8A6A12; background:#FFF3D6; border:1px solid #F0DFB5; padding:4px 10px; border-radius:999px}
+  .dirty.show{display:inline-block}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>KonnexPlay site settings</h1>
+  <span class="dirty" id="dirty">Unsaved changes</span>
+  <span class="sp"></span>
+  <span class="pill" id="connPill">Not connected</span>
+  <a class="pill" id="viewSite" href="../" target="_blank" rel="noopener" style="text-decoration:none">Open the live site &#8599;</a>
+</header>
+
+<main>
+  <section class="panel" aria-label="Settings">
+
+    <div class="setup" id="setupBox">
+      <h2>One-time setup</h2>
+      <p>To save changes this page needs permission to write to your GitHub repository. You create a token once and paste it below. It is stored only in this browser and never sent anywhere except GitHub.</p>
+      <p>
+        Open <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">GitHub token settings</a>,
+        then: <strong>Repository access</strong> &rarr; Only select repositories &rarr; <code>konnexplay-website</code>.
+        Under <strong>Permissions</strong> &rarr; Repository permissions &rarr; set <strong>Contents</strong> to <strong>Read and write</strong>.
+        Generate it and copy the token.
+      </p>
+      <label>
+        <span>GitHub token</span>
+        <input type="text" id="token" placeholder="github_pat_..." autocomplete="off" spellcheck="false">
+        <small>Kept in this browser only. Clearing your browser data removes it and you will paste a new one.</small>
+      </label>
+      <button class="ghost" id="connect" type="button">Connect</button>
+      <button class="ghost" id="forget" type="button" style="display:none">Forget token</button>
+    </div>
+
+    <div class="msg" id="msg" role="status" aria-live="polite"></div>
+
+    <div class="group">
+      <h2>Contact</h2>
+      <label>
+        <span>Phone and WhatsApp number</span>
+        <input type="text" id="phoneDisplay" placeholder="+91 77788 58901">
+        <small>Shown across the site. Used for call links and the WhatsApp handoff on the demo form.</small>
+        <em class="err" id="err-phoneDisplay"></em>
+      </label>
+      <label>
+        <span>Email address</span>
+        <input type="text" id="email" placeholder="hello@konnexplay.com">
+        <em class="err" id="err-email"></em>
+      </label>
+      <label>
+        <span>Instagram page</span>
+        <input type="text" id="instagram" placeholder="https://www.instagram.com/konnex_play/">
+        <em class="err" id="err-instagram"></em>
+      </label>
+    </div>
+
+    <div class="group">
+      <h2>Pricing</h2>
+      <label>
+        <span>Starter, rupees per court per year</span>
+        <input type="text" id="starter" placeholder="12,000">
+        <small>Write it the way it should read, with the comma. Do not add the rupee sign.</small>
+        <em class="err" id="err-starter"></em>
+      </label>
+      <label>
+        <span>Pro, rupees per court per year</span>
+        <input type="text" id="pro" placeholder="18,000">
+        <em class="err" id="err-pro"></em>
+      </label>
+      <label>
+        <span>Setup fee waived, rupees</span>
+        <input type="text" id="setupWaived" placeholder="5,000">
+        <em class="err" id="err-setupWaived"></em>
+      </label>
+    </div>
+
+    <div class="group">
+      <h2>Company</h2>
+      <label>
+        <span>Registered address</span>
+        <input type="text" id="address" placeholder="57-58, Shiva Park Society, Adajan, Surat 395009, Gujarat">
+        <small>Appears on the legal pages.</small>
+      </label>
+    </div>
+
+    <div class="group">
+      <h2>Demo requests</h2>
+      <label>
+        <span>Lead capture web app URL</span>
+        <input type="text" id="endpoint" placeholder="https://script.google.com/macros/s/.../exec">
+        <small>From the Google Apps Script setup in <code>backend/README.md</code>. While this is empty, demo requests only reach you if the visitor presses send in WhatsApp.</small>
+        <em class="err" id="err-endpoint"></em>
+      </label>
+    </div>
+
+    <div class="actions">
+      <button class="primary" id="save" type="button" disabled>Save and publish</button>
+      <button class="ghost" id="revert" type="button">Undo my changes</button>
+    </div>
+  </section>
+
+  <section class="preview" aria-label="Preview of the website">
+    <div class="previewbar">
+      <span>Preview</span>
+      <button type="button" id="vDesk" aria-pressed="true">Desktop</button>
+      <button type="button" id="vPhone" aria-pressed="false">Phone</button>
+      <button type="button" id="reload">Reload</button>
+    </div>
+    <iframe id="frame" src="../index.html" title="Website preview"></iframe>
+  </section>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  var OWNER = 'anispms';
+  var REPO = 'konnexplay-website';
+  var BRANCH = 'main';
+  var FILE = 'content.json';
+  var TOKEN_KEY = 'kx_admin_token';
+
+  var FIELDS = {
+    phoneDisplay: ['contact', 'phoneDisplay'],
+    email: ['contact', 'email'],
+    instagram: ['contact', 'instagram'],
+    starter: ['pricing', 'starter'],
+    pro: ['pricing', 'pro'],
+    setupWaived: ['pricing', 'setupWaived'],
+    address: ['company', 'address'],
+    endpoint: ['leads', 'endpoint']
+  };
+
+  var $ = function (id) { return document.getElementById(id); };
+  var content = null;   // as loaded from GitHub
+  var sha = null;       // blob sha, needed to update without clobbering
+  var token = '';
+  var dirty = false;
+
+  function msg(kind, text) {
+    var m = $('msg');
+    m.className = 'msg show ' + kind;
+    m.textContent = text;
+  }
+  function clearMsg() { $('msg').className = 'msg'; }
+
+  /* ---------- validation ---------- */
+
+  var RULES = {
+    phoneDisplay: function (v) {
+      if (!v) return 'A phone number is required.';
+      if (v.replace(/\D/g, '').length < 10) return 'That does not look like a full phone number.';
+      return '';
+    },
+    email: function (v) {
+      if (!v) return 'An email address is required.';
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(v)) return 'That does not look like an email address.';
+      return '';
+    },
+    instagram: function (v) {
+      if (v && !/^https:\/\//.test(v)) return 'Must start with https://';
+      return '';
+    },
+    starter: function (v) { return /^[\d,]+$/.test(v) ? '' : 'Numbers and commas only, for example 12,000'; },
+    pro: function (v) { return /^[\d,]+$/.test(v) ? '' : 'Numbers and commas only, for example 18,000'; },
+    setupWaived: function (v) { return /^[\d,]+$/.test(v) ? '' : 'Numbers and commas only, for example 5,000'; },
+    endpoint: function (v) {
+      if (!v) return '';
+      if (!/^https:\/\/script\.google\.com\/macros\/s\/[^/]+\/exec$/.test(v)) {
+        return 'Should look like https://script.google.com/macros/s/.../exec';
+      }
+      return '';
+    }
+  };
+
+  function validate() {
+    var ok = true;
+    Object.keys(FIELDS).forEach(function (id) {
+      var el = $(id);
+      if (!el) return;
+      var rule = RULES[id];
+      var problem = rule ? rule(el.value.trim()) : '';
+      var err = $('err-' + id);
+      if (problem) { ok = false; el.classList.add('bad'); if (err) { err.textContent = problem; err.className = 'err show'; } }
+      else { el.classList.remove('bad'); if (err) err.className = 'err'; }
+    });
+    return ok;
+  }
+
+  /* ---------- model <-> form ---------- */
+
+  function get(obj, path) {
+    var o = obj;
+    for (var i = 0; i < path.length; i++) { if (!o) return ''; o = o[path[i]]; }
+    return o == null ? '' : String(o);
+  }
+  function set(obj, path, val) {
+    var o = obj;
+    for (var i = 0; i < path.length - 1; i++) { if (!o[path[i]]) o[path[i]] = {}; o = o[path[i]]; }
+    o[path[path.length - 1]] = val;
+  }
+
+  function formToContent() {
+    var c = JSON.parse(JSON.stringify(content || {}));
+    Object.keys(FIELDS).forEach(function (id) {
+      var el = $(id);
+      if (el) set(c, FIELDS[id], el.value.trim());
+    });
+    // Digits are derived, never typed, so the two can never disagree.
+    var d = ($('phoneDisplay').value || '').replace(/\D/g, '');
+    if (d) set(c, ['contact', 'phoneDigits'], d.length === 10 ? '91' + d : d);
+    return c;
+  }
+
+  function contentToForm(c) {
+    Object.keys(FIELDS).forEach(function (id) {
+      var el = $(id);
+      if (el) el.value = get(c, FIELDS[id]);
+    });
+  }
+
+  /* ---------- preview ---------- */
+
+  var previewTimer = null;
+  function pushPreview() {
+    clearTimeout(previewTimer);
+    previewTimer = setTimeout(function () {
+      var f = $('frame');
+      if (!f || !f.contentWindow) return;
+      try {
+        f.contentWindow.postMessage({ type: 'kx-preview-content', content: formToContent() }, '*');
+      } catch (e) {}
+    }, 350);
+  }
+
+  function markDirty() {
+    dirty = true;
+    $('dirty').className = 'dirty show';
+    pushPreview();
+    validate();
+  }
+
+  /* ---------- GitHub ---------- */
+
+  function api(path, opts) {
+    opts = opts || {};
+    opts.headers = Object.assign(
+      {
+        Accept: 'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2022-11-28'
+      },
+      token ? { Authorization: 'Bearer ' + token } : {},
+      opts.headers || {}
+    );
+    return fetch('https://api.github.com' + path, opts);
+  }
+
+  function b64encode(str) {
+    return btoa(unescape(encodeURIComponent(str)));
+  }
+  function b64decode(str) {
+    return decodeURIComponent(escape(atob(str.replace(/\s/g, ''))));
+  }
+
+  function loadContent() {
+    // Public repo, so reading works with or without a token.
+    return api('/repos/' + OWNER + '/' + REPO + '/contents/' + FILE + '?ref=' + BRANCH)
+      .then(function (r) {
+        if (r.status === 404) throw new Error('content.json is not in the repository yet.');
+        if (!r.ok) throw new Error('GitHub said ' + r.status + ' when reading content.json.');
+        return r.json();
+      })
+      .then(function (j) {
+        sha = j.sha;
+        content = JSON.parse(b64decode(j.content));
+        contentToForm(content);
+        dirty = false;
+        $('dirty').className = 'dirty';
+      });
+  }
+
+  function save() {
+    if (!validate()) { msg('err', 'Fix the highlighted fields first.'); return; }
+    if (!token) { msg('err', 'Connect with a GitHub token before saving.'); return; }
+
+    var next = formToContent();
+    var body = JSON.stringify(next, null, 2) + '\n';
+    $('save').disabled = true;
+    msg('info', 'Saving...');
+
+    api('/repos/' + OWNER + '/' + REPO + '/contents/' + FILE, {
+      method: 'PUT',
+      body: JSON.stringify({
+        message: 'Update site settings from the admin panel',
+        content: b64encode(body),
+        sha: sha,
+        branch: BRANCH
+      })
+    })
+      .then(function (r) {
+        return r.json().then(function (j) { return { ok: r.ok, status: r.status, j: j }; });
+      })
+      .then(function (res) {
+        if (!res.ok) {
+          if (res.status === 401 || res.status === 403) {
+            throw new Error('GitHub refused the token. Check it has Contents: Read and write on this repository.');
+          }
+          if (res.status === 409 || res.status === 422) {
+            throw new Error('Someone else changed the file. Reload this page and make your change again.');
+          }
+          throw new Error((res.j && res.j.message) || ('GitHub said ' + res.status));
+        }
+        sha = res.j.content.sha;
+        content = next;
+        dirty = false;
+        $('dirty').className = 'dirty';
+        msg('ok', 'Saved. The live site updates in about a minute. Your preview already shows the change.');
+      })
+      .catch(function (e) { msg('err', e.message); })
+      .then(function () { $('save').disabled = false; });
+  }
+
+  function connect(quiet) {
+    var t = $('token').value.trim();
+    if (!t) { if (!quiet) msg('err', 'Paste a token first.'); return; }
+    token = t;
+    msg('info', 'Checking the token...');
+    api('/repos/' + OWNER + '/' + REPO)
+      .then(function (r) {
+        if (r.status === 401) throw new Error('That token was not accepted. It may be wrong or expired.');
+        if (!r.ok) throw new Error('GitHub said ' + r.status + '.');
+        return r.json();
+      })
+      .then(function (repo) {
+        if (!repo.permissions || !repo.permissions.push) {
+          throw new Error('That token can read but not write. Set Contents to Read and write.');
+        }
+        try { localStorage.setItem(TOKEN_KEY, token); } catch (e) {}
+        $('connPill').textContent = 'Connected';
+        $('connPill').className = 'pill on';
+        $('save').disabled = false;
+        $('forget').style.display = '';
+        msg('ok', 'Connected. You can save changes now.');
+      })
+      .catch(function (e) { token = ''; $('save').disabled = true; msg('err', e.message); });
+  }
+
+  /* ---------- wiring ---------- */
+
+  Object.keys(FIELDS).forEach(function (id) {
+    var el = $(id);
+    if (el) el.addEventListener('input', markDirty);
+  });
+
+  $('connect').addEventListener('click', function () { connect(false); });
+  $('save').addEventListener('click', save);
+  $('revert').addEventListener('click', function () {
+    if (content) { contentToForm(content); dirty = false; $('dirty').className = 'dirty'; pushPreview(); validate(); clearMsg(); }
+  });
+  $('forget').addEventListener('click', function () {
+    try { localStorage.removeItem(TOKEN_KEY); } catch (e) {}
+    token = ''; $('token').value = '';
+    $('connPill').textContent = 'Not connected'; $('connPill').className = 'pill';
+    $('save').disabled = true; $('forget').style.display = 'none';
+    msg('info', 'Token removed from this browser.');
+  });
+
+  $('reload').addEventListener('click', function () {
+    $('frame').src = '../index.html?t=' + Date.now();
+  });
+  $('vDesk').addEventListener('click', function () {
+    $('frame').style.maxWidth = ''; $('frame').style.margin = '';
+    $('vDesk').setAttribute('aria-pressed', 'true'); $('vPhone').setAttribute('aria-pressed', 'false');
+  });
+  $('vPhone').addEventListener('click', function () {
+    $('frame').style.maxWidth = '390px'; $('frame').style.margin = '0 auto';
+    $('vDesk').setAttribute('aria-pressed', 'false'); $('vPhone').setAttribute('aria-pressed', 'true');
+  });
+
+  $('frame').addEventListener('load', function () { setTimeout(pushPreview, 900); });
+
+  window.addEventListener('beforeunload', function (e) {
+    if (dirty) { e.preventDefault(); e.returnValue = ''; }
+  });
+
+  // Restore a saved token, then load the current settings.
+  try {
+    var saved = localStorage.getItem(TOKEN_KEY);
+    if (saved) { $('token').value = saved; connect(true); }
+  } catch (e) {}
+
+  loadContent()
+    .then(function () { clearMsg(); })
+    .catch(function (e) {
+      // Fall back to the local file so the panel is usable before the first push.
+      fetch('../content.json', { cache: 'no-store' })
+        .then(function (r) { return r.json(); })
+        .then(function (c) { content = c; contentToForm(c); msg('info', 'Showing the local file. ' + e.message); })
+        .catch(function () { msg('err', e.message); });
+    });
+})();
+</script>
+</body>
+</html>

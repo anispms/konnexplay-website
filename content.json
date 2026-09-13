@@ -1,0 +1,28 @@
+{
+  "_comment": "Business details used across the site. Edited through /admin/. Every value here replaces its default wherever it appears on the site.",
+  "_version": 1,
+  "contact": {
+    "phoneDisplay": "+91 77788 58901",
+    "phoneDigits": "917778858901",
+    "email": "hello@konnexplay.com",
+    "hours": "9 AM to 11 PM, all days",
+    "instagram": "https://www.instagram.com/konnex_play/"
+  },
+  "pricing": {
+    "starter": "12,000",
+    "pro": "18,000",
+    "setupWaived": "5,000",
+    "currency": "₹",
+    "unit": "per court per year"
+  },
+  "company": {
+    "legalName": "Konnex Play Private Limited",
+    "city": "Surat",
+    "state": "Gujarat",
+    "address": "57-58, Shiva Park Society, Adajan, Surat 395009, Gujarat",
+    "cin": "U62011GJ2026PTC181411"
+  },
+  "leads": {
+    "endpoint": ""
+  }
+}
