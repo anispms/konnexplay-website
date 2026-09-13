@@ -174,6 +174,7 @@
     <div class="actions">
       <button class="primary" id="save" type="button" disabled>Save and publish</button>
       <button class="ghost" id="revert" type="button">Undo my changes</button>
+      <p id="saveHint" style="margin:8px 0 0;font-size:13px;color:#8A6A12;flex-basis:100%">Paste your GitHub token above and press Connect to enable saving.</p>
     </div>
   </section>
 
@@ -430,9 +431,17 @@
         $('connPill').className = 'pill on';
         $('save').disabled = false;
         $('forget').style.display = '';
+        var sh = $('saveHint'); if (sh) sh.style.display = 'none';
         msg('ok', 'Connected. You can save changes now.');
       })
-      .catch(function (e) { token = ''; $('save').disabled = true; msg('err', e.message); });
+      .catch(function (e) {
+        token = '';
+        $('save').disabled = true;
+        $('connPill').textContent = 'Not connected';
+        $('connPill').className = 'pill';
+        var sh3 = $('saveHint'); if (sh3) sh3.style.display = '';
+        msg('err', e.message);
+      });
   }
 
   /* ---------- wiring ---------- */
@@ -470,9 +479,12 @@
           lines.push('Can read:  ' + (p.pull ? 'yes' : 'no'));
           lines.push('Can write: ' + (p.push ? 'yes' : 'NO  <-- this is the problem'));
           lines.push('');
-          lines.push(p.push
-            ? 'Access is correct. Press Connect, then Save and publish.'
-            : 'Open the token on GitHub and set Repository permissions, Contents, to Read and write.');
+          if (p.push) {
+            lines.push('Access is correct. Connecting you now...');
+            setTimeout(function () { connect(false); }, 50);
+          } else {
+            lines.push('Open the token on GitHub and set Repository permissions, Contents, to Read and write.');
+          }
         } else if (res.status === 404) {
           lines.push('GitHub says it cannot find ' + OWNER + '/' + REPO + ' for this token.');
           lines.push('');
@@ -503,6 +515,7 @@
     token = ''; $('token').value = '';
     $('connPill').textContent = 'Not connected'; $('connPill').className = 'pill';
     $('save').disabled = true; $('forget').style.display = 'none';
+    var sh2 = $('saveHint'); if (sh2) sh2.style.display = '';
     msg('info', 'Token removed from this browser.');
   });
 
