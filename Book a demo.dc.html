@@ -19,7 +19,7 @@
 <meta property="og:title" content="See KonnexPlay in 20 minutes | KonnexPlay" />
 <meta property="og:description" content="Your courts, your rates, your Saturday. No slide deck." />
 <meta property="og:image" content="assets/shot-calendar-v4.jpg" />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&family=Outfit:wght@600..800&display=swap" rel="stylesheet" />
 <style>
 html, body { margin: 0; padding: 0; background: #FAFAF9; }
 a { color: #0D1B3E; } a:hover { color: #088064; }
@@ -272,7 +272,7 @@ class Component extends DCLogic {
       page: location.href,
       referrer: document.referrer || ''
     };
-    const body = ['Name: ' + s.name, 'Mobile: +91 ' + this.digits(s.phone), 'Venue: ' + s.venue, 'City: ' + s.city, 'Courts: ' + s.courts, 'Main sport: ' + s.sport, 'Takes bookings today via: ' + (s.method || 'not given')].join('\n');
+    const body = ['Name: ' + s.name, 'Mobile: +91 ' + this.digits(s.phone), 'Venue: ' + s.venue, 'City: ' + s.city, 'Courts: ' + s.courts, 'Sports: ' + lead.sport, 'Takes bookings today via: ' + (s.method || 'not given')].join('\n');
     try {
       const key = 'kx_demo_requests';
       const log = JSON.parse(window.localStorage.getItem(key) || '[]');
