@@ -12,4 +12,4 @@
 window.KX_LEAD_ENDPOINT = '';
 
 /* Build id for the page files. Rewritten by tools-stamp-version.js. */
-window.KX_BUILD = '9b07c524';
+window.KX_BUILD = '6e4420a8';

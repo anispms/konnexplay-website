@@ -78,7 +78,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 
 <section data-screen-label="02 Terms strip" style="background:#FAFAF9;border-bottom:1px solid #DDE0E5">
 <div style="max-width:1200px;margin:0 auto;padding:28px 24px;display:grid;grid-template-columns:{{ cols3 }};gap:20px 40px;align-items:baseline">
-<div style="font-size:17px;line-height:1.5;text-wrap:pretty"><strong data-count="12000" data-prefix="₹" style="font-weight:700;font-variant-numeric:tabular-nums">₹12,000</strong> per court per year</div>
+<div style="font-size:17px;line-height:1.5;text-wrap:pretty">from <strong data-count="12000" data-prefix="₹" style="font-weight:700;font-variant-numeric:tabular-nums">₹12,000</strong> per court per year</div>
 <div style="font-size:17px;line-height:1.5;text-wrap:pretty">No commission on your own bookings</div>
 <div style="font-size:17px;line-height:1.5;text-wrap:pretty">Setup and training worth ₹5,000, waived</div>
 </div>
@@ -190,7 +190,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 <p style="font-size:17px;line-height:1.6;color:#3D4457;margin:0;text-wrap:pretty">Players used to ask you what you have. Now they open the link, see your courts, your sports and your rates, and start from there.</p>
 </div>
 <div data-feat="1" style="border-left:2px solid {{ fb1 }};padding:20px 0 20px 22px;transition:border-color 280ms ease,opacity 280ms ease">
-<h3 style="font-family:Outfit,sans-serif;font-weight:700;font-size:22px;letter-spacing:-0.02em;margin:0 0 8px">Live slots, priced your way</h3>
+<h3 style="font-family:Outfit,sans-serif;font-weight:700;font-size:22px;letter-spacing:-0.02em;margin:0 0 8px">Live slots, priced your way<span style="display:inline-block;margin-left:8px;padding:2px 7px;border:1px solid #088064;border-radius:2px;font-family:Inter,sans-serif;font-size:10px;letter-spacing:0.1em;font-weight:700;color:#088064;vertical-align:middle">PRO</span></h3>
 <p style="font-size:17px;line-height:1.6;color:#3D4457;margin:0;text-wrap:pretty">Morning, evening, weekday, weekend and festival rates are rules you set once. The player only ever sees what is genuinely free, at the right price.</p>
 </div>
 <div data-feat="2" style="border-left:2px solid {{ fb2 }};padding:20px 0 20px 22px;transition:border-color 280ms ease,opacity 280ms ease">
@@ -202,7 +202,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 <p style="font-size:17px;line-height:1.6;color:#3D4457;margin:0;text-wrap:pretty">Your manager, your evening staff and you are looking at the same Saturday. A slot that is taken is gone everywhere, in under a second.</p>
 </div>
 <div data-feat="4" style="border-left:2px solid {{ fb4 }};padding:20px 0 20px 22px;transition:border-color 280ms ease,opacity 280ms ease">
-<h3 style="font-family:Outfit,sans-serif;font-weight:700;font-size:22px;letter-spacing:-0.02em;margin:0 0 8px">The report you open on the 1st</h3>
+<h3 style="font-family:Outfit,sans-serif;font-weight:700;font-size:22px;letter-spacing:-0.02em;margin:0 0 8px">The report you open on the 1st<span style="display:inline-block;margin-left:8px;padding:2px 7px;border:1px solid #088064;border-radius:2px;font-family:Inter,sans-serif;font-size:10px;letter-spacing:0.1em;font-weight:700;color:#088064;vertical-align:middle">PRO</span></h3>
 <p style="font-size:17px;line-height:1.6;color:#3D4457;margin:0;text-wrap:pretty">What came in, from which court, what was discounted, what you spent and what is still due. Totalled before you ask for it.</p>
 </div>
 </div>
@@ -299,11 +299,12 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 <div data-rv="1">
 <div style="font-size:12px;letter-spacing:0.14em;font-weight:700;color:#088064;margin-bottom:22px">WHAT COMMISSION COSTS</div>
 <div style="font-family:Outfit,sans-serif;font-weight:800;font-size:clamp(56px,8vw,120px);line-height:0.92;letter-spacing:-0.04em;font-variant-numeric:tabular-nums;text-wrap:balance">{{ commissionStr }}</div>
-<p style="font-size:18px;line-height:1.65;color:#3D4457;margin:22px 0 32px;max-width:56ch;text-wrap:pretty">A year, in commission, for a venue doing ₹2,00,000 a month through someone else's app. On KonnexPlay the same venue pays {{ konnexStr }} a year and keeps the rest.</p>
+<p style="font-size:18px;line-height:1.65;color:#3D4457;margin:22px 0 32px;max-width:56ch;text-wrap:pretty">A year, in commission, for a venue doing ₹2,00,000 a month through someone else's app. On KonnexPlay the same venue pays {{ konnexStr }} a year on Starter, or {{ konnexProStr }} on Pro, and keeps the rest.</p>
 <div style="font-size:12px;letter-spacing:0.14em;font-weight:700;color:#5A6275;margin-bottom:10px">A YEAR, SIDE BY SIDE</div>
 <div style="display:grid;gap:12px">
 <div><div style="height:30px;width:100%;background:#0D1B3E"></div><div style="font-size:15px;margin-top:8px">Commission at {{ rate }}% · {{ commissionStr }}</div></div>
-<div><div style="height:30px;width:{{ konnexBarW }};min-width:6px;background:#0DC59A;transition:width 280ms ease"></div><div style="font-size:15px;margin-top:8px">KonnexPlay · {{ konnexStr }}</div></div>
+<div><div style="height:30px;width:{{ konnexBarW }};min-width:6px;background:#0DC59A;transition:width 280ms ease"></div><div style="font-size:15px;margin-top:8px">KonnexPlay Starter · {{ konnexStr }}</div></div>
+<div><div style="height:30px;width:{{ konnexProBarW }};min-width:6px;background:#088064;transition:width 280ms ease"></div><div style="font-size:15px;margin-top:8px">KonnexPlay Pro · {{ konnexProStr }}</div></div>
 </div>
 </div>
 <div data-rv="1">
@@ -314,8 +315,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 </div>
 <div style="margin-top:32px">
 <div style="border-top:2px solid #0D1B3E;padding-top:18px"><div style="font-size:12px;letter-spacing:0.14em;font-weight:700;color:#5A6275">COMMISSION, A YEAR</div><div style="font-family:Outfit,sans-serif;font-weight:800;font-size:clamp(28px,3vw,38px);line-height:1.05;letter-spacing:-0.02em;margin-top:8px;font-variant-numeric:tabular-nums;text-wrap:balance">{{ commissionStr }}</div></div>
-<div style="border-top:2px solid #088064;padding-top:18px;margin-top:26px"><div style="font-size:12px;letter-spacing:0.14em;font-weight:700;color:#088064">KONNEXPLAY, A YEAR</div><div style="font-family:Outfit,sans-serif;font-weight:800;font-size:clamp(28px,3vw,38px);line-height:1.05;letter-spacing:-0.02em;margin-top:8px;color:#088064;font-variant-numeric:tabular-nums;text-wrap:balance">{{ konnexStr }}</div></div>
-<p style="font-size:17px;line-height:1.6;color:#3D4457;margin:28px 0 0;max-width:56ch;text-wrap:pretty">₹12,000 per court per year. Setup and training worth ₹5,000, waived. No KonnexPlay commission on bookings through your own website, phone, WhatsApp or counter. Standard payment gateway charges apply on online payments. <a href="#/pricing" style="font-weight:600">Pricing</a></p>
+<div style="border-top:2px solid #088064;padding-top:18px;margin-top:26px"><div style="font-size:12px;letter-spacing:0.14em;font-weight:700;color:#088064">KONNEXPLAY STARTER, A YEAR</div><div style="font-family:Outfit,sans-serif;font-weight:800;font-size:clamp(28px,3vw,38px);line-height:1.05;letter-spacing:-0.02em;margin-top:8px;color:#088064;font-variant-numeric:tabular-nums;text-wrap:balance">{{ konnexStr }}</div></div>
+<p style="font-size:17px;line-height:1.6;color:#3D4457;margin:28px 0 0;max-width:56ch;text-wrap:pretty">Starter ₹12,000 per court per year. Pro ₹18,000, which is the one you need if you price mornings and evenings differently, or want the expense and profit reports. Setup and training worth ₹5,000, waived. No KonnexPlay commission on bookings through your own website, phone, WhatsApp or counter. Standard payment gateway charges apply on online payments. <a href="#/pricing" style="font-weight:600">Pricing</a></p>
 </div>
 </div>
 </div>
@@ -667,7 +668,11 @@ class Component extends DCLogic {
     const s = this.state, w = s.w, m = w < 900;
     const b = this.num(s.mBookings), r = this.num(s.rate), c = this.num(s.nCourts);
     const comm = (b === null || r === null) ? 0 : b * (r / 100) * 12;
+    // Both plans, because the homepage describes features from both. Quoting
+    // only the Starter figure here put this page ₹24,000 away from the pricing
+    // page for the very same venue.
     const kp = c === null ? 0 : c * 12000;
+    const kpPro = c === null ? 0 : c * 18000;
     const fo = i => (s.feat === i ? 1 : 0);
     const fb = i => (s.feat === i ? '#0DC59A' : '#DDE0E5');
     return {
@@ -690,8 +695,9 @@ class Component extends DCLogic {
       featLabel: this.FEATS[s.feat] || this.FEATS[0],
       calendar: this.calendarEl(),
       mBookings: s.mBookings, rate: s.rate, nCourts: s.nCourts,
-      commissionStr: this.inr(comm), konnexStr: this.inr(kp),
+      commissionStr: this.inr(comm), konnexStr: this.inr(kp), konnexProStr: this.inr(kpPro),
       konnexBarW: comm <= 0 ? '6px' : Math.max(1.5, Math.min(100, kp / comm * 100)) + '%',
+      konnexProBarW: comm <= 0 ? '6px' : Math.max(1.5, Math.min(100, kpPro / comm * 100)) + '%',
       setBookings: e => this.setState({ mBookings: e.target.value }),
       setRate: e => this.setState({ rate: e.target.value }),
       setNCourts: e => this.setState({ nCourts: e.target.value }),
