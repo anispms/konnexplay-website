@@ -203,9 +203,52 @@ class Component extends DCLogic {
     return g;
   }
   missing() { return this.gaps().length > 0; }
+
+  /** Which input matches each phrase gaps() produces. */
+  kxGapFields() {
+    const s = this.state, out = [];
+    if (!s.name.trim()) out.push('name');
+    if (this.digits(s.phone).length !== 10) out.push('phone');
+    if (!s.venue.trim()) out.push('venue');
+    if (!s.city.trim()) out.push('city');
+    return out;
+  }
+
+  /**
+   * Put the first empty field on screen, focus it, and mark every empty one
+   * as invalid. Runs after render, so the alert exists by the time we look.
+   */
+  kxFocusFirstGap() {
+    const names = this.kxGapFields();
+    setTimeout(() => {
+      try {
+        const all = ['name', 'phone', 'venue', 'city'];
+        all.forEach((n) => {
+          const el = document.querySelector('input[name="' + n + '"]');
+          if (!el) return;
+          const bad = names.indexOf(n) !== -1;
+          el.setAttribute('aria-invalid', bad ? 'true' : 'false');
+        });
+        const first = names.length
+          ? document.querySelector('input[name="' + names[0] + '"]')
+          : null;
+        const alert = document.querySelector('[role="alert"]');
+        const target = first || alert;
+        if (target && target.scrollIntoView) {
+          target.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        }
+        // Focus after the scroll starts, so the browser does not fight it.
+        if (first) setTimeout(() => { try { first.focus({ preventScroll: true }); } catch (e) { first.focus(); } }, 260);
+      } catch (e) {}
+    }, 60);
+  }
   done() { const s = this.state; return [!!s.name.trim(), this.digits(s.phone).length === 10, !!s.venue.trim(), !!s.city.trim()].filter(Boolean).length; }
   send() {
-    if (this.missing()) { this.setState({ tried: true }); return; }
+    if (this.missing()) {
+      this.setState({ tried: true });
+      this.kxFocusFirstGap();
+      return;
+    }
     const s = this.state;
     const lead = {
       name: s.name,
@@ -259,6 +302,12 @@ class Component extends DCLogic {
         document.body.appendChild(a); a.click(); document.body.removeChild(a);
       } catch (e) {}
     }
+    try {
+      ['name', 'phone', 'venue', 'city'].forEach(function (n) {
+        var el = document.querySelector('input[name="' + n + '"]');
+        if (el) el.setAttribute('aria-invalid', 'false');
+      });
+    } catch (e) {}
     this.setState({ sent: true, tried: false, sentName: s.name, sentPhone: '+91 ' + this.digits(s.phone), leadText: waText, savedToServer: savedToServer });
   }
   renderVals() {
