@@ -391,7 +391,12 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 <div>
 <div style="font-family:Outfit,sans-serif;font-weight:800;font-size:28px;letter-spacing:-0.02em;margin-bottom:12px">{{ thanks }}</div>
 <sc-if value="{{ savedToServer }}" hint-placeholder-val="{{ true }}">
-<p style="font-size:17px;line-height:1.6;color:#3D4457;margin:0;text-wrap:pretty">We have your details. Roshan will call you to fix a time, and the demo runs on your own courts and rates.</p>
+<p style="font-size:17px;line-height:1.6;color:#3D4457;margin:0 0 18px;text-wrap:pretty">We have your details. Roshan will call you to fix a time, and the demo runs on your own courts and rates.</p>
+<div style="background:#F1FAF6;border-left:3px solid #0DC59A;padding:14px 16px;font-size:15px;line-height:1.55;color:#3D4457">In a hurry? Message us and we will answer today.
+<div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:10px">
+<a href="{{ waLink }}" target="_blank" rel="noopener" style="background:#0DC59A;color:#062B22;padding:11px 18px;font-size:15px;font-weight:600;text-decoration:none;min-height:44px;display:inline-flex;align-items:center">WhatsApp us</a>
+<a href="tel:+917778858901" style="border:1.5px solid #0D1B3E;color:#0D1B3E;padding:11px 18px;font-size:15px;font-weight:600;text-decoration:none;min-height:44px;display:inline-flex;align-items:center">Call +91 77788 58901</a>
+</div></div>
 </sc-if>
 <sc-if value="{{ needsWhatsApp }}" hint-placeholder-val="{{ false }}">
 <sc-if value="{{ waOpened }}" hint-placeholder-val="{{ true }}">
