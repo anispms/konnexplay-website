@@ -70,9 +70,10 @@
    */
   function splitName(full) {
     var parts = String(full || '').trim().split(/\s+/).filter(Boolean);
-    if (!parts.length) return { first: '', last: 'Unknown' };
-    if (parts.length === 1) return { first: '', last: parts[0] };
-    return { first: parts.shift(), last: parts.join(' ') };
+    if (!parts.length) return { first: '', last: 'Unknown', full: 'Unknown' };
+    if (parts.length === 1) return { first: '', last: parts[0], full: parts[0] };
+    var full = parts.join(' ');
+    return { first: parts[0], last: parts.slice(1).join(' '), full: full };
   }
 
   /**
@@ -110,8 +111,11 @@
       hidden(form, 'returnURL', location.origin + location.pathname);
 
       // Lead fields, named exactly as Zoho expects them.
-      hidden(form, 'Last Name', n.last);
-      if (n.first) hidden(form, 'First Name', n.first);
+      // The whole name goes in Last Name, which is the one field a Lead
+      // cannot be without. Splitting it into First and Last only works if the
+      // web form carries a First Name field, and a field the form does not
+      // have is discarded, which would leave a lead called by surname alone.
+      hidden(form, 'Last Name', n.full);
       hidden(form, 'Company', lead.venue || 'Not stated');
       // Both, because Phone and Mobile are separate fields in Zoho and the
       // form decides which one it wants. Whichever it does not have is ignored.
