@@ -64,6 +64,25 @@ header a:focus-visible {
    no desktop layout. */
 
 @media (max-width: 900px) {
+  /* The Platform jump list. These are real navigation now that they scroll
+     properly, so they need a thumb-sized target rather than a text line. */
+  div[style*="font-size: 19px"][style*="font-weight: 600"] > a[href] {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* Breadcrumbs and the related-pages row are navigation, but were authored
+     at desktop line-height: 16px and 19px tall. Both are how someone moves
+     between the city and sport pages, so they need a thumb-sized target. */
+  section[style*="padding: 28px 24px 0px"] a[href],
+  div[style*="gap: 16px 32px"] > a[href],
+  div[style*="gap: 16px 28px"] > a[href] {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
   /* Links stacked in a column, which is every footer and menu list here. */
   div[style*="flex-direction:column"] > a[href],
   div[style*="flex-direction: column"] > a[href] {
