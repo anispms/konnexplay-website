@@ -69,6 +69,11 @@
   .msg.err{background:#FBEAE9; color:var(--danger); border:1px solid #F0C3C0}
   .msg.info{background:#EEF2F7; color:var(--ink-2); border:1px solid var(--line)}
   .setup{padding:18px 20px; background:#FFF8E8; border-bottom:1px solid #F0DFB5}
+  .setupdone{display:flex; align-items:center; justify-content:space-between; gap:12px;
+    padding:10px 20px; background:#F1FAF6; border-bottom:1px solid #CDEBDD;
+    font-size:13px; color:var(--ink)}
+  .setupdone button{border:0; background:none; color:var(--ink-2); font-size:13px;
+    text-decoration:underline; cursor:pointer; padding:6px 0; min-height:44px}
   .setup h2{color:#8A6A12}
   .setup p{margin:0 0 12px; font-size:13.5px; color:#6B5410; line-height:1.55}
   .setup a{color:#6B5410}
@@ -129,6 +134,10 @@
 <main>
   <section class="panel" aria-label="Settings">
 
+    <div class="setupdone" id="setupDone" style="display:none">
+      <span><strong>Connected</strong> to anispms/konnexplay-website</span>
+      <button type="button" id="setupShow">Change token</button>
+    </div>
     <div class="setup" id="setupBox">
       <h2>One-time setup</h2>
       <p>To save changes this page needs permission to write to your GitHub repository. You create a token once and paste it below. It is stored only in this browser and never sent anywhere except GitHub.</p>
@@ -731,6 +740,17 @@
       .then(function () { refreshSaveButton(); });
   }
 
+  /**
+   * Show the setup only when it is needed. Once a token works it is a line,
+   * not a page of instructions.
+   */
+  function setupFolded(folded) {
+    var box = $('setupBox'), line = $('setupDone');
+    if (!box || !line) return;
+    box.style.display = folded ? 'none' : '';
+    line.style.display = folded ? 'flex' : 'none';
+  }
+
   function connect(quiet) {
     var t = $('token').value.trim();
     if (!t) { if (!quiet) msg('err', 'Paste a token first.'); return; }
@@ -757,6 +777,7 @@
         refreshSaveButton();
         $('forget').style.display = '';
         var sh = $('saveHint'); if (sh) sh.style.display = 'none';
+        setupFolded(true);
         msg('ok', 'Connected. You can save changes now.');
       })
       .catch(function (e) {
@@ -798,6 +819,7 @@
   }
   syncAnalyticsHelp();
 
+  $('setupShow').addEventListener('click', function () { setupFolded(false); $('token').focus(); });
   $('connect').addEventListener('click', function () { connect(false); });
 
   $('diag').addEventListener('click', function () {
@@ -862,6 +884,7 @@
     token = ''; $('token').value = '';
     $('connPill').textContent = 'Not connected'; $('connPill').className = 'pill';
     $('save').disabled = true; $('forget').style.display = 'none';
+    setupFolded(false);
     var sh2 = $('saveHint'); if (sh2) sh2.style.display = '';
     msg('info', 'Token removed from this browser.');
   });
