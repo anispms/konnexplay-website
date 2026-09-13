@@ -212,15 +212,6 @@
       </label>
     </div>
 
-    <div class="group">
-      <h2>Demo requests</h2>
-      <label>
-        <span>Lead capture web app URL</span>
-        <input type="text" id="endpoint" placeholder="https://script.google.com/macros/s/.../exec">
-        <small>From the Google Apps Script setup in <code>backend/README.md</code>. While this is empty, demo requests only reach you if the visitor presses send in WhatsApp.</small>
-        <em class="err" id="err-endpoint"></em>
-      </label>
-    </div>
 
     <div class="group">
       <h2>Zoho CRM</h2>
@@ -327,7 +318,6 @@
     pro: ['pricing', 'pro'],
     setupWaived: ['pricing', 'setupWaived'],
     address: ['company', 'address'],
-    endpoint: ['leads', 'endpoint'],
     analyticsProvider: ['analytics', 'provider'],
     analyticsId: ['analytics', 'id'],
     zohoEnabled: ['zoho', 'enabled'],
@@ -410,13 +400,6 @@
       if (p === 'plausible' && !/^[a-z0-9.-]+\.[a-z]{2,}$/i.test(v)) return 'Use the bare domain, like konnexplay.com, with no https:// and no slash.';
       return '';
     },
-    endpoint: function (v) {
-      if (!v) return '';
-      if (!/^https:\/\/script\.google\.com\/macros\/s\/[^/]+\/exec$/.test(v)) {
-        return 'Should look like https://script.google.com/macros/s/.../exec';
-      }
-      return '';
-    }
   };
 
   function validate() {
@@ -561,7 +544,6 @@
     pro: 'Pro, rupees per court per year',
     setupWaived: 'Setup fee waived, rupees',
     address: 'Registered address',
-    endpoint: 'Lead capture web app URL',
     analyticsProvider: 'Measurement service',
     analyticsId: 'Site identifier',
     zohoEnabled: 'Send demo requests to Zoho CRM',
