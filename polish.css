@@ -305,3 +305,43 @@ header div[style*="z-index: 50"][style*="bottom: 0"] {
 img[style*="aspect-ratio"] {
   height: auto !important;
 }
+
+/* ---------------------------------------------------------------------------
+   The demo card running off the right edge of the screen.
+
+   The card sits in a one-column CSS grid. A 1fr track will not shrink below
+   the min-content width of what is inside it unless the item is explicitly
+   allowed to, and here that floor was 358px. On a 390px phone the card ended
+   8px from the right edge instead of 24, which merely looked off-centre. On a
+   360px phone, which is the common Android width, the card ran 22px past the
+   edge of the screen, taking the Menu button with it.
+
+   That is why it looked broken on a real phone while every check at 390px
+   reported no overflow.
+
+   min-width:0 lets the track shrink to the space actually available. Verified
+   that nothing inside then spills out of the card.
+   --------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  div[style*="max-width: 1200px"][style*="grid-template-columns"] > *,
+  div[style*="max-width:1200px"][style*="grid-template-columns"] > * {
+    min-width: 0;
+  }
+
+  /* The same floor exists at every level down to the input, so the permission
+     to shrink has to travel with it: the field grid, each label, and the flex
+     row inside the mobile label. Without this the card shrinks correctly and
+     the fields simply hang out of its right side instead. */
+  form div[style*="display: grid"] > *,
+  form label,
+  form label > span {
+    min-width: 0 !important;
+  }
+
+  /* Same reason, one level down: the mobile field is a flex row holding "+91"
+     and the input, and the input must be allowed to give up width. */
+  span[style*="border-bottom: 1.5px solid"] > input {
+    min-width: 0 !important;
+    flex: 1 1 0% !important;
+  }
+}
