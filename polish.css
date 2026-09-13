@@ -1,3 +1,38 @@
+/* Focus indicator.
+   Every interactive element on the site computed to outline:none, so someone
+   navigating by keyboard, switch or screen reader had no way to see where they
+   were. That is a straight WCAG 2.4.7 failure and it makes the demo form close
+   to unusable without a mouse.
+
+   :focus-visible means a mouse click still shows nothing, so the design is
+   unchanged for pointer users; the ring appears only for keyboard focus. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid #0DC59A !important;
+  outline-offset: 2px !important;
+  border-radius: 3px;
+}
+
+/* On the dark navy footer and hero, green on navy is legible but a white ring
+   reads faster. */
+footer a:focus-visible,
+header a:focus-visible {
+  outline-color: #FFFFFF !important;
+}
+
+/* Older browsers without :focus-visible still deserve something. */
+@supports not selector(:focus-visible) {
+  a:focus, button:focus, input:focus, select:focus, textarea:focus {
+    outline: 3px solid #0DC59A !important;
+    outline-offset: 2px !important;
+  }
+}
+
 /* At 360px the logo (154px) plus Book a demo (134px) plus Menu (67px) plus
    spacing needs 404px, so Menu was pushed off the right edge of the screen.
    The sticky action bar already carries Book a demo on phones, so the header
