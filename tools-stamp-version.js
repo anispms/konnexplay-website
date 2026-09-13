@@ -25,7 +25,8 @@ const OURS = [
   'polish.css',
   'actionbar.js',
   'zoho.js',
-  'update-check.js'
+  'update-check.js',
+  'anchors.js'
 ];
 
 function sha(buf) {
