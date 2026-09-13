@@ -45,8 +45,13 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 </div></div>
 </sc-if>
 <sc-if value="{{ needsWhatsApp }}" hint-placeholder-val="{{ true }}">
+<sc-if value="{{ waOpened }}" hint-placeholder-val="{{ true }}">
 <p style="font-size:17px;line-height:1.6;color:#3D4457;margin:0 0 18px">WhatsApp just opened with your details filled in. <strong style="font-weight:600">Press send there</strong> and Roshan will call you on <strong style="font-weight:600">{{ phoneOut }}</strong> to fix a time.</p>
-<div style="background:#F4F6F8;border-left:3px solid #0DC59A;padding:14px 16px;margin:0 0 22px;font-size:15px;line-height:1.55;color:#3D4457">Did WhatsApp not open? Use one of these and we will have it straight away.
+</sc-if>
+<sc-if value="{{ waNotOpened }}" hint-placeholder-val="{{ false }}">
+<p style="font-size:17px;line-height:1.6;color:#3D4457;margin:0 0 18px">Your details are ready to send. <strong style="font-weight:600">Tap WhatsApp below</strong> and press send, and Roshan will call you on <strong style="font-weight:600">{{ phoneOut }}</strong> to fix a time.</p>
+</sc-if>
+<div style="background:#F4F6F8;border-left:3px solid #0DC59A;padding:14px 16px;margin:0 0 22px;font-size:15px;line-height:1.55;color:#3D4457">Whichever you prefer, we will have it straight away.
 <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:10px">
 <a href="{{ waLink }}" target="_blank" rel="noopener" style="background:#0DC59A;color:#062B22;padding:11px 18px;font-size:15px;font-weight:600;text-decoration:none;min-height:44px;display:inline-flex;align-items:center">Open WhatsApp</a>
 <a href="tel:+917778858901" style="border:1.5px solid #0D1B3E;color:#0D1B3E;padding:11px 18px;font-size:15px;font-weight:600;text-decoration:none;min-height:44px;display:inline-flex;align-items:center">Call +91 77788 58901</a>
@@ -133,7 +138,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 
 <sc-if value="{{ showErr }}" hint-placeholder-val="{{ false }}"><div role="alert" style="font-size:15px;line-height:1.5;color:#8A4A0F;background:#FFF1E3;border-left:3px solid #B1382C;padding:14px 16px;margin-top:24px">{{ errText }}</div></sc-if>
 
-<button type="submit" style="margin-top:28px;width:100%;border:0;border-radius:0;background:#0DC59A;color:#061428;padding:19px;font-size:18px;font-weight:700;cursor:pointer;min-height:58px;display:flex;align-items:center;justify-content:center;gap:12px;transition:background 140ms ease" style-hover="background:#0AA983">Book my 20-minute demo <span aria-hidden="true" style="font-size:15px">&rarr;</span></button>
+<button type="submit" disabled="{{ sending }}" aria-busy="{{ sending }}" style="margin-top:28px;width:100%;border:0;border-radius:0;background:{{ sendBg }};color:#061428;padding:19px;font-size:18px;font-weight:700;cursor:{{ sendCursor }};min-height:58px;display:flex;align-items:center;justify-content:center;gap:12px;transition:background 140ms ease" style-hover="background:#0AA983">{{ sendLabel }} <span aria-hidden="true" style="font-size:15px">{{ sendArrow }}</span></button>
 <div style="border-top:1px solid #DDE0E5;margin-top:24px;padding-top:18px;display:grid;gap:10px;font-size:14px;line-height:1.55;color:#3D4457">
 <div style="display:flex;gap:10px"><span aria-hidden="true" style="color:#088064;font-weight:700;flex-shrink:0">&#10003;</span><span>Nothing to install and nothing to pay for the demo.</span></div>
 <div style="display:flex;gap:10px"><span aria-hidden="true" style="color:#088064;font-weight:700;flex-shrink:0">&#10003;</span><span>If you go ahead, your 12 months start after a 14-day setup period, not the day you pay.</span></div>
@@ -187,7 +192,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{}">
 class Component extends DCLogic {
-  state = { w: 1200, name: '', phone: '', venue: '', city: '', courts: 2, sport: 'Box cricket', sports: ['Box cricket'], sportOpen: false, method: '', tried: false, sent: false, sentName: '', sentPhone: '', leadText: '', savedToServer: false };
+  state = { w: 1200, name: '', phone: '', venue: '', city: '', courts: 2, sport: 'Box cricket', sports: ['Box cricket'], sportOpen: false, method: '', tried: false, sending: false, sent: false, autoOpened: false, sentName: '', sentPhone: '', leadText: '', savedToServer: false };
   componentDidMount() {
     this._r = () => { const w = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0); if (w !== this.state.w) this.setState({ w: w }); };
     window.addEventListener('resize', this._r);
@@ -206,6 +211,62 @@ class Component extends DCLogic {
     return g;
   }
   missing() { return this.gaps().length > 0; }
+
+  /**
+   * Send the lead to the configured endpoint and report whether it arrived.
+   *
+   * Resolves true only on an acknowledgement we could actually read. A missing
+   * endpoint, a refused request, an error status or no answer inside the time
+   * limit all resolve false, and the caller then falls back to WhatsApp.
+   */
+  kxDeliver(lead) {
+    const endpoint = window.KX_LEAD_ENDPOINT;
+    if (!endpoint) return Promise.resolve(false);
+
+    let hp = '';
+    try {
+      const h = document.querySelector('input[name="company"]');
+      hp = h ? h.value : '';
+    } catch (e) {}
+
+    const payload = Object.assign({}, lead, { company: hp });
+    const enc = Object.keys(payload).map(function (k) {
+      return encodeURIComponent(k) + '=' + encodeURIComponent(payload[k]);
+    }).join('&');
+
+    const ctrl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+    let timer = null;
+
+    // The clock is the guarantee. Abort only rejects a request the browser is
+    // really running; anything else that stalls would hang here forever.
+    const giveUp = new Promise(function (resolve) {
+      timer = setTimeout(function () {
+        try { ctrl && ctrl.abort(); } catch (e) {}
+        resolve(false);
+      }, 9000);
+    });
+
+    const attempt = fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: enc,
+      signal: ctrl ? ctrl.signal : undefined
+    })
+      .then(function (r) {
+        if (!r || !r.ok) return false;
+        return r.text().then(function (t) {
+          // Apps Script answers with JSON. Anything else is a sign-in page or
+          // an error page, which means the lead did not land.
+          try { return !!JSON.parse(t).ok; } catch (e) { return false; }
+        });
+      })
+      .catch(function () { return false; });
+
+    return Promise.race([attempt, giveUp]).then(function (v) {
+      clearTimeout(timer);
+      return !!v;
+    });
+  }
 
   /** Add or remove one sport, keeping the readable string in step. */
   kxToggleSport(name) {
@@ -255,6 +316,7 @@ class Component extends DCLogic {
   }
   done() { const s = this.state; return [!!s.name.trim(), this.digits(s.phone).length === 10, !!s.venue.trim(), !!s.city.trim()].filter(Boolean).length; }
   send() {
+    if (this.state.sending) return;
     if (this.missing()) {
       this.setState({ tried: true });
       this.kxFocusFirstGap();
@@ -280,46 +342,44 @@ class Component extends DCLogic {
       window.localStorage.setItem(key, JSON.stringify(log.slice(-50)));
     } catch (e) {}
     const waText = 'Demo request\n' + body;
-    try {
-      const endpoint = window.KX_LEAD_ENDPOINT;
-      if (endpoint) {
-        const payload = Object.assign({}, lead, {
-          company: (function () { try { var h = document.querySelector('input[name="company"]'); return h ? h.value : ''; } catch (e) { return ''; } })()
-        });
-        const enc = Object.keys(payload).map(function (k) {
-          return encodeURIComponent(k) + '=' + encodeURIComponent(payload[k]);
-        }).join('&');
-        fetch(endpoint, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: enc
-        }).catch(function () {});
-      }
-    } catch (e) {}
     let sentToZoho = false;
     try {
       if (window.KX_ZOHO_READY && window.KX_ZOHO_READY()) {
         sentToZoho = !!window.KX_ZOHO_SUBMIT(lead);
       }
     } catch (e) {}
-    const savedToServer = !!window.KX_LEAD_ENDPOINT || sentToZoho;
-    if (!savedToServer) {
-      // No endpoint configured: WhatsApp is the only way this reaches anyone.
+
+    // No endpoint means no network wait, so the click is still live and the
+    // tab can be opened. Anything else has to wait for an answer first.
+    const canOpenNow = !window.KX_LEAD_ENDPOINT;
+
+    this.setState({ sending: true });
+    this.kxDeliver(lead).then((delivered) => {
+      const savedToServer = delivered || sentToZoho;
+      let autoOpened = false;
+      if (!savedToServer && canOpenNow) {
+        // Nothing acknowledged it, so WhatsApp is the only way this reaches us.
+        try {
+          const url = 'https://wa.me/917778858901?text=' + encodeURIComponent(waText);
+          const a = document.createElement('a');
+          a.href = url; a.target = '_blank'; a.rel = 'noopener'; a.style.display = 'none';
+          document.body.appendChild(a); a.click(); document.body.removeChild(a);
+          autoOpened = true;
+        } catch (e) {}
+      }
       try {
-        const url = 'https://wa.me/917778858901?text=' + encodeURIComponent(waText);
-        const a = document.createElement('a');
-        a.href = url; a.target = '_blank'; a.rel = 'noopener'; a.style.display = 'none';
-        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        ['name', 'phone', 'venue', 'city'].forEach(function (n) {
+          var el = document.querySelector('input[name="' + n + '"]');
+          if (el) el.setAttribute('aria-invalid', 'false');
+        });
       } catch (e) {}
-    }
-    try {
-      ['name', 'phone', 'venue', 'city'].forEach(function (n) {
-        var el = document.querySelector('input[name="' + n + '"]');
-        if (el) el.setAttribute('aria-invalid', 'false');
+      this.setState({
+        sending: false, sent: true, tried: false, autoOpened: autoOpened,
+        sentName: s.name, sentPhone: '+91 ' + this.digits(s.phone),
+        leadText: waText, savedToServer: savedToServer
       });
-    } catch (e) {}
-    this.setState({ sent: true, tried: false, sentName: s.name, sentPhone: '+91 ' + this.digits(s.phone), leadText: waText, savedToServer: savedToServer });
+    });
+    return;
   }
   renderVals() {
     const s = this.state, w = s.w, m = w < 900;
@@ -392,7 +452,13 @@ class Component extends DCLogic {
       setMethod: e => this.setState({ method: e.target.value }),
       showErr: s.tried && this.missing(),
       sent: s.sent, notSent: !s.sent, mailHref: mailHref,
+      sending: !!s.sending,
+      sendLabel: s.sending ? 'Sending your details' : 'Book my 20-minute demo',
+      sendArrow: s.sending ? '' : String.fromCharCode(8594),
+      sendBg: s.sending ? '#7FD9C2' : '#0DC59A',
+      sendCursor: s.sending ? 'progress' : 'pointer',
       savedToServer: !!s.savedToServer, needsWhatsApp: !s.savedToServer,
+      waOpened: !!s.autoOpened, waNotOpened: !s.autoOpened,
       thanks: 'Thanks, ' + (first || 'and welcome') + '.',
       phoneOut: s.sentPhone || '',
       waLink: wa,

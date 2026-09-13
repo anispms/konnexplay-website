@@ -140,7 +140,11 @@
   }
 
   function applyConfig(c) {
-    if (c && c.leads && typeof c.leads.endpoint === 'string') {
+    /* An empty string is still a string. Testing the type alone meant a blank
+       endpoint in content.json wiped whatever config.js had set, on every page
+       load, and the owner was left thinking the Apps Script was broken. Only a
+       real value may replace what is already there. */
+    if (c && c.leads && c.leads.endpoint) {
       window.KX_LEAD_ENDPOINT = c.leads.endpoint;
     }
     if (c && c.zoho) { window.KX_ZOHO = c.zoho; }

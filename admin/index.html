@@ -100,12 +100,13 @@
   .kx-confirm li{padding:11px 0; border-top:1px solid var(--line); font-size:14px; line-height:1.5}
   .kx-confirm .kx-f{display:block; font-weight:600; color:var(--ink); margin-bottom:3px}
   .kx-confirm .kx-old{color:var(--ink-2); text-decoration:line-through}
+  .kx-confirm .kx-blank{color:var(--ink-2); font-style:italic}
   .kx-confirm .kx-new{color:var(--ok); font-weight:600}
   .kx-confirm-foot{display:flex; gap:10px; justify-content:flex-end; padding:16px 22px;
     border-top:1px solid var(--line); background:#F7F8FA}
   .kx-confirm-foot button{min-height:46px; padding:0 20px; font-size:15px; font-weight:600;
     border-radius:6px; cursor:pointer}
-  .kx-confirm-foot .kx-go{background:var(--ok,#0DC59A); color:#062B22; border:0}
+  .kx-confirm-foot .kx-go{background:var(--ok); color:#FFFFFF; border:0}
   .kx-confirm-foot .kx-no{background:#fff; color:var(--ink); border:1px solid var(--line)}
   @media (max-width: 560px){
     .kx-confirm-foot{flex-direction:column-reverse}
@@ -335,10 +336,24 @@
 
   /* ---------- validation ---------- */
 
+  /**
+   * The digits the Call and WhatsApp buttons dial, or '' if the number cannot
+   * be dialled. Ten digits get the country code; twelve already carry it.
+   */
+  function kxPhoneDigits(v) {
+    var d = String(v || '').replace(/\D/g, '');
+    if (d.length === 10) return '91' + d;
+    if (d.length === 12 && d.indexOf('91') === 0) return d;
+    return '';
+  }
+
   var RULES = {
     phoneDisplay: function (v) {
       if (!v) return 'A phone number is required.';
-      if (v.replace(/\D/g, '').length < 10) return 'That does not look like a full phone number.';
+      // Only these two shapes can be turned into a working wa.me link.
+      if (!kxPhoneDigits(v)) {
+        return 'Use a 10-digit mobile number, for example 77788 58901, with or without +91 in front.';
+      }
       return '';
     },
     email: function (v) {
@@ -394,7 +409,9 @@
       var problem = rule ? rule(el.value.trim()) : '';
       var err = $('err-' + id);
       if (problem) { ok = false; el.classList.add('bad'); if (err) { err.textContent = problem; err.className = 'err show'; } }
-      else { el.classList.remove('bad'); if (err) err.className = 'err'; }
+      // Clear the text too. Hiding it left the old complaint in the page for
+      // a screen reader to find long after the field was corrected.
+      else { el.classList.remove('bad'); if (err) { err.textContent = ''; err.className = 'err'; } }
     });
     return ok;
   }
@@ -420,8 +437,8 @@
     });
     set(c, ['zoho', 'enabled'], ($('zohoEnabled').value || '') === 'yes');
     // Digits are derived, never typed, so the two can never disagree.
-    var d = ($('phoneDisplay').value || '').replace(/\D/g, '');
-    if (d) set(c, ['contact', 'phoneDigits'], d.length === 10 ? '91' + d : d);
+    var d = kxPhoneDigits($('phoneDisplay').value);
+    if (d) set(c, ['contact', 'phoneDigits'], d);
     return c;
   }
 
@@ -534,6 +551,18 @@
       if (was === now) return;
       rows.push({ label: FIELD_LABEL[id] || id, was: was, now: now, secret: /Xnq|Xmi/.test(id) });
     });
+
+    /* The WhatsApp digits are derived from the displayed number rather than
+       typed, so they are not in FIELDS. They are still written on every save,
+       and if the two had drifted apart this is the only place it would show. */
+    var wasD = readPath(content || {}, ['contact', 'phoneDigits']);
+    var nowD = readPath(next, ['contact', 'phoneDigits']);
+    wasD = (wasD === null || wasD === undefined) ? '' : String(wasD);
+    nowD = (nowD === null || nowD === undefined) ? '' : String(nowD);
+    if (wasD !== nowD) {
+      rows.push({ label: 'WhatsApp number the buttons dial', was: wasD, now: nowD, secret: false });
+    }
+
     return rows;
   }
 
@@ -547,7 +576,9 @@
 
     var items = rows.map(function (r) {
       var show = function (v) {
-        if (!v) return '<span class="kx-old">(empty)</span>';
+        // "0" is falsy but real: a price of zero is not an empty field, and
+        // the placeholder must not be struck through in the new column.
+        if (v === '') return '<span class="kx-blank">(empty)</span>';
         var t = r.secret ? v.slice(0, 4) + '\u2026' : v;
         return t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
       };
@@ -568,6 +599,8 @@
     function close() {
       wrap.remove();
       document.removeEventListener('keydown', onKey, true);
+      // Put the keyboard back on the button that opened this, not on the body.
+      try { $('save').focus(); } catch (e) {}
     }
     function onKey(e) {
       if (e.key === 'Escape' || e.key === 'Esc') { close(); }
