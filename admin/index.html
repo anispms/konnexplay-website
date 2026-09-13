@@ -277,6 +277,10 @@
     </div>
 
     <div class="actions">
+      <div id="kx-edits" style="display:none;margin:0 0 14px">
+        <div style="font-size:12px;letter-spacing:.08em;font-weight:700;color:var(--ink-2);margin-bottom:8px">CONTENT CHANGES</div>
+        <ol id="kx-edits-list" style="margin:0;padding:0 0 0 18px;font-size:13px;line-height:1.5;color:var(--ink)"></ol>
+      </div>
       <button class="primary" id="save" type="button" disabled>Save and publish</button>
       <button class="ghost" id="revert" type="button">Undo my changes</button>
       <p id="saveHint" style="margin:8px 0 0;font-size:13px;color:#8A6A12;flex-basis:100%">Paste your GitHub token above and press Connect to enable saving.</p>
@@ -288,9 +292,11 @@
       <span>Preview</span>
       <button type="button" id="vDesk" aria-pressed="true">Desktop</button>
       <button type="button" id="vPhone" aria-pressed="false">Phone</button>
+      <button type="button" id="kx-edit-toggle" aria-pressed="false">Edit</button>
       <button type="button" id="reload">Reload</button>
     </div>
     <iframe id="frame" src="../index.html" title="Website preview"></iframe>
+<input type="file" id="kx-file" style="display:none" accept="image/*">
   </section>
 </main>
 
@@ -329,11 +335,13 @@
   var token = '';
   var dirty = false;
 
+  window.msg = msg;
   function msg(kind, text) {
     var m = $('msg');
     m.className = 'msg show ' + kind;
     m.textContent = text;
   }
+  window.clearMsg = clearMsg;
   function clearMsg() { $('msg').className = 'msg'; }
 
   /* ---------- validation ---------- */
@@ -471,12 +479,15 @@
    * Put the number of pending changes on the button, and disable it when there
    * are none. Never enables it when there is no token: connecting owns that.
    */
+  window.refreshSaveButton = refreshSaveButton;
   function refreshSaveButton() {
     var btn = $('save');
     if (!btn) return;
-    if (!token) { btn.textContent = 'Save and publish'; btn.disabled = true; return; }
+    if (!KX_PANEL.getToken()) { btn.textContent = 'Save and publish'; btn.disabled = true; return; }
     var n = 0;
     try { n = changeList(formToContent()).length; } catch (e) { n = 0; }
+    // changeList already folds in anything edited in the preview, so there
+    // is nothing to add here. Adding it counted every content edit twice.
     btn.disabled = n === 0;
     btn.textContent = n === 0
       ? 'Nothing to publish'
@@ -557,6 +568,7 @@
   }
 
   /** Which settings differ between what is saved and what is on screen. */
+  window.changeList = changeList;
   function changeList(next) {
     var rows = [];
     Object.keys(FIELDS).forEach(function (id) {
@@ -582,6 +594,9 @@
     if (wasD !== nowD) {
       rows.push({ label: 'WhatsApp number the buttons dial', was: wasD, now: nowD, secret: false });
     }
+
+    // And anything edited in the preview.
+    try { if (window.KX_EXTRA_ROWS) rows = rows.concat(window.KX_EXTRA_ROWS()); } catch (e) {}
 
     return rows;
   }
@@ -647,7 +662,31 @@
     confirmChanges(rows, function () { publish(next); });
   }
 
+  window.publish = publish;
   function publish(next) {
+    // Content edits are separate files, so they go first and the settings
+    // follow. If there are no content edits this is a straight no-op.
+    if (window.KX_EXTRA_PUBLISH && window.KX_EXTRA_COUNT && window.KX_EXTRA_COUNT() > 0) {
+      $('save').disabled = true;
+      window.KX_EXTRA_PUBLISH(function (step) { msg('info', step + '\u2026'); })
+        .then(function (res) {
+          if (res && res.skipped && res.skipped.length) {
+            msg('err', 'Some content changes could not be applied: ' + res.skipped.join('; '));
+          }
+          publishSettings(next);
+        })
+        .catch(function (e) {
+          msg('err', 'Could not publish the content changes: ' + (e && e.message ? e.message : e));
+          refreshSaveButton();
+        });
+      return;
+    }
+    publishSettings(next);
+  }
+
+  function publishSettings(next) {
+    // Nothing to write if only content was edited.
+    try { if (!changeList(next).length) { msg('ok', 'Published. The live site updates in about a minute.'); refreshSaveButton(); return; } } catch (e) {}
     var body = JSON.stringify(next, null, 2) + '\n';
     $('save').disabled = true;
     msg('info', 'Saving...');
@@ -869,6 +908,107 @@
         .then(function (c) { content = c; contentToForm(c); msg('info', 'Showing the local file. ' + e.message); })
         .catch(function () { msg('err', e.message); });
     });
+
+  /* The click-to-edit editor lives in its own file and cannot see inside this
+     closure. These are the few things it needs: how to call GitHub, how to read
+     the form, and whether we are connected. */
+  window.KX_PANEL = {
+    api: api,
+    formToContent: formToContent,
+    getToken: function () { return token; }
+  };
+})();
+</script>
+
+<script src="edit.js"></script>
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+
+  window.KX_EDIT_SAY = function (m) { msg('info', m); };
+
+  KX_EDIT.init({
+    api: function (p, o) { return KX_PANEL.api(p, o); },
+    onChange: function () { renderEdits(); try { refreshSaveButton(); } catch (e) {} }
+  });
+
+  function renderEdits() {
+    var box = $('kx-edits'), list = $('kx-edits-list');
+    var items = KX_EDIT.list();
+    if (!items.length) { box.style.display = 'none'; list.innerHTML = ''; return; }
+    box.style.display = 'block';
+    list.innerHTML = '';
+    items.forEach(function (c, i) {
+      var li = document.createElement('li');
+      li.style.margin = '0 0 8px';
+      var what =
+        c.kind === 'text' ? 'Text: "' + short(c.find) + '" becomes "' + short(c.replace) + '"' +
+          (c.count > 1 ? ' (' + c.count + ' places)' : '')
+        : c.kind === 'link' ? 'Link: ' + short(c.label)
+        : 'Picture: ' + c.file + ' replaced with ' + short(c.label);
+      li.appendChild(document.createTextNode(what + ' '));
+      var undo = document.createElement('button');
+      undo.type = 'button';
+      undo.textContent = 'undo';
+      undo.style.cssText = 'border:0;background:none;color:var(--danger);cursor:pointer;font-size:12px;text-decoration:underline;padding:0';
+      undo.addEventListener('click', function () { KX_EDIT.undoOne(i); });
+      li.appendChild(undo);
+      list.appendChild(li);
+    });
+  }
+  function short(t) { t = String(t || '').replace(/\s+/g, ' ').trim(); return t.length > 48 ? t.slice(0, 48) + '\u2026' : t; }
+
+  $('kx-edit-toggle').addEventListener('click', function () {
+    if (KX_EDIT.isOn()) {
+      KX_EDIT.off();
+      this.setAttribute('aria-pressed', 'false');
+      this.textContent = 'Edit';
+      clearMsg();
+    } else {
+      if (!KX_EDIT.on()) { msg('err', 'The preview is still loading. Try again in a moment.'); return; }
+      this.setAttribute('aria-pressed', 'true');
+      this.textContent = 'Done editing';
+      msg('info', 'Editing is on. Click any text to change it, any picture to replace it. Hold Alt and click a link to change where it goes.');
+    }
+  });
+
+  $('kx-file').addEventListener('change', function () {
+    if (this.files && this.files[0]) KX_EDIT.fileChosen(this.files[0]);
+  });
+
+  /* The preview reloads on navigation, so editing has to be re-applied. */
+  $('frame').addEventListener('load', function () {
+    setTimeout(function () { KX_EDIT.reattach(); }, 600);
+  });
+
+  /* Three hooks the panel asks for. Nothing of the panel is replaced. */
+
+  window.KX_EXTRA_COUNT = function () { return KX_EDIT.list().length; };
+
+  window.KX_EXTRA_ROWS = function () {
+    return KX_EDIT.list().map(function (c) {
+      var page = String(c.file).replace('.dc.html', '');
+      return {
+        label: c.kind === 'text' ? 'Text on ' + page + (c.count > 1 ? ' (' + c.count + ' places)' : '')
+             : c.kind === 'link' ? 'Link on ' + page
+             : 'Picture ' + c.file,
+        was: c.kind === 'file' ? '(the picture that is there now)' : String(c.find).replace(/^href="|"$/g, ''),
+        now: c.kind === 'file' ? c.label : String(c.replace).replace(/^href="|"$/g, ''),
+        secret: false
+      };
+    });
+  };
+
+  window.KX_EXTRA_PUBLISH = function (progress) {
+    return KX_EDIT.publish(progress).then(function (res) {
+      KX_EDIT.clear();
+      renderEdits();
+      return res;
+    });
+  };
+
+  renderEdits();
 })();
 </script>
 </body>
