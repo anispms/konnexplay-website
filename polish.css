@@ -257,6 +257,20 @@ header a:focus-visible {
     border-color: #0DC59A !important;
   }
 
+  /* The sports dropdown and its panel, so the control does not sit square
+     among four rounded fields. */
+  button[aria-haspopup="listbox"] {
+    border-radius: 10px !important;
+    background: #F7F8FA !important;
+  }
+  button[aria-haspopup="listbox"][aria-expanded="true"] {
+    background: #FFFFFF !important;
+    border-color: #0DC59A !important;
+  }
+  div[role="group"][aria-label="Sports at your venue"] {
+    border-radius: 10px !important;
+  }
+
   /* Rounded corners on the submit button to match the fields. */
   button[type="submit"] {
     border-radius: 10px !important;

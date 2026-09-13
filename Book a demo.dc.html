@@ -108,16 +108,19 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 </div>
 
 <div>
-<span style="display:block;font-size:11px;letter-spacing:0.14em;font-weight:700;color:#5A6275;margin-bottom:9px">MAIN SPORT</span>
-<div style="display:flex;flex-wrap:wrap;gap:8px">
-<button type="button" onClick="{{ setS0 }}" aria-pressed="{{ sOn0 }}" style="border:1.5px solid {{ sBd0 }};background:{{ sBg0 }};color:{{ sFg0 }};padding:11px 16px;font-size:15px;font-weight:600;cursor:pointer;min-height:44px;transition:all 140ms ease">Box cricket</button>
-<button type="button" onClick="{{ setS1 }}" aria-pressed="{{ sOn1 }}" style="border:1.5px solid {{ sBd1 }};background:{{ sBg1 }};color:{{ sFg1 }};padding:11px 16px;font-size:15px;font-weight:600;cursor:pointer;min-height:44px;transition:all 140ms ease">Football turf</button>
-<button type="button" onClick="{{ setS2 }}" aria-pressed="{{ sOn2 }}" style="border:1.5px solid {{ sBd2 }};background:{{ sBg2 }};color:{{ sFg2 }};padding:11px 16px;font-size:15px;font-weight:600;cursor:pointer;min-height:44px;transition:all 140ms ease">Pickleball</button>
-<button type="button" onClick="{{ setS3 }}" aria-pressed="{{ sOn3 }}" style="border:1.5px solid {{ sBd3 }};background:{{ sBg3 }};color:{{ sFg3 }};padding:11px 16px;font-size:15px;font-weight:600;cursor:pointer;min-height:44px;transition:all 140ms ease">Padel</button>
-<button type="button" onClick="{{ setS4 }}" aria-pressed="{{ sOn4 }}" style="border:1.5px solid {{ sBd4 }};background:{{ sBg4 }};color:{{ sFg4 }};padding:11px 16px;font-size:15px;font-weight:600;cursor:pointer;min-height:44px;transition:all 140ms ease">Badminton</button>
-<button type="button" onClick="{{ setS5 }}" aria-pressed="{{ sOn5 }}" style="border:1.5px solid {{ sBd5 }};background:{{ sBg5 }};color:{{ sFg5 }};padding:11px 16px;font-size:15px;font-weight:600;cursor:pointer;min-height:44px;transition:all 140ms ease">Tennis</button>
-<button type="button" onClick="{{ setS6 }}" aria-pressed="{{ sOn6 }}" style="border:1.5px solid {{ sBd6 }};background:{{ sBg6 }};color:{{ sFg6 }};padding:11px 16px;font-size:15px;font-weight:600;cursor:pointer;min-height:44px;transition:all 140ms ease">Multi-sport</button>
+<span style="display:block;font-size:11px;letter-spacing:0.14em;font-weight:700;color:#5A6275;margin-bottom:9px">SPORTS AT YOUR VENUE</span>
+<button type="button" onClick="{{ toggleSports }}" aria-expanded="{{ sportOpen }}" aria-haspopup="listbox" style="width:100%;box-sizing:border-box;display:flex;align-items:center;justify-content:space-between;gap:10px;background:#FFFFFF;border:1.5px solid #DDE0E5;border-radius:0;padding:13px 14px;min-height:52px;font-family:Inter,sans-serif;font-size:17px;font-weight:500;color:#0D1B3E;cursor:pointer;text-align:left"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ sportLabel }}</span><span aria-hidden="true" style="flex:none;color:#5A6275;font-size:13px">{{ sportCaret }}</span></button>
+<sc-if value="{{ sportOpen }}" hint-placeholder-val="{{ false }}">
+<div role="group" aria-label="Sports at your venue" style="margin-top:8px;border:1.5px solid #DDE0E5;background:#FFFFFF;padding:4px 0;max-height:292px;overflow-y:auto">
+<label style="display:flex;align-items:center;gap:12px;padding:11px 14px;min-height:48px;cursor:pointer;font-family:Inter,sans-serif;font-size:16px;color:#0D1B3E"><input type="checkbox" checked="{{ sChk0 }}" onChange="{{ setS0 }}" style="width:20px;height:20px;flex:none;accent-color:#0DC59A;cursor:pointer" /><span>Box cricket</span></label>
+<label style="display:flex;align-items:center;gap:12px;padding:11px 14px;min-height:48px;cursor:pointer;font-family:Inter,sans-serif;font-size:16px;color:#0D1B3E"><input type="checkbox" checked="{{ sChk1 }}" onChange="{{ setS1 }}" style="width:20px;height:20px;flex:none;accent-color:#0DC59A;cursor:pointer" /><span>Football turf</span></label>
+<label style="display:flex;align-items:center;gap:12px;padding:11px 14px;min-height:48px;cursor:pointer;font-family:Inter,sans-serif;font-size:16px;color:#0D1B3E"><input type="checkbox" checked="{{ sChk2 }}" onChange="{{ setS2 }}" style="width:20px;height:20px;flex:none;accent-color:#0DC59A;cursor:pointer" /><span>Pickleball</span></label>
+<label style="display:flex;align-items:center;gap:12px;padding:11px 14px;min-height:48px;cursor:pointer;font-family:Inter,sans-serif;font-size:16px;color:#0D1B3E"><input type="checkbox" checked="{{ sChk3 }}" onChange="{{ setS3 }}" style="width:20px;height:20px;flex:none;accent-color:#0DC59A;cursor:pointer" /><span>Padel</span></label>
+<label style="display:flex;align-items:center;gap:12px;padding:11px 14px;min-height:48px;cursor:pointer;font-family:Inter,sans-serif;font-size:16px;color:#0D1B3E"><input type="checkbox" checked="{{ sChk4 }}" onChange="{{ setS4 }}" style="width:20px;height:20px;flex:none;accent-color:#0DC59A;cursor:pointer" /><span>Badminton</span></label>
+<label style="display:flex;align-items:center;gap:12px;padding:11px 14px;min-height:48px;cursor:pointer;font-family:Inter,sans-serif;font-size:16px;color:#0D1B3E"><input type="checkbox" checked="{{ sChk5 }}" onChange="{{ setS5 }}" style="width:20px;height:20px;flex:none;accent-color:#0DC59A;cursor:pointer" /><span>Tennis</span></label>
+<label style="display:flex;align-items:center;gap:12px;padding:11px 14px;min-height:48px;cursor:pointer;font-family:Inter,sans-serif;font-size:16px;color:#0D1B3E"><input type="checkbox" checked="{{ sChk6 }}" onChange="{{ setS6 }}" style="width:20px;height:20px;flex:none;accent-color:#0DC59A;cursor:pointer" /><span>Multi-sport</span></label>
 </div>
+</sc-if>
 </div>
 
 <label style="display:block">
@@ -184,7 +187,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{}">
 class Component extends DCLogic {
-  state = { w: 1200, name: '', phone: '', venue: '', city: '', courts: 2, sport: 'Box cricket', method: '', tried: false, sent: false, sentName: '', sentPhone: '', leadText: '', savedToServer: false };
+  state = { w: 1200, name: '', phone: '', venue: '', city: '', courts: 2, sport: 'Box cricket', sports: ['Box cricket'], sportOpen: false, method: '', tried: false, sent: false, sentName: '', sentPhone: '', leadText: '', savedToServer: false };
   componentDidMount() {
     this._r = () => { const w = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0); if (w !== this.state.w) this.setState({ w: w }); };
     window.addEventListener('resize', this._r);
@@ -203,6 +206,14 @@ class Component extends DCLogic {
     return g;
   }
   missing() { return this.gaps().length > 0; }
+
+  /** Add or remove one sport, keeping the readable string in step. */
+  kxToggleSport(name) {
+    const list = (this.state.sports || []).slice();
+    const at = list.indexOf(name);
+    if (at === -1) list.push(name); else list.splice(at, 1);
+    this.setState({ sports: list, sport: list.join(', ') });
+  }
 
   /** Which input matches each phrase gaps() produces. */
   kxGapFields() {
@@ -256,7 +267,7 @@ class Component extends DCLogic {
       venue: s.venue,
       city: s.city,
       courts: String(s.courts || ''),
-      sport: s.sport,
+      sport: ((s.sports && s.sports.length) ? s.sports.join(', ') : s.sport),
       method: s.method || '',
       page: location.href,
       referrer: document.referrer || ''
@@ -321,7 +332,7 @@ class Component extends DCLogic {
       twoCols: w < 620 ? '1fr' : '1fr 1fr',
       proofCols: w < 760 ? '1fr' : 'minmax(0,1fr) minmax(0,1fr)',
       padY: m ? '64px' : '96px',
-      name: s.name, phone: s.phone, venue: s.venue, city: s.city, courts: s.courts, sport: s.sport, method: s.method,
+      name: s.name, phone: s.phone, venue: s.venue, city: s.city, courts: s.courts, sport: ((s.sports && s.sports.length) ? s.sports.join(', ') : s.sport), method: s.method,
       setName: e => this.setState({ name: e.target.value }),
       setPhone: e => this.setState({ phone: this.digits(e.target.value) }),
       setVenue: e => this.setState({ venue: e.target.value }),
@@ -356,42 +367,26 @@ class Component extends DCLogic {
       cBg6: String(s.courts) === '6+' ? '#0D1B3E' : '#FFFFFF',
       cFg6: String(s.courts) === '6+' ? '#FFFFFF' : '#5A6275',
       cBd6: String(s.courts) === '6+' ? '#0D1B3E' : '#DDE0E5',
-      setS0: () => this.setState({ sport: "Box cricket" }),
-      sOn0: s.sport === "Box cricket",
-      sBg0: s.sport === "Box cricket" ? '#E8FBF5' : '#FFFFFF',
-      sFg0: s.sport === "Box cricket" ? '#066B54' : '#5A6275',
-      sBd0: s.sport === "Box cricket" ? '#0DC59A' : '#DDE0E5',
-      setS1: () => this.setState({ sport: "Football turf" }),
-      sOn1: s.sport === "Football turf",
-      sBg1: s.sport === "Football turf" ? '#E8FBF5' : '#FFFFFF',
-      sFg1: s.sport === "Football turf" ? '#066B54' : '#5A6275',
-      sBd1: s.sport === "Football turf" ? '#0DC59A' : '#DDE0E5',
-      setS2: () => this.setState({ sport: "Pickleball" }),
-      sOn2: s.sport === "Pickleball",
-      sBg2: s.sport === "Pickleball" ? '#E8FBF5' : '#FFFFFF',
-      sFg2: s.sport === "Pickleball" ? '#066B54' : '#5A6275',
-      sBd2: s.sport === "Pickleball" ? '#0DC59A' : '#DDE0E5',
-      setS3: () => this.setState({ sport: "Padel" }),
-      sOn3: s.sport === "Padel",
-      sBg3: s.sport === "Padel" ? '#E8FBF5' : '#FFFFFF',
-      sFg3: s.sport === "Padel" ? '#066B54' : '#5A6275',
-      sBd3: s.sport === "Padel" ? '#0DC59A' : '#DDE0E5',
-      setS4: () => this.setState({ sport: "Badminton" }),
-      sOn4: s.sport === "Badminton",
-      sBg4: s.sport === "Badminton" ? '#E8FBF5' : '#FFFFFF',
-      sFg4: s.sport === "Badminton" ? '#066B54' : '#5A6275',
-      sBd4: s.sport === "Badminton" ? '#0DC59A' : '#DDE0E5',
-      setS5: () => this.setState({ sport: "Tennis" }),
-      sOn5: s.sport === "Tennis",
-      sBg5: s.sport === "Tennis" ? '#E8FBF5' : '#FFFFFF',
-      sFg5: s.sport === "Tennis" ? '#066B54' : '#5A6275',
-      sBd5: s.sport === "Tennis" ? '#0DC59A' : '#DDE0E5',
-      setS6: () => this.setState({ sport: "Multi-sport" }),
-      sOn6: s.sport === "Multi-sport",
-      sBg6: s.sport === "Multi-sport" ? '#E8FBF5' : '#FFFFFF',
-      sFg6: s.sport === "Multi-sport" ? '#066B54' : '#5A6275',
-      sBd6: s.sport === "Multi-sport" ? '#0DC59A' : '#DDE0E5',
-      doneLabel: this.done() + ' of 4 done',
+      setS0: () => this.kxToggleSport("Box cricket"),
+      sChk0: (s.sports || []).indexOf("Box cricket") !== -1,
+      setS1: () => this.kxToggleSport("Football turf"),
+      sChk1: (s.sports || []).indexOf("Football turf") !== -1,
+      setS2: () => this.kxToggleSport("Pickleball"),
+      sChk2: (s.sports || []).indexOf("Pickleball") !== -1,
+      setS3: () => this.kxToggleSport("Padel"),
+      sChk3: (s.sports || []).indexOf("Padel") !== -1,
+      setS4: () => this.kxToggleSport("Badminton"),
+      sChk4: (s.sports || []).indexOf("Badminton") !== -1,
+      setS5: () => this.kxToggleSport("Tennis"),
+      sChk5: (s.sports || []).indexOf("Tennis") !== -1,
+      setS6: () => this.kxToggleSport("Multi-sport"),
+      sChk6: (s.sports || []).indexOf("Multi-sport") !== -1,
+      toggleSports: () => this.setState({ sportOpen: !s.sportOpen }),
+      sportOpen: !!s.sportOpen,
+      sportCaret: s.sportOpen ? String.fromCharCode(9650) : String.fromCharCode(9660),
+      sportLabel: (s.sports && s.sports.length)
+        ? (s.sports.length > 2 ? s.sports.length + ' sports selected' : s.sports.join(', '))
+        : 'Choose your sports',      doneLabel: this.done() + ' of 4 done',
       doneColor: this.done() === 4 ? '#088064' : '#5A6275',
       errText: 'Still needed: ' + this.gaps().join(', ') + '.',
       setMethod: e => this.setState({ method: e.target.value }),
