@@ -20,7 +20,9 @@
  * Everything else is left alone and goes straight to the network.
  */
 
-var CACHE = 'kx-v1';
+/* Bumping this name throws away everything the previous worker had stored,
+   which is the quickest way to be sure no page from before a change survives. */
+var CACHE = 'kx-v2';
 
 self.addEventListener('install', function (e) {
   // Take over straight away rather than waiting for every tab to close.
@@ -69,8 +71,21 @@ self.addEventListener('fetch', function (e) {
   if (url.pathname.endsWith('version.json')) return;
 
   if (isPage(url, req)) {
+    /* Going to the network is not enough on its own. GitHub Pages tells the
+       browser to hold every file for ten minutes, and a plain fetch is served
+       out of that same store, so a refresh could still hand back the page from
+       before the change. Asking for the page with cache: reload skips the
+       browser's copy and goes to the server, which is what a refresh is meant
+       to do. It cannot be done by passing the original Request through, since a
+       navigation Request cannot be rebuilt, so the URL is refetched instead. */
+    var live;
+    try {
+      live = fetch(url.href, { cache: 'reload', credentials: 'same-origin' });
+    } catch (err) {
+      live = fetch(req);
+    }
     e.respondWith(
-      fetch(req)
+      live
         .then(function (res) {
           if (res && res.ok) {
             var copy = res.clone();
