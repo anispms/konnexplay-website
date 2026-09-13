@@ -10,3 +10,6 @@
  * in WhatsApp.
  */
 window.KX_LEAD_ENDPOINT = '';
+
+/* Build id for the page files. Rewritten by tools-stamp-version.js. */
+window.KX_BUILD = '5625d3dc';
