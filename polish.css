@@ -361,3 +361,18 @@ img[style*="aspect-ratio"] {
     flex: 1 1 0% !important;
   }
 }
+
+/* On the demo page itself, "Book a demo" points at the page you are already
+   reading. Drop it there and let Call and WhatsApp share the width, so the
+   bar always offers something you cannot already see. */
+#kx-actionbar.kx-on-demo { grid-template-columns: 1fr 1fr; }
+#kx-actionbar.kx-on-demo a.kx-primary { display: none; }
+
+/* At 320px the mobile field is 155px wide and the +91 prefix takes a slice of
+   it, so "Enter mobile number" was cut off mid-word. Tighten the prefix and
+   the type just for the narrowest phones; 16px still stops iOS zooming in. */
+@media (max-width: 360px) {
+  input[name="phone"] { font-size: 16px !important; letter-spacing: 0 !important; }
+  span:has(> input[name="phone"]) { gap: 6px !important; }
+  span:has(> input[name="phone"]) > span:first-child { font-size: 16px !important; }
+}

@@ -65,6 +65,15 @@
 
     document.body.appendChild(bar);
 
+    /* Offering "Book a demo" on the demo page is a button back to where you
+       already are. Track the route and let Call and WhatsApp share the bar. */
+    var markRoute = function () {
+      var onDemo = (location.hash || '').indexOf('#/demo') === 0;
+      bar.classList.toggle('kx-on-demo', onDemo);
+    };
+    markRoute();
+    window.addEventListener('hashchange', markRoute);
+
     // Keep the number in step if the admin panel changes it.
     if (window.MutationObserver) {
       var sync = function () {
