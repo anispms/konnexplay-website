@@ -121,7 +121,11 @@
       // form decides which one it wants. Whichever it does not have is ignored.
       hidden(form, 'Phone', lead.phone || '');
       hidden(form, 'Mobile', lead.phone || '');
+      // Zoho named this field 'Address - City' when it was added to the form,
+      // not 'City'. Both are sent: the one the form does not carry is ignored,
+      // and this keeps working if the field is ever renamed back.
       hidden(form, 'City', lead.city || '');
+      hidden(form, 'Address - City', lead.city || '');
       hidden(form, 'Lead Source', c.leadSource);
       // Forms often mark Lead Status mandatory, and a missing mandatory field
       // is refused in silence. A new lead has not been contacted yet.
