@@ -389,7 +389,21 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
 <div>
 <div style="font-family:Outfit,sans-serif;font-weight:800;font-size:28px;letter-spacing:-0.02em;margin-bottom:12px">{{ thanks }}</div>
+<sc-if value="{{ savedToServer }}" hint-placeholder-val="{{ true }}">
 <p style="font-size:17px;line-height:1.6;color:#3D4457;margin:0;text-wrap:pretty">We have your details. Roshan will call you to fix a time, and the demo runs on your own courts and rates.</p>
+</sc-if>
+<sc-if value="{{ needsWhatsApp }}" hint-placeholder-val="{{ false }}">
+<sc-if value="{{ waOpened }}" hint-placeholder-val="{{ true }}">
+<p style="font-size:17px;line-height:1.6;color:#3D4457;margin:0 0 16px;text-wrap:pretty">WhatsApp just opened with your details filled in. <strong style="font-weight:600">Press send there</strong> and Roshan will call you to fix a time.</p>
+</sc-if>
+<sc-if value="{{ waNotOpened }}" hint-placeholder-val="{{ false }}">
+<p style="font-size:17px;line-height:1.6;color:#3D4457;margin:0 0 16px;text-wrap:pretty">Your details are ready to send. <strong style="font-weight:600">Tap WhatsApp below</strong> and press send, and Roshan will call you to fix a time.</p>
+</sc-if>
+<div style="display:flex;flex-wrap:wrap;gap:10px">
+<a href="{{ waLink }}" target="_blank" rel="noopener" style="background:#0DC59A;color:#062B22;padding:11px 18px;font-size:15px;font-weight:600;text-decoration:none;min-height:44px;display:inline-flex;align-items:center">Send on WhatsApp</a>
+<a href="tel:+917778858901" style="border:1.5px solid #0D1B3E;color:#0D1B3E;padding:11px 18px;font-size:15px;font-weight:600;text-decoration:none;min-height:44px;display:inline-flex;align-items:center">Call +91 77788 58901</a>
+</div>
+</sc-if>
 </div>
 </sc-if>
 <sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
@@ -403,7 +417,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 <label style="display:block"><span style="display:block;font-size:13px;font-weight:600;margin-bottom:6px">Courts or turfs</span><input type="number" min="1" value="{{ fCourts }}" onChange="{{ setCourts }}" style="width:100%;box-sizing:border-box;border:1px solid #C9CBD1;padding:13px;font-size:16px;min-height:44px" /></label>
 <label style="display:block"><span style="display:block;font-size:13px;font-weight:600;margin-bottom:6px">Sport</span><select value="{{ fSport }}" onChange="{{ setSport }}" style="width:100%;box-sizing:border-box;border:1px solid #C9CBD1;padding:13px;font-size:16px;min-height:44px;background:#FFFFFF"><option>Box cricket</option><option>Football turf</option><option>Pickleball</option><option>Padel</option><option>Badminton</option><option>Tennis</option><option>Multi-sport</option></select></label>
 </div>
-<button type="submit" style="margin-top:22px;width:100%;background:#0DC59A;color:#061428;border:0;padding:18px;font-weight:700;font-size:17px;cursor:pointer;transition:background 140ms ease" style-hover="background:#0AA983">Book a 20-minute demo</button>
+<button type="submit" disabled="{{ sending }}" aria-busy="{{ sending }}" style="margin-top:22px;width:100%;background:#0DC59A;color:#061428;border:0;padding:18px;font-weight:700;font-size:17px;cursor:pointer;transition:background 140ms ease" style-hover="background:#0AA983">{{ sendLabel }}</button>
 <p style="font-size:13px;line-height:1.6;color:#5A6275;margin:14px 0 0">We call to fix a time. Your details are not shared with anyone else.</p>
 </form>
 </sc-if>
@@ -418,7 +432,8 @@ class Component extends DCLogic {
   state = {
     w: 1200, reduced: false, feat: 0, fill: 0,
     chan: 0, mBookings: 200000, rate: 10, nCourts: 4,
-    fName: '', fPhone: '', fVenue: '', fCity: '', fCourts: 4, fSport: 'Box cricket', sent: false, firstName: ''
+    fName: '', fPhone: '', fVenue: '', fCity: '', fCourts: 4, fSport: 'Box cricket', sent: false, firstName: '',
+    fSending: false, fSaved: false, fWaOpened: false, fLeadText: ''
   };
 
   FEATS = ['YOUR BOOKING WEBSITE', 'LIVE SLOTS AND RATES', 'PAYMENT AND ADVANCE', 'THE OWNER CALENDAR', 'THE MONTHLY REPORT'];
@@ -689,7 +704,46 @@ class Component extends DCLogic {
       setSport: e => this.setState({ fSport: e.target.value }),
       sent: s.sent, notSent: !s.sent,
       thanks: 'Thanks, ' + ((s.fName || '').trim().split(' ')[0] || 'and welcome') + '.',
-      submit: e => { e.preventDefault(); this.setState({ sent: true }); }
+      sending: !!s.fSending,
+      savedToServer: !!s.fSaved,
+      needsWhatsApp: !s.fSaved,
+      waOpened: !!s.fWaOpened,
+      waNotOpened: !s.fWaOpened,
+      waLink: s.fLeadText ? window.KX_WHATSAPP_URL(s.fLeadText) : 'https://wa.me/917778858901',
+      sendLabel: s.fSending ? 'Sending your details' : 'Book a 20-minute demo',
+      submit: e => {
+        if (e && e.preventDefault) e.preventDefault();
+        if (this.state.fSending) return;
+
+        const lead = {
+          name: (s.fName || '').trim(),
+          phone: (s.fPhone || '').trim(),
+          venue: (s.fVenue || '').trim(),
+          city: (s.fCity || '').trim(),
+          courts: String(s.fCourts || ''),
+          sport: (s.fSport || ''),
+          method: '',
+          page: location.href,
+          referrer: document.referrer || ''
+        };
+
+        // A tab can only be opened while the click is still live. If there is
+        // an endpoint we have to wait for it, and by then the click is gone.
+        const canOpenNow = !window.KX_LEAD_ENDPOINT;
+        this.setState({ fSending: true });
+
+        window.KX_SEND_LEAD(lead).then(res => {
+          let opened = false;
+          if (!res.delivered && canOpenNow) opened = window.KX_OPEN_WHATSAPP(res.text);
+          this.setState({
+            fSending: false,
+            sent: true,
+            fSaved: !!res.delivered,
+            fWaOpened: opened,
+            fLeadText: res.text
+          });
+        });
+      }
     };
   }
 }
